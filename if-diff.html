@@ -20,13 +20,78 @@
           static get is() { return 'if-diff'; }
           static get properties() {
             return {
-              prop1: {
+              lhs: {
                 type: String,
-                value: 'if-diff'
+                observer: '__debounceRender'
+              },
+              equals: {
+                type: Boolean,
+                observer: '__debounceRender'
+              },
+              not_equals:{
+                type: Boolean,
+                observer: '__debounceRender'
+              },
+              greater_than:{
+                type: Boolean,
+                observer: '__debounceRender'
+              },
+              rhs: {
+                type: String,
+                observer: '__debounceRender'
+              }, 
+              if: {
+                type: Boolean,
+                observer: '__debounceRender',
               }
             };
           }
+
+          __evaluateProperties(){
+            if(!this.if) return false;
+            if(this.greater_than){
+              if(this.lhs > this.rhs) return true;
+            }
+            if(this.equals){
+              return (this.lhs === this.rhs);
+            }
+            if(this.not_equals){
+              return (this.lhs !== this.rhs);
+            }
+            return true;
+          }
+
+          __render() {
+            if (this.__evaluateProperties()) {
+              if (!this.__ensureInstance()) {
+                // No template found yet
+                return;
+              }
+              this._showHideChildren();
+            } else if (this.restamp) {
+              this.__teardownInstance();
+            }
+            if (!this.restamp && this.__instance) {
+              this._showHideChildren();
+            }
+            if (this.if != this._lastIf) {
+              this.dispatchEvent(new CustomEvent('dom-change', {
+                bubbles: true,
+                composed: true
+              }));
+              this._lastIf = this.if;
+            }
+          }
+
+          _showHideChildren() {
+            let hidden = this.__hideTemplateChildren__ || !this.__evaluateProperties();
+            if (this.__instance) {
+              this.__instance._showHideChildren(hidden);
+            }
+          }
         }
+
+
 
         customElements.define(IfDiff.is, IfDiff);
    }
