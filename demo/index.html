@@ -10,6 +10,7 @@
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
     <link rel="import" href="../if-diff.html">
 
     <custom-style>
@@ -22,7 +23,16 @@
       <h3>Basic if-diff demo</h3>
       <demo-snippet>
         <template>
-          <if-diff></if-diff>
+          <dom-bind>
+            <template>
+              <input type="checkbox" checked="{{isChecked::change}}">
+              <if-diff if="[[isChecked]]">
+                <template>
+                  Conditions passed.
+                </template>
+              </if-diff>
+            </template>
+          </dom-bind>
         </template>
       </demo-snippet>
     </div>
