@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/elements/dom-if.html">
+
+
+
+<script>
+  (function() {
+  'use strict';
+   function initIfDiff(){
+        /**
+        * `if-diff`
+        * Extension of polymer&#39;s dom-if element that allows comparison between two operands 
+        *
+        * @customElement
+        * @polymer
+        * @demo demo/index.html
+        */
+        class IfDiff extends Polymer.Element {
+          static get is() { return 'if-diff'; }
+          static get properties() {
+            return {
+              prop1: {
+                type: String,
+                value: 'if-diff'
+              }
+            };
+          }
+        }
+
+        customElements.define(IfDiff.is, IfDiff);
+   }
+    customElements.whenDefined('dom-if').then(() =>{
+      initIfDiff();
+    })
+  })();
+</script>
+
