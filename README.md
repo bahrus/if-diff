@@ -2,7 +2,7 @@
 
 # \<if-diff\>
 
-if-diff is an extension of Polymer&#39;s dom-if element that allows comparison between two operands.
+\<if-diff\> is an extension of Polymer's dom-if element that allows comparison between two operands.
 
 Because Polymer's dom-if can only bind to simple boolean properties, it is somewhat clunky when using it in conjunction with multi-select components like paper-tabs.
 
@@ -28,10 +28,18 @@ Because Polymer's dom-if can only bind to simple boolean properties, it is somew
 
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your element locally.
 
+## Installation
+
+Install the component using [Bower](http://bower.io/):
+```sh
+$ bower install if-diff --save
+```
+
 ## Viewing Your Element
 
 ```
 $ polymer serve
+Open http://127.0.0.1:8081/components/if-diff
 ```
 
 ## Running Tests
