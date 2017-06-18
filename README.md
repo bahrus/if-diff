@@ -1,6 +1,8 @@
 # \<if-diff\>
 
-Extension of polymer&#39;s dom-if element that allows comparison between two operands 
+Extension of Polymer&#39;s dom-if element that allows comparison between two operands.
+
+Because Polymer's dom-if can only bind to simple boolean properties, it is somewhat clunky when using it in conjunction with multi-select components like paper-tabs.
 
 ## Install the Polymer-CLI
 

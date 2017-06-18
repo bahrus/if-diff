@@ -10,7 +10,10 @@
    function initIfDiff(){
         /**
         * `if-diff`
-        * Extension of polymer&#39;s dom-if element that allows comparison between two operands 
+        * Extension of polymer&#39;s dom-if element that allows comparison between two operands.
+        * dom-if only allows testing simple boolean properties, not complex expressions.
+        * But comparing two strings is the next most common way to define a conditional display.  
+        * That is what if-diff supports. 
         *
         * @customElement
         * @polymer
@@ -20,26 +23,44 @@
           static get is() { return 'if-diff'; }
           static get properties() {
             return {
+              /**
+              * Left hand side of comparison operation
+              */
               lhs: {
                 type: String,
                 observer: '__debounceRender'
               },
+              /**
+              * LHS must equal RHS
+              */
               equals: {
                 type: Boolean,
                 observer: '__debounceRender'
               },
+              /**
+              * LHS must not equal RHS
+              */
               not_equals:{
                 type: Boolean,
                 observer: '__debounceRender'
               },
+              /**
+              * LHS must be greater than RHS
+              */
               greater_than:{
                 type: Boolean,
                 observer: '__debounceRender'
               },
+              /**
+              *  Right hand side of comparison operation
+              */
               rhs: {
                 type: String,
                 observer: '__debounceRender'
-              }, 
+              },
+              /**
+              *  Inherited from dom-if
+              */
               if: {
                 type: Boolean,
                 observer: '__debounceRender',

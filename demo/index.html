@@ -25,11 +25,16 @@
         <template>
           <dom-bind>
             <template>
-              <!--If condition: <input type="checkbox" checked="{{isChecked::change}}"><br>-->
               LHS: <input type="textbox" value="{{lhs::input}}"> RHS: <input type="textbox" value="{{rhs::input}}">
               <if-diff if lhs="[[lhs]]" equals rhs="[[rhs]]">
                 <template>
-                  Conditions passed.
+                  <div>LHS == RHS</div>
+                </template>
+              </if-diff>
+
+              <if-diff if lhs="[[lhs]]" not_equals rhs="[[rhs]]">
+                <template>
+                  <div>LHS != RHS</div>
                 </template>
               </if-diff>
             </template>
