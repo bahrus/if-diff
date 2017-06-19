@@ -11,7 +11,23 @@ Because Polymer's dom-if can only bind to simple boolean properties, it is somew
 <custom-element-demo>
   <template>
     <link rel="import" href="if-diff.html">
+    <link rel="import" href="../polymer/lib/elements/dom-bind.html">
+    <dom-bind>
+        <template>
+            LHS: <input type="textbox" value="{{lhs::input}}"> RHS: <input type="textbox" value="{{rhs::input}}">
+            <if-diff if lhs="[[lhs]]" equals rhs="[[rhs]]">
+            <template>
+                <div>LHS == RHS</div>
+            </template>
+            </if-diff>
 
+            <if-diff if lhs="[[lhs]]" not_equals rhs="[[rhs]]">
+            <template>
+                <div>LHS != RHS</div>
+            </template>
+            </if-diff>
+        </template>
+    </dom-bind>
   </template>
 </custom-element-demo>
 ```

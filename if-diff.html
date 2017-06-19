@@ -59,6 +59,14 @@
                 observer: '__debounceRender'
               },
               /**
+              * Result of evaluating logical expression
+              */
+              result:{
+                type: String,
+                readOnly:true,
+                notify: true
+              },
+              /**
               *  Inherited from dom-if
               */
               if: {
@@ -67,7 +75,7 @@
               }
             };
           }
-
+          
           __evaluateProperties(){
             if(!this.if) return false;
             if(this.greater_than){
@@ -83,7 +91,12 @@
           }
 
           __render() {
-            if (this.__evaluateProperties()) {
+            const result = this.__evaluateProperties();
+            if(result !== this.__previousResult){
+              this._setResult(result);
+            }
+            this.__previousResult = result;
+            if (result) {
               if (!this.__ensureInstance()) {
                 // No template found yet
                 return;
