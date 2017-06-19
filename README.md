@@ -14,18 +14,21 @@ Because Polymer's dom-if can only bind to simple boolean properties, it is somew
     <link rel="import" href="../polymer/lib/elements/dom-bind.html">
     <dom-bind>
         <template>
-            LHS: <input type="textbox" value="{{lhs::input}}"> RHS: <input type="textbox" value="{{rhs::input}}">
-            <if-diff if lhs="[[lhs]]" equals rhs="[[rhs]]">
+            LHS: <input type="textbox" value="{{lhs::input}}"> RHS: <input type="textbox" value="{{rhs::input}}" >
+            <if-diff if lhs="[[lhs]]" equals rhs="[[rhs]]" result="{{EqualsResult}}">
             <template>
                 <div>LHS == RHS</div>
             </template>
             </if-diff>
 
-            <if-diff if lhs="[[lhs]]" not_equals rhs="[[rhs]]">
+            <if-diff if lhs="[[lhs]]" not_equals rhs="[[rhs]]" result="{{NotEqualsResult}}">
             <template>
                 <div>LHS != RHS</div>
             </template>
             </if-diff>
+
+            LHS Equals RHS: <span>[[EqualsResult]]</span><br>
+            LHS Doesn't equal RHS: <span>[[NotEqualsResult]]</span>
         </template>
     </dom-bind>
   </template>
