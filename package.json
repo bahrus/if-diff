@@ -27,5 +27,12 @@
   },
   "scripts": {
     "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'bower_components', 'junction') } catch (e) { }\""
-  }
+  },
+  "name": "if-diff",
+  "version": "0.0.3",
+  "description": "Extension of Polymer's dom-if that allows comparing two properties rather than just binding to a single boolean property",
+  "main": "if-diff.html",
+  "repository": "https://github.com/bahrus/if-diff",
+  "author": "bahrus <anderson.bruce.b@gmail.com>",
+  "license": "MIT"
 }
