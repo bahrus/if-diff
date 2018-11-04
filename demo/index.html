@@ -6,47 +6,50 @@
 
     <title>if-diff demo</title>
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
-    <link rel="import" href="../if-diff.html">
-
-    <custom-style>
-      <style is="custom-style" include="demo-pages-shared-styles">
-      </style>
-    </custom-style>
   </head>
   <body>
-    <div class="vertical-section-container centered">
+    <div>
+      <style>
+        [data-equals="-1"]{
+          display: none;
+        }
+        [data-not-equals="-1"]{
+          display: none;
+        }
+      </style>
       <h3>Basic if-diff demo.</h3>
       <div> 
         Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
       </div>
-      <demo-snippet>
-        <template>
-          <dom-bind>
-            <template>
-              LHS: <input type="textbox" value="{{lhs::input}}"> RHS: <input type="textbox" value="{{rhs::input}}" >
-              <if-diff if lhs="[[lhs]]" equals rhs="[[rhs]]" result="{{EqualsResult}}">
-                <template>
-                  <div>LHS == RHS</div>
-                </template>
-              </if-diff>
+      LHS: <input type="textbox"> 
+      <p-d on="input" to="if-diff{lhs}" m="2"></p-d>
+      RHS: <input type="textbox">
+      <p-d on="input" to="if-diff{rhs}" m="2"></p-d>
+      <if-diff if  equals tag="equals"></if-diff>
+      <div data-equals="0">
+          <template>
+            <div>LHS == RHS</div>
+          </template>
+      </div>
 
-              <if-diff if lhs="[[lhs]]" not_equals rhs="[[rhs]]" result="{{NotEqualsResult}}">
-                <template>
-                  <div>LHS != RHS</div>
-                </template>
-              </if-diff>
+      <if-diff if not_equals tag="notEquals"></if-diff>
+      <div data-not-equals="0">
+          <template>
+              <div>LHS != RHS</div>
+          </template>       
+      </div>
 
-              LHS Equals RHS: <span>[[EqualsResult]]</span><br>
-              LHS Doesn't equal RHS: <span>[[NotEqualsResult]]</span>
-            </template>
-          </dom-bind>
-        </template>
-      </demo-snippet>
+      
+
+      LHS Equals RHS: <span>[[EqualsResult]]</span><br>
+      LHS Doesn't equal RHS: <span>[[NotEqualsResult]]</span>
+      <!-- ========================  Script Refs ========================== -->
+      <!-- Polyfills Needed for retro browsers -->
+      <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+      <!-- End Polyfills -->
+      <script type="module" src="../if-diff.js"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/p-d.p-u@0.0.74/p-d.p-u.js"></script>
     </div>
   </body>
 </html>
