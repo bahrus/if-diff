@@ -113,7 +113,7 @@ export class IfDiff extends XtallatX(HTMLElement){
             let ns = this.nextElementSibling as HTMLElement;
             while(ns){
                 const ds = ns.dataset[this._tag];
-                if(ds === '0'){
+                if(ds === '0' && val){
                     this.loadTemplate(ns);
                 }
                 if(ds){

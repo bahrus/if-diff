@@ -26,6 +26,14 @@ if-diff allows the server to display content that should be initially displayed,
 ...
 ```
 
+Notes: 
+
+1.  The "tag" attribute refers to a data-* attribute / dataset.* property.  The case is based on the property name.
+2.  Only downstream sibling elements are checked for the data-* attribute.'
+3.  if-diff sets the data-* attribute to "1" when the condition is true, "-1" if not.  It is up the application css to interpret how this should display.
+4.  If if-diff encounters a data-* value of "0", this signifies there's exactly one template inside the DOM element, which needs cloning before changing to "1".  It will leave the template untouched if the condition is not satiffied.
+
+
 <!--
 ```
 <custom-element-demo>
