@@ -13,7 +13,7 @@ if-diff allows the server to display content that should be initially displayed,
 
 ```html
 <!-- Polymer notation -->
-<if-diff if lhs="[[dayOfWeek]]" equals rhs="Monday" tag="manicMonday"></if-diff>
+<if-diff if lhs="[[dayOfWeek]]" equals rhs="Monday" tag="manicMonday" m="1"></if-diff>
 ...
 <if-diff if lhs="[[dayOfWeek]]" equals rhs="Tuesday" tag="rubyTuesday"></if-diff>
 ...
@@ -31,9 +31,10 @@ if-diff allows the server to display content that should be initially displayed,
 Notes: 
 
 1.  The "tag" attribute refers to a data-* attribute / dataset.* property.  The case is based on the property name.
-2.  Only downstream sibling elements are checked for the data-* attribute.'
-3.  if-diff sets the data-* attribute to "1" when the condition is true, "-1" if not.  It is up the application css to interpret how this should display.
-4.  If if-diff encounters a data-* value of "0", this signifies there's exactly one template inside the DOM element, which needs cloning before changing to "1".  It will leave the template untouched if the condition is not satiffied.
+2.  Only downstream sibling elements are checked for the data-* attribute.  This is to encourage unidirectional data flow, and keeping related things physically close.
+3.  Speaking of which, the optional  m attribute indicates the maximum number of elements that are getting affected by the if-diff tag.  Placing the if-diff element right above the elements it affects, and specifying m accurately will improve performance.
+4.  if-diff sets the data-* attribute to "1" when the condition is true, "-1" if not.  It is up the application css to interpret how this should display.
+5.  If if-diff encounters a data-* value of "0", this signifies there's exactly one template inside the DOM element, which needs cloning before changing to "1".  It will leave the template untouched if the condition is not satisfied.
 
 
 <!--

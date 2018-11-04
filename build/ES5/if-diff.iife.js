@@ -168,6 +168,7 @@
   var tag = 'tag';
   var equals = 'equals';
   var not_equals = 'not_equals';
+  var m$ = 'm'; //TODO:  share mixin with p-d.p-u?
 
   var IfDiff =
   /*#__PURE__*/
@@ -199,6 +200,7 @@
           case tag:
           case lhs:
           case rhs:
+          case m$:
             this[u] = nv;
             break;
         }
@@ -264,12 +266,16 @@
         });
 
         if (this._tag) {
+          var max = this._m ? this._m : Infinity;
+          var c = 0;
           var ns = this.nextElementSibling;
 
           while (ns) {
             var ds = ns.dataset[this._tag];
 
             if (ds) {
+              c++;
+
               if (ds === '0') {
                 if (val) {
                   this.loadTemplate(ns);
@@ -280,6 +286,7 @@
               }
             }
 
+            if (c > max) break;
             ns = ns.nextElementSibling;
           }
         }
@@ -353,6 +360,14 @@
       set: function set(nv) {
         this.attr(tag, nv);
       }
+    }, {
+      key: "m",
+      get: function get() {
+        return this._m;
+      },
+      set: function set(v) {
+        this.attr(m$, v.toString());
+      }
     }], [{
       key: "is",
       get: function get() {
@@ -361,7 +376,7 @@
     }, {
       key: "observedAttributes",
       get: function get() {
-        return [if$, lhs, rhs, tag, equals, not_equals, disabled];
+        return [if$, lhs, rhs, tag, equals, not_equals, disabled, m$];
       }
     }]);
     return IfDiff;

@@ -119,6 +119,7 @@ const rhs = 'rhs';
 const tag = 'tag';
 const equals = 'equals';
 const not_equals = 'not_equals';
+const m$ = 'm'; //TODO:  share mixin with p-d.p-u?
 class IfDiff extends XtallatX(HTMLElement) {
     constructor() {
         super(...arguments);
@@ -126,7 +127,7 @@ class IfDiff extends XtallatX(HTMLElement) {
     }
     static get is() { return 'if-diff'; }
     static get observedAttributes() {
-        return [if$, lhs, rhs, tag, equals, not_equals, disabled];
+        return [if$, lhs, rhs, tag, equals, not_equals, disabled, m$];
     }
     get if() {
         return this._if;
@@ -164,6 +165,12 @@ class IfDiff extends XtallatX(HTMLElement) {
     set tag(nv) {
         this.attr(tag, nv);
     }
+    get m() {
+        return this._m;
+    }
+    set m(v) {
+        this.attr(m$, v.toString());
+    }
     attributeChangedCallback(n, ov, nv) {
         super.attributeChangedCallback(n, ov, nv);
         const u = '_' + n;
@@ -176,6 +183,7 @@ class IfDiff extends XtallatX(HTMLElement) {
             case tag:
             case lhs:
             case rhs:
+            case m$:
                 this[u] = nv;
                 break;
         }
@@ -222,10 +230,13 @@ class IfDiff extends XtallatX(HTMLElement) {
             value: val
         });
         if (this._tag) {
+            let max = this._m ? this._m : Infinity;
+            let c = 0;
             let ns = this.nextElementSibling;
             while (ns) {
                 const ds = ns.dataset[this._tag];
                 if (ds) {
+                    c++;
                     if (ds === '0') {
                         if (val) {
                             this.loadTemplate(ns);
@@ -236,6 +247,8 @@ class IfDiff extends XtallatX(HTMLElement) {
                         ns.dataset[this._tag] = val ? '1' : '-1';
                     }
                 }
+                if (c > max)
+                    break;
                 ns = ns.nextElementSibling;
             }
         }
