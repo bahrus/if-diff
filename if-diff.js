@@ -1,6 +1,7 @@
 import { XtallatX, disabled } from 'xtal-latx/xtal-latx.js';
 import { define } from 'xtal-latx/define.js';
 import { debounce } from 'xtal-latx/debounce.js';
+import { filterDown } from 'xtal-latx/filterDown.js';
 const if$ = 'if';
 const lhs = 'lhs';
 const rhs = 'rhs';
@@ -77,6 +78,10 @@ export class IfDiff extends XtallatX(HTMLElement) {
         }
         this.onPropsChange();
     }
+    init() {
+        this.addMutObs();
+        this.onPropsChange();
+    }
     connectedCallback() {
         this.style.display = 'none';
         this._upgradeProperties(IfDiff.observedAttributes);
@@ -84,12 +89,13 @@ export class IfDiff extends XtallatX(HTMLElement) {
         this._debouncer = debounce(() => {
             this.passDown();
         }, 16);
-        this.onPropsChange();
+        setTimeout(() => {
+            this.init();
+        }, 50);
     }
     onPropsChange() {
         if (!this._conn || this._disabled)
             return;
-        this.addMutObs(); //TODO:  let breathe;
         this._debouncer();
     }
     loadTemplate(el) {
@@ -103,6 +109,9 @@ export class IfDiff extends XtallatX(HTMLElement) {
         el.appendChild(tmpl.content.cloneNode(true));
         tmpl.remove();
     }
+    // test(el: Element, tag: string): boolean{
+    //     return (<any>el).dataset && !!(<HTMLElement>el).dataset[this._tag];
+    // }
     passDown() {
         let val = this._if;
         if (val && (this._equals || this._not_equals)) {
@@ -119,26 +128,21 @@ export class IfDiff extends XtallatX(HTMLElement) {
         });
         if (this._tag) {
             let max = this._m ? this._m : Infinity;
-            let c = 0;
-            let ns = this.nextElementSibling;
-            while (ns) {
-                const ds = ns.dataset[this._tag];
-                if (ds) {
-                    c++;
-                    if (ds === '0') {
-                        if (val) {
-                            this.loadTemplate(ns);
-                            ns.dataset[this._tag] = "1";
-                        }
-                    }
-                    else {
-                        ns.dataset[this._tag] = val ? '1' : '-1';
+            const tag = this._tag;
+            const test = (el) => el.dataset && !!el.dataset[tag];
+            const matches = filterDown(this, test, max);
+            matches.forEach(el => {
+                const ds = el.dataset;
+                if (ds[tag] === '0') {
+                    if (val) {
+                        this.loadTemplate(el);
+                        el.dataset[tag] = "1";
                     }
                 }
-                if (c > max)
-                    break;
-                ns = ns.nextElementSibling;
-            }
+                else {
+                    el.dataset[tag] = val ? '1' : '-1';
+                }
+            });
         }
     }
     addMutObs() {

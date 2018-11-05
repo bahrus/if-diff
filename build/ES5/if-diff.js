@@ -1,6 +1,7 @@
 import { XtallatX, disabled } from "./node_modules/xtal-latx/xtal-latx.js";
 import { define } from "./node_modules/xtal-latx/define.js";
 import { debounce } from "./node_modules/xtal-latx/debounce.js";
+import { filterDown } from "./node_modules/xtal-latx/filterDown.js";
 var if$ = 'if';
 var lhs = 'lhs';
 var rhs = 'rhs';
@@ -47,6 +48,12 @@ function (_XtallatX) {
       this.onPropsChange();
     }
   }, {
+    key: "init",
+    value: function init() {
+      this.addMutObs();
+      this.onPropsChange();
+    }
+  }, {
     key: "connectedCallback",
     value: function connectedCallback() {
       var _this2 = this;
@@ -59,13 +66,14 @@ function (_XtallatX) {
       this._debouncer = debounce(function () {
         _this2.passDown();
       }, 16);
-      this.onPropsChange();
+      setTimeout(function () {
+        _this2.init();
+      }, 50);
     }
   }, {
     key: "onPropsChange",
     value: function onPropsChange() {
       if (!this._conn || this._disabled) return;
-      this.addMutObs(); //TODO:  let breathe;
 
       this._debouncer();
     }
@@ -85,10 +93,15 @@ function (_XtallatX) {
 
       el.appendChild(tmpl.content.cloneNode(true));
       tmpl.remove();
-    }
+    } // test(el: Element, tag: string): boolean{
+    //     return (<any>el).dataset && !!(<HTMLElement>el).dataset[this._tag];
+    // }
+
   }, {
     key: "passDown",
     value: function passDown() {
+      var _this4 = this;
+
       var val = this._if;
 
       if (val && (this._equals || this._not_equals)) {
@@ -106,40 +119,38 @@ function (_XtallatX) {
 
       if (this._tag) {
         var max = this._m ? this._m : Infinity;
-        var c = 0;
-        var ns = this.nextElementSibling;
+        var _tag = this._tag;
 
-        while (ns) {
-          var ds = ns.dataset[this._tag];
+        var test = function test(el) {
+          return el.dataset && !!el.dataset[_tag];
+        };
 
-          if (ds) {
-            c++;
+        var matches = filterDown(this, test, max);
+        matches.forEach(function (el) {
+          var ds = el.dataset;
 
-            if (ds === '0') {
-              if (val) {
-                this.loadTemplate(ns);
-                ns.dataset[this._tag] = "1";
-              }
-            } else {
-              ns.dataset[this._tag] = val ? '1' : '-1';
+          if (ds[_tag] === '0') {
+            if (val) {
+              _this4.loadTemplate(el);
+
+              el.dataset[_tag] = "1";
             }
+          } else {
+            el.dataset[_tag] = val ? '1' : '-1';
           }
-
-          if (c > max) break;
-          ns = ns.nextElementSibling;
-        }
+        });
       }
     }
   }, {
     key: "addMutObs",
     value: function addMutObs() {
-      var _this4 = this;
+      var _this5 = this;
 
       var elToObs = this.parentElement;
       if (!elToObs) return; //TODO
 
       this._sibObs = new MutationObserver(function (m) {
-        _this4._debouncer();
+        _this5._debouncer();
       });
 
       this._sibObs.observe(elToObs, {

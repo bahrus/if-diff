@@ -26,7 +26,7 @@
       <p-d on="input" to="if-diff{lhs}" m="2"></p-d>
       RHS: <input type="textbox">
       <p-d on="input" to="if-diff{rhs}" m="2"></p-d>
-      <if-diff if  equals tag="equals" m="1"></if-diff>
+      <if-diff if  equals tag="equals"></if-diff>
       <p-d on="value-changed" to="[data-lhs-equals-rhs]{innerText}"></p-d>
       <div data-equals="0">
           <template>
@@ -34,7 +34,7 @@
           </template>
       </div>
 
-      <if-diff if not_equals tag="notEquals" m="1"></if-diff>
+      <if-diff if not_equals tag="notEquals"></if-diff>
       <p-d on="value-changed" to="[data-lhs-not-equals-rhs]{innerText}"></p-d>
       <div data-not-equals="0">
           <template>
