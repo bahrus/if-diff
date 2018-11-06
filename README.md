@@ -8,7 +8,7 @@
 
 if-diff allows the server to display content that should be initially displayed, then adjusts what is displayed as conditions in the browser change.
 
-For example, suppose today is Tuesday.  The server could generate the syntax below:
+For example, suppose today is Monday.  The server could generate the syntax below:
 
 ## Syntax
 
