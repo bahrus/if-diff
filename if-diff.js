@@ -13,6 +13,7 @@ export class IfDiff extends XtallatX(HTMLElement) {
     constructor() {
         super(...arguments);
         this._conn = false;
+        this._lastMatches = null;
     }
     static get is() { return 'if-diff'; }
     static get observedAttributes() {
@@ -80,14 +81,14 @@ export class IfDiff extends XtallatX(HTMLElement) {
     }
     init() {
         this.addMutObs();
-        this.onPropsChange();
+        this.passDown();
     }
     connectedCallback() {
         this.style.display = 'none';
         this._upgradeProperties(IfDiff.observedAttributes);
         this._conn = true;
-        this._debouncer = debounce(() => {
-            this.passDown();
+        this._debouncer = debounce((getNew = false) => {
+            this.passDown(getNew);
         }, 16);
         setTimeout(() => {
             this.init();
@@ -109,7 +110,7 @@ export class IfDiff extends XtallatX(HTMLElement) {
         el.appendChild(tmpl.content.cloneNode(true));
         tmpl.remove();
     }
-    passDown() {
+    passDown(getNew = false) {
         let val = this._if;
         if (val && (this._equals || this._not_equals)) {
             if (this._equals) {
@@ -127,7 +128,7 @@ export class IfDiff extends XtallatX(HTMLElement) {
             let max = this._m ? this._m : Infinity;
             const tag = this._tag;
             const test = (el) => el.dataset && !!el.dataset[tag];
-            const matches = filterDown(this.nextElementSibling, test, max);
+            const matches = !getNew && (this._lastMatches !== null) ? this._lastMatches : filterDown(this.nextElementSibling, test, max);
             matches.forEach(el => {
                 const ds = el.dataset;
                 if (ds[tag] === '0') {
@@ -140,6 +141,7 @@ export class IfDiff extends XtallatX(HTMLElement) {
                     el.dataset[tag] = val ? '1' : '-1';
                 }
             });
+            this._lastMatches = matches;
         }
     }
     addMutObs() {
@@ -147,7 +149,7 @@ export class IfDiff extends XtallatX(HTMLElement) {
         if (!elToObs)
             return; //TODO
         this._sibObs = new MutationObserver((m) => {
-            this._debouncer();
+            this._debouncer(true);
         });
         this._sibObs.observe(elToObs, { childList: true });
     }

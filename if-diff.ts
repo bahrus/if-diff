@@ -86,14 +86,14 @@ export class IfDiff extends XtallatX(HTMLElement){
     _debouncer!: any;
     init(){
         this.addMutObs();
-        this.onPropsChange();
+        this.passDown();
     }
     connectedCallback(){
         this.style.display = 'none';
         this._upgradeProperties(IfDiff.observedAttributes);
         this._conn = true;
-        this._debouncer = debounce(() => {
-            this.passDown();
+        this._debouncer = debounce((getNew: boolean = false) => {
+            this.passDown(getNew);
         }, 16);
         setTimeout(() => {
             this.init();
@@ -116,8 +116,8 @@ export class IfDiff extends XtallatX(HTMLElement){
         el.appendChild(tmpl.content.cloneNode(true));
         tmpl.remove();
     }
-    
-    passDown(){
+    _lastMatches: Element[] | null = null;
+    passDown(getNew = false){
         let val = this._if;
         if(val && (this._equals || this._not_equals)){
             if(this._equals){
@@ -134,7 +134,7 @@ export class IfDiff extends XtallatX(HTMLElement){
             let max = this._m ? this._m : Infinity;
             const tag = this._tag;
             const test = (el: Element | null) =>  (<any>el).dataset && !!(<HTMLElement>el).dataset[tag];
-            const matches = filterDown(this.nextElementSibling,  test, max )
+            const matches = !getNew && (this._lastMatches !== null) ? this._lastMatches : filterDown(this.nextElementSibling,  test, max );
             matches.forEach(el =>{
                 const ds = (<any>el).dataset;
                 if(ds[tag] === '0'){
@@ -145,7 +145,8 @@ export class IfDiff extends XtallatX(HTMLElement){
                 }else{
                     (<any>el).dataset[tag] = val ? '1' : '-1';
                 }
-            })
+            });
+            this._lastMatches = matches;
 
         }
 
@@ -156,7 +157,7 @@ export class IfDiff extends XtallatX(HTMLElement){
         let elToObs = this.parentElement;
         if (!elToObs) return; //TODO
         this._sibObs = new MutationObserver((m: MutationRecord[]) => {
-            this._debouncer();
+            this._debouncer(true);
         });
         this._sibObs.observe(elToObs, { childList: true });
     }
