@@ -109,9 +109,6 @@ export class IfDiff extends XtallatX(HTMLElement) {
         el.appendChild(tmpl.content.cloneNode(true));
         tmpl.remove();
     }
-    // test(el: Element, tag: string): boolean{
-    //     return (<any>el).dataset && !!(<HTMLElement>el).dataset[this._tag];
-    // }
     passDown() {
         let val = this._if;
         if (val && (this._equals || this._not_equals)) {
@@ -130,7 +127,7 @@ export class IfDiff extends XtallatX(HTMLElement) {
             let max = this._m ? this._m : Infinity;
             const tag = this._tag;
             const test = (el) => el.dataset && !!el.dataset[tag];
-            const matches = filterDown(this, test, max);
+            const matches = filterDown(this.nextElementSibling, test, max);
             matches.forEach(el => {
                 const ds = el.dataset;
                 if (ds[tag] === '0') {
