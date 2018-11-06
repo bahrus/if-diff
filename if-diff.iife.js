@@ -113,22 +113,54 @@ function XtallatX(superClass) {
         }
     };
 }
-function filterDown(el, match, max) {
-    let c = 0;
-    let ns = el.nextElementSibling;
-    const ret = [];
-    const isF = typeof match === 'function';
-    while (ns) {
-        let isG = isF ? match(ns) : ns.matches(match);
-        if (isG) {
-            ret.push(ns);
-            c++;
-            if (c >= max)
-                return ret;
-        }
-        ns = ns.nextElementSibling;
+class NavDown {
+    constructor(seed, match, notify, max, mutDebounce = 50) {
+        this.seed = seed;
+        this.match = match;
+        this.notify = notify;
+        this.max = max;
+        this.mutDebounce = mutDebounce;
+        //this.init();
     }
-    return ret;
+    init() {
+        this._debouncer = debounce(() => {
+            this.sync();
+        }, this.mutDebounce);
+        this.sync();
+        this.addMutObs(this.seed.parentElement);
+    }
+    addMutObs(elToObs) {
+        if (elToObs === null || elToObs._addedMutObs)
+            return;
+        this._mutObs = new MutationObserver((m) => {
+            this._debouncer(true);
+        });
+        this._mutObs.observe(elToObs, { childList: true });
+        elToObs._addedMutObs = true;
+    }
+    sync() {
+        const isF = typeof this.match === 'function';
+        this.matches = [];
+        let ns = this.seed.nextElementSibling;
+        let c = 0;
+        while (ns !== null) {
+            let isG = isF ? this.match(ns) : ns.matches(this.match);
+            if (isG) {
+                this.matches.push(ns);
+                c++;
+                if (c >= this.max) {
+                    this.notify();
+                    return;
+                }
+                ;
+            }
+            ns = ns.nextElementSibling;
+        }
+        this.notify();
+    }
+    disconnect() {
+        this._mutObs.disconnect();
+    }
 }
 const if$ = 'if';
 const lhs = 'lhs';
@@ -141,6 +173,8 @@ class IfDiff extends XtallatX(HTMLElement) {
     constructor() {
         super(...arguments);
         this._conn = false;
+        this._navDown = null;
+        this._lastMatches = null;
     }
     static get is() { return 'if-diff'; }
     static get observedAttributes() {
@@ -207,14 +241,14 @@ class IfDiff extends XtallatX(HTMLElement) {
         this.onPropsChange();
     }
     init() {
-        this.addMutObs();
-        this.onPropsChange();
+        //this.addMutObs();
+        this.passDown();
     }
     connectedCallback() {
         this.style.display = 'none';
         this._upgradeProperties(IfDiff.observedAttributes);
         this._conn = true;
-        this._debouncer = debounce(() => {
+        this._debouncer = debounce((getNew = false) => {
             this.passDown();
         }, 16);
         setTimeout(() => {
@@ -237,9 +271,23 @@ class IfDiff extends XtallatX(HTMLElement) {
         el.appendChild(tmpl.content.cloneNode(true));
         tmpl.remove();
     }
-    // test(el: Element, tag: string): boolean{
-    //     return (<any>el).dataset && !!(<HTMLElement>el).dataset[this._tag];
-    // }
+    tagMatches() {
+        const matches = this._navDown.matches;
+        const val = this.value;
+        const t = this._tag;
+        matches.forEach(el => {
+            const ds = el.dataset;
+            if (ds[t] === '0') {
+                if (val) {
+                    this.loadTemplate(el);
+                    el.dataset[t] = "1";
+                }
+            }
+            else {
+                el.dataset[t] = val ? '1' : '-1';
+            }
+        });
+    }
     passDown() {
         let val = this._if;
         if (val && (this._equals || this._not_equals)) {
@@ -255,36 +303,22 @@ class IfDiff extends XtallatX(HTMLElement) {
             value: val
         });
         if (this._tag) {
-            let max = this._m ? this._m : Infinity;
-            const tag = this._tag;
-            const test = (el) => el.dataset && !!el.dataset[tag];
-            const matches = filterDown(this, test, max);
-            matches.forEach(el => {
-                const ds = el.dataset;
-                if (ds[tag] === '0') {
-                    if (val) {
-                        this.loadTemplate(el);
-                        el.dataset[tag] = "1";
-                    }
-                }
-                else {
-                    el.dataset[tag] = val ? '1' : '-1';
-                }
-            });
+            if (this._navDown === null) {
+                const tag = this._tag;
+                const test = (el) => el.dataset && !!el.dataset[this._tag];
+                const max = this._m ? this._m : Infinity;
+                const bndTagMatches = this.tagMatches.bind(this);
+                this._navDown = new NavDown(this, test, () => bndTagMatches(), max);
+                this._navDown.init();
+            }
+            else {
+                this.tagMatches();
+            }
         }
     }
-    addMutObs() {
-        let elToObs = this.parentElement;
-        if (!elToObs)
-            return; //TODO
-        this._sibObs = new MutationObserver((m) => {
-            this._debouncer();
-        });
-        this._sibObs.observe(elToObs, { childList: true });
-    }
     disconnect() {
-        if (this._sibObs)
-            this._sibObs.disconnect();
+        if (this._navDown)
+            this._navDown.disconnect();
     }
 }
 define(IfDiff);

@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "xtal-latx": "0.0.63"
+    "xtal-latx": "0.0.66"
   },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "^2.0.0",

@@ -162,26 +162,82 @@
     );
   }
 
-  function filterDown(el, match, max) {
-    var c = 0;
-    var ns = el.nextElementSibling;
-    var ret = [];
-    var isF = typeof match === 'function';
-
-    while (ns) {
-      var isG = isF ? match(ns) : ns.matches(match);
-
-      if (isG) {
-        ret.push(ns);
-        c++;
-        if (c >= max) return ret;
-      }
-
-      ns = ns.nextElementSibling;
+  var NavDown =
+  /*#__PURE__*/
+  function () {
+    function NavDown(seed, match, notify, max) {
+      var mutDebounce = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 50;
+      babelHelpers.classCallCheck(this, NavDown);
+      this.seed = seed;
+      this.match = match;
+      this.notify = notify;
+      this.max = max;
+      this.mutDebounce = mutDebounce; //this.init();
     }
 
-    return ret;
-  }
+    babelHelpers.createClass(NavDown, [{
+      key: "init",
+      value: function init() {
+        var _this4 = this;
+
+        this._debouncer = debounce(function () {
+          _this4.sync();
+        }, this.mutDebounce);
+        this.sync();
+        this.addMutObs(this.seed.parentElement);
+      }
+    }, {
+      key: "addMutObs",
+      value: function addMutObs(elToObs) {
+        var _this5 = this;
+
+        if (elToObs === null || elToObs._addedMutObs) return;
+        this._mutObs = new MutationObserver(function (m) {
+          _this5._debouncer(true);
+        });
+
+        this._mutObs.observe(elToObs, {
+          childList: true
+        });
+
+        elToObs._addedMutObs = true;
+      }
+    }, {
+      key: "sync",
+      value: function sync() {
+        var isF = typeof this.match === 'function';
+        this.matches = [];
+        var ns = this.seed.nextElementSibling;
+        var c = 0;
+
+        while (ns !== null) {
+          var isG = isF ? this.match(ns) : ns.matches(this.match);
+
+          if (isG) {
+            this.matches.push(ns);
+            c++;
+
+            if (c >= this.max) {
+              this.notify();
+              return;
+            }
+
+            ;
+          }
+
+          ns = ns.nextElementSibling;
+        }
+
+        this.notify();
+      }
+    }, {
+      key: "disconnect",
+      value: function disconnect() {
+        this._mutObs.disconnect();
+      }
+    }]);
+    return NavDown;
+  }();
 
   var if$ = 'if';
   var lhs = 'lhs';
@@ -197,12 +253,14 @@
     babelHelpers.inherits(IfDiff, _XtallatX);
 
     function IfDiff() {
-      var _this4;
+      var _this6;
 
       babelHelpers.classCallCheck(this, IfDiff);
-      _this4 = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(IfDiff).apply(this, arguments));
-      _this4._conn = false;
-      return _this4;
+      _this6 = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(IfDiff).apply(this, arguments));
+      _this6._conn = false;
+      _this6._navDown = null;
+      _this6._lastMatches = null;
+      return _this6;
     }
 
     babelHelpers.createClass(IfDiff, [{
@@ -231,13 +289,13 @@
     }, {
       key: "init",
       value: function init() {
-        this.addMutObs();
-        this.onPropsChange();
+        //this.addMutObs();
+        this.passDown();
       }
     }, {
       key: "connectedCallback",
       value: function connectedCallback() {
-        var _this5 = this;
+        var _this7 = this;
 
         this.style.display = 'none';
 
@@ -245,10 +303,12 @@
 
         this._conn = true;
         this._debouncer = debounce(function () {
-          _this5.passDown();
+          var getNew = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+          _this7.passDown();
         }, 16);
         setTimeout(function () {
-          _this5.init();
+          _this7.init();
         }, 50);
       }
     }, {
@@ -261,27 +321,46 @@
     }, {
       key: "loadTemplate",
       value: function loadTemplate(el) {
-        var _this6 = this;
+        var _this8 = this;
 
         var tmpl = el.querySelector('template');
 
         if (!tmpl) {
           setTimeout(function () {
-            _this6.loadTemplate(el);
+            _this8.loadTemplate(el);
           }, 50);
           return;
         }
 
         el.appendChild(tmpl.content.cloneNode(true));
         tmpl.remove();
-      } // test(el: Element, tag: string): boolean{
-      //     return (<any>el).dataset && !!(<HTMLElement>el).dataset[this._tag];
-      // }
+      }
+    }, {
+      key: "tagMatches",
+      value: function tagMatches() {
+        var _this9 = this;
 
+        var matches = this._navDown.matches;
+        var val = this.value;
+        var t = this._tag;
+        matches.forEach(function (el) {
+          var ds = el.dataset;
+
+          if (ds[t] === '0') {
+            if (val) {
+              _this9.loadTemplate(el);
+
+              el.dataset[t] = "1";
+            }
+          } else {
+            el.dataset[t] = val ? '1' : '-1';
+          }
+        });
+      }
     }, {
       key: "passDown",
       value: function passDown() {
-        var _this7 = this;
+        var _this10 = this;
 
         var val = this._if;
 
@@ -299,49 +378,29 @@
         });
 
         if (this._tag) {
-          var max = this._m ? this._m : Infinity;
-          var _tag = this._tag;
+          if (this._navDown === null) {
+            var _tag = this._tag;
 
-          var test = function test(el) {
-            return el.dataset && !!el.dataset[_tag];
-          };
+            var test = function test(el) {
+              return el.dataset && !!el.dataset[_this10._tag];
+            };
 
-          var matches = filterDown(this, test, max);
-          matches.forEach(function (el) {
-            var ds = el.dataset;
+            var max = this._m ? this._m : Infinity;
+            var bndTagMatches = this.tagMatches.bind(this);
+            this._navDown = new NavDown(this, test, function () {
+              return bndTagMatches();
+            }, max);
 
-            if (ds[_tag] === '0') {
-              if (val) {
-                _this7.loadTemplate(el);
-
-                el.dataset[_tag] = "1";
-              }
-            } else {
-              el.dataset[_tag] = val ? '1' : '-1';
-            }
-          });
+            this._navDown.init();
+          } else {
+            this.tagMatches();
+          }
         }
-      }
-    }, {
-      key: "addMutObs",
-      value: function addMutObs() {
-        var _this8 = this;
-
-        var elToObs = this.parentElement;
-        if (!elToObs) return; //TODO
-
-        this._sibObs = new MutationObserver(function (m) {
-          _this8._debouncer();
-        });
-
-        this._sibObs.observe(elToObs, {
-          childList: true
-        });
       }
     }, {
       key: "disconnect",
       value: function disconnect() {
-        if (this._sibObs) this._sibObs.disconnect();
+        if (this._navDown) this._navDown.disconnect();
       }
     }, {
       key: "if",

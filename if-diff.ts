@@ -1,7 +1,7 @@
 import {XtallatX, disabled} from 'xtal-latx/xtal-latx.js';
 import {define} from 'xtal-latx/define.js';
 import {debounce} from 'xtal-latx/debounce.js';
-import {filterDown} from 'xtal-latx/filterDown.js';
+import {NavDown} from 'xtal-latx/NavDown.js'
 const if$ = 'if';
 const lhs = 'lhs';
 const rhs = 'rhs';
@@ -84,8 +84,9 @@ export class IfDiff extends XtallatX(HTMLElement){
     }
     _conn: boolean = false;
     _debouncer!: any;
+    _navDown: NavDown | null = null;
     init(){
-        this.addMutObs();
+        //this.addMutObs();
         this.passDown();
     }
     connectedCallback(){
@@ -93,7 +94,7 @@ export class IfDiff extends XtallatX(HTMLElement){
         this._upgradeProperties(IfDiff.observedAttributes);
         this._conn = true;
         this._debouncer = debounce((getNew: boolean = false) => {
-            this.passDown(getNew);
+            this.passDown();
         }, 16);
         setTimeout(() => {
             this.init();
@@ -117,7 +118,23 @@ export class IfDiff extends XtallatX(HTMLElement){
         tmpl.remove();
     }
     _lastMatches: Element[] | null = null;
-    passDown(getNew = false){
+    tagMatches(){
+        const matches = this._navDown!.matches;
+        const val = this.value;
+        const t = this._tag;
+        matches.forEach(el =>{
+            const ds = (<any>el).dataset;
+            if(ds[t] === '0'){
+                if(val){
+                    this.loadTemplate(el);
+                    (<any>el).dataset[t] = "1";
+                }
+            }else{
+                (<any>el).dataset[t] = val ? '1' : '-1';
+            }
+        });
+    }
+    passDown(){
         let val = this._if;
         if(val && (this._equals || this._not_equals)){
             if(this._equals){
@@ -131,40 +148,24 @@ export class IfDiff extends XtallatX(HTMLElement){
             value: val
         });
         if(this._tag){
-            let max = this._m ? this._m : Infinity;
-            const tag = this._tag;
-            const test = (el: Element | null) =>  (<any>el).dataset && !!(<HTMLElement>el).dataset[tag];
-            const matches = !getNew && (this._lastMatches !== null) ? this._lastMatches : filterDown(this.nextElementSibling,  test, max );
-            matches.forEach(el =>{
-                const ds = (<any>el).dataset;
-                if(ds[tag] === '0'){
-                    if(val){
-                        this.loadTemplate(el);
-                        (<any>el).dataset[tag] = "1";
-                    }
-                }else{
-                    (<any>el).dataset[tag] = val ? '1' : '-1';
-                }
-            });
-            this._lastMatches = matches;
-
+            if(this._navDown === null){
+                const tag = this._tag;
+                const test = (el: Element | null) =>  (<any>el).dataset && !!(<HTMLElement>el).dataset[this._tag];
+                const max = this._m ? this._m : Infinity;
+                const bndTagMatches = this.tagMatches.bind(this);
+                this._navDown = new NavDown(this, test, () => bndTagMatches(), max);
+                this._navDown.init();
+            }else{
+                this.tagMatches();
+            }
         }
 
     }
-    //TODO:  share mixin with p-d.p-u?
-    _addedSMO!: boolean; //addedSiblingMutationObserver
-    addMutObs() {
-        let elToObs = this.parentElement;
-        if (!elToObs) return; //TODO
-        this._sibObs = new MutationObserver((m: MutationRecord[]) => {
-            this._debouncer(true);
-        });
-        this._sibObs.observe(elToObs, { childList: true });
-    }
+
     disconnect(){
-        if(this._sibObs)  this._sibObs.disconnect();
+        if(this._navDown)  this._navDown.disconnect();
     }
 
-    _sibObs!: MutationObserver;
+
 }
 define(IfDiff);

@@ -1,7 +1,7 @@
 import { XtallatX, disabled } from "./node_modules/xtal-latx/xtal-latx.js";
 import { define } from "./node_modules/xtal-latx/define.js";
 import { debounce } from "./node_modules/xtal-latx/debounce.js";
-import { filterDown } from "./node_modules/xtal-latx/filterDown.js";
+import { NavDown } from "./node_modules/xtal-latx/NavDown.js";
 var if$ = 'if';
 var lhs = 'lhs';
 var rhs = 'rhs';
@@ -21,6 +21,8 @@ function (_XtallatX) {
     babelHelpers.classCallCheck(this, IfDiff);
     _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(IfDiff).apply(this, arguments));
     _this._conn = false;
+    _this._navDown = null;
+    _this._lastMatches = null;
     return _this;
   }
 
@@ -50,8 +52,8 @@ function (_XtallatX) {
   }, {
     key: "init",
     value: function init() {
-      this.addMutObs();
-      this.onPropsChange();
+      //this.addMutObs();
+      this.passDown();
     }
   }, {
     key: "connectedCallback",
@@ -64,6 +66,8 @@ function (_XtallatX) {
 
       this._conn = true;
       this._debouncer = debounce(function () {
+        var getNew = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
         _this2.passDown();
       }, 16);
       setTimeout(function () {
@@ -93,14 +97,33 @@ function (_XtallatX) {
 
       el.appendChild(tmpl.content.cloneNode(true));
       tmpl.remove();
-    } // test(el: Element, tag: string): boolean{
-    //     return (<any>el).dataset && !!(<HTMLElement>el).dataset[this._tag];
-    // }
+    }
+  }, {
+    key: "tagMatches",
+    value: function tagMatches() {
+      var _this4 = this;
 
+      var matches = this._navDown.matches;
+      var val = this.value;
+      var t = this._tag;
+      matches.forEach(function (el) {
+        var ds = el.dataset;
+
+        if (ds[t] === '0') {
+          if (val) {
+            _this4.loadTemplate(el);
+
+            el.dataset[t] = "1";
+          }
+        } else {
+          el.dataset[t] = val ? '1' : '-1';
+        }
+      });
+    }
   }, {
     key: "passDown",
     value: function passDown() {
-      var _this4 = this;
+      var _this5 = this;
 
       var val = this._if;
 
@@ -118,49 +141,29 @@ function (_XtallatX) {
       });
 
       if (this._tag) {
-        var max = this._m ? this._m : Infinity;
-        var _tag = this._tag;
+        if (this._navDown === null) {
+          var _tag = this._tag;
 
-        var test = function test(el) {
-          return el.dataset && !!el.dataset[_tag];
-        };
+          var test = function test(el) {
+            return el.dataset && !!el.dataset[_this5._tag];
+          };
 
-        var matches = filterDown(this, test, max);
-        matches.forEach(function (el) {
-          var ds = el.dataset;
+          var max = this._m ? this._m : Infinity;
+          var bndTagMatches = this.tagMatches.bind(this);
+          this._navDown = new NavDown(this, test, function () {
+            return bndTagMatches();
+          }, max);
 
-          if (ds[_tag] === '0') {
-            if (val) {
-              _this4.loadTemplate(el);
-
-              el.dataset[_tag] = "1";
-            }
-          } else {
-            el.dataset[_tag] = val ? '1' : '-1';
-          }
-        });
+          this._navDown.init();
+        } else {
+          this.tagMatches();
+        }
       }
-    }
-  }, {
-    key: "addMutObs",
-    value: function addMutObs() {
-      var _this5 = this;
-
-      var elToObs = this.parentElement;
-      if (!elToObs) return; //TODO
-
-      this._sibObs = new MutationObserver(function (m) {
-        _this5._debouncer();
-      });
-
-      this._sibObs.observe(elToObs, {
-        childList: true
-      });
     }
   }, {
     key: "disconnect",
     value: function disconnect() {
-      if (this._sibObs) this._sibObs.disconnect();
+      if (this._navDown) this._navDown.disconnect();
     }
   }, {
     key: "if",
