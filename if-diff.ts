@@ -117,9 +117,9 @@ export class IfDiff extends XtallatX(HTMLElement){
         el.appendChild(tmpl.content.cloneNode(true));
         tmpl.remove();
     }
-    _lastMatches: Element[] | null = null;
-    tagMatches(){
-        const matches = this._navDown!.matches;
+    //_lastMatches: Element[] | null = null;
+    tagMatches(nd: NavDown){
+        const matches = nd.matches;
         const val = this.value;
         const t = this._tag;
         matches.forEach(el =>{
@@ -153,10 +153,10 @@ export class IfDiff extends XtallatX(HTMLElement){
                 const test = (el: Element | null) =>  (<any>el).dataset && !!(<HTMLElement>el).dataset[this._tag];
                 const max = this._m ? this._m : Infinity;
                 const bndTagMatches = this.tagMatches.bind(this);
-                this._navDown = new NavDown(this, test, () => bndTagMatches(), max);
+                this._navDown = new NavDown(this, test, (nd) => bndTagMatches(nd), max);
                 this._navDown.init();
             }else{
-                this.tagMatches();
+                this.tagMatches(this._navDown);
             }
         }
 
