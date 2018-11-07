@@ -4,6 +4,7 @@
   "sources": [
     "if-diff.js",
     "if-diff.iife.js",
+    "combo.iife.js",
     "index.html"
   ],
   "extraDependencies": [

@@ -203,12 +203,15 @@
         elToObs._addedMutObs = true;
       }
     }, {
+      key: "sibCheck",
+      value: function sibCheck(sib, c) {}
+    }, {
       key: "sync",
       value: function sync() {
+        var c = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
         var isF = typeof this.match === 'function';
         this.matches = [];
         var ns = this.seed.nextElementSibling;
-        var c = 0;
 
         while (ns !== null) {
           var isG = isF ? this.match(ns) : ns.matches(this.match);
@@ -218,17 +221,18 @@
             c++;
 
             if (c >= this.max) {
-              this.notify();
+              this.notify(this);
               return;
             }
 
             ;
           }
 
+          this.sibCheck(ns, c);
           ns = ns.nextElementSibling;
         }
 
-        this.notify();
+        this.notify(this);
       }
     }, {
       key: "disconnect",
@@ -259,7 +263,6 @@
       _this6 = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(IfDiff).apply(this, arguments));
       _this6._conn = false;
       _this6._navDown = null;
-      _this6._lastMatches = null;
       return _this6;
     }
 
@@ -334,13 +337,14 @@
 
         el.appendChild(tmpl.content.cloneNode(true));
         tmpl.remove();
-      }
+      } //_lastMatches: Element[] | null = null;
+
     }, {
       key: "tagMatches",
-      value: function tagMatches() {
+      value: function tagMatches(nd) {
         var _this9 = this;
 
-        var matches = this._navDown.matches;
+        var matches = nd.matches;
         var val = this.value;
         var t = this._tag;
         matches.forEach(function (el) {
@@ -387,13 +391,13 @@
 
             var max = this._m ? this._m : Infinity;
             var bndTagMatches = this.tagMatches.bind(this);
-            this._navDown = new NavDown(this, test, function () {
-              return bndTagMatches();
+            this._navDown = new NavDown(this, test, function (nd) {
+              return bndTagMatches(nd);
             }, max);
 
             this._navDown.init();
           } else {
-            this.tagMatches();
+            this.tagMatches(this._navDown);
           }
         }
       }

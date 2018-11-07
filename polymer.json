@@ -1,7 +1,8 @@
 {
   "sources":[
     "if-diff.js",
-    "if-diff.iife.js"
+    "if-diff.iife.js",
+    "combo.iife.js"
   ],
   "npm": true,
   "lint": {

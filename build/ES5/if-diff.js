@@ -22,7 +22,6 @@ function (_XtallatX) {
     _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(IfDiff).apply(this, arguments));
     _this._conn = false;
     _this._navDown = null;
-    _this._lastMatches = null;
     return _this;
   }
 
@@ -97,13 +96,14 @@ function (_XtallatX) {
 
       el.appendChild(tmpl.content.cloneNode(true));
       tmpl.remove();
-    }
+    } //_lastMatches: Element[] | null = null;
+
   }, {
     key: "tagMatches",
-    value: function tagMatches() {
+    value: function tagMatches(nd) {
       var _this4 = this;
 
-      var matches = this._navDown.matches;
+      var matches = nd.matches;
       var val = this.value;
       var t = this._tag;
       matches.forEach(function (el) {
@@ -150,13 +150,13 @@ function (_XtallatX) {
 
           var max = this._m ? this._m : Infinity;
           var bndTagMatches = this.tagMatches.bind(this);
-          this._navDown = new NavDown(this, test, function () {
-            return bndTagMatches();
+          this._navDown = new NavDown(this, test, function (nd) {
+            return bndTagMatches(nd);
           }, max);
 
           this._navDown.init();
         } else {
-          this.tagMatches();
+          this.tagMatches(this._navDown);
         }
       }
     }
