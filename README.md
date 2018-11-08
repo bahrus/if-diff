@@ -2,7 +2,7 @@
 
 <a href="https://nodei.co/npm/if-diff/"><img src="https://nodei.co/npm/if-diff.png"></a>
 
-<img src="http://img.badgesize.io/https://unpkg.com/if-diff@0.0.12/build/ES6/if-diff.iife.js?compression=gzip">
+<img src="http://img.badgesize.io/https://cdn.jsdelivr.net/npm/if-diff@0.0.13/dist/if-diff.iife.js?compression=gzip">
 
 # \<if-diff\>
 
@@ -98,7 +98,7 @@ Rules:
 
 ## Commonality with p-d.p-u (a kind of dom-bind alternative)
 
-Not only does if-diff share the same fetish for unidirectional data flow as [p-d.p-u](https://www.webcomponents.org/element/p-d.p-u), they share a number of common modules.  As a result, while if-diff weighs around 1.8kb and p-d weighs around 2.6kb, combine them together, and due to the magic of code reuse, the combined size is ~3.3kb minified and gzipped.
+Not only does if-diff share the same fetish for unidirectional data flow as [p-d.p-u](https://www.webcomponents.org/element/p-d.p-u), they share a number of common modules.  As a result, while if-diff weighs around 1.6kb and p-d weighs around 2.2kb, combine them together, and due to the magic of code reuse, the combined size is ~2.8kb minified and gzipped.
 
 ## Install the Polymer-CLI
 

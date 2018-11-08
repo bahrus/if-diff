@@ -3,8 +3,8 @@
   "fragments": [],
   "sources": [
     "if-diff.js",
-    "if-diff.iife.js",
-    "combo.iife.js",
+    "dist/if-diff.iife.js",
+    "dist/combo.iife.js",
     "index.html"
   ],
   "extraDependencies": [
@@ -16,13 +16,6 @@
       "js": {
         "minify": false,
         "compile": true
-      }
-    },
-    {
-      "name": "ES6",
-      "js": {
-        "minify": true,
-        "compile": false
       }
     }
   ],

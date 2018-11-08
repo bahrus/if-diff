@@ -191,16 +191,15 @@
       value: function addMutObs(elToObs) {
         var _this5 = this;
 
-        if (elToObs === null || elToObs._addedMutObs) return;
+        if (elToObs === null) return;
         this._mutObs = new MutationObserver(function (m) {
           _this5._debouncer(true);
         });
 
         this._mutObs.observe(elToObs, {
           childList: true
-        });
+        }); // (<any>elToObs)._addedMutObs = true;
 
-        elToObs._addedMutObs = true;
       }
     }, {
       key: "sibCheck",
