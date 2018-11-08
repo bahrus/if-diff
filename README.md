@@ -2,7 +2,7 @@
 
 <a href="https://nodei.co/npm/if-diff/"><img src="https://nodei.co/npm/if-diff.png"></a>
 
-<img src="http://img.badgesize.io/https://cdn.jsdelivr.net/npm/if-diff@0.0.13/dist/if-diff.iife.js?compression=gzip">
+<img src="http://img.badgesize.io/https://cdn.jsdelivr.net/npm/if-diff@0.0.13/dist/if-diff.iife.min.js?compression=gzip">
 
 # \<if-diff\>
 
