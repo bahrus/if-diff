@@ -8,7 +8,7 @@
     "tape": "^4.9.1",
     "@types/tape": "4.2.32",
     "xtal-test": "0.0.8",
-    "p-d.p-u": "0.0.75"
+    "p-d.p-u": "0.0.80"
   },
   "name": "if-diff",
   "version": "0.0.14",

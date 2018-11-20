@@ -98,7 +98,7 @@ Rules:
 
 ## Commonality with p-d.p-u (a kind of dom-bind alternative)
 
-Not only does if-diff share the same fetish for unidirectional data flow as [p-d.p-u](https://www.webcomponents.org/element/p-d.p-u), they share a number of common modules.  As a result, while if-diff weighs around 1.6kb and p-d weighs around 2.2kb, combine them together, and due to the magic of code reuse, the combined size is ~2.8kb minified and gzipped.
+Not only does if-diff share the same fetish for unidirectional data flow as [p-d.p-u](https://www.webcomponents.org/element/p-d.p-u), they share a number of common modules.  As a result, while if-diff weighs around 1.6kb and p-d weighs around 1.9kb, combine them together, and due to the magic of code reuse, the combined size is ~2.5kb minified and gzipped.
 
 ## Install the Polymer-CLI
 
