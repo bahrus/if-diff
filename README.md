@@ -41,7 +41,7 @@ Rules:
 3.  Speaking of which, the optional  m attribute indicates the maximum number of elements that are getting affected by the *if-diff* tag.  Placing the *if-diff* element right above the elements it affects, and specifying "m" accurately, will improve performance and help reduce greenhouse emissions.
 4.  *if-diff* sets the data-* attribute to "1" when the condition is true, "-1" if not.  It is up to the application's css styling to interpret how this should display.
 5.  If *if-diff* encounters a data-* value of "0", this signifies there's exactly one template inside the DOM element, which needs cloning before changing to "1".  It will leave the template untouched if the condition is not satisfied.
-
+6.  The "if" attribute / property is actually an active participant in the logical evaluation.  If that attribute / property is false, then the evaluation will be false no matter what.  And as the demo below indicates, not_equals is also supported.
 
 <!--
 ```
@@ -85,7 +85,7 @@ Rules:
       LHS Equals RHS: <span data-lhs-equals-rhs></span><br>
       LHS Doesn't equal RHS: <span data-lhs-not-equals-rhs></span>
       <!-- ========================  Script Refs ========================== -->
-      <!-- Polyfills Needed for retro browsers -->
+      <!-- Polyfills Needed for MS browsers -->
       <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
       <!-- End Polyfills -->
       <script type="module" src="https://cdn.jsdelivr.net/npm/if-diff@0.0.5/if-diff.iife.js"></script>

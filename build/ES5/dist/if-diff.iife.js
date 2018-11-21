@@ -166,12 +166,14 @@
   /*#__PURE__*/
   function () {
     function NavDown(seed, match, notify, max) {
-      var mutDebounce = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 50;
+      var ignore = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+      var mutDebounce = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 50;
       babelHelpers.classCallCheck(this, NavDown);
       this.seed = seed;
       this.match = match;
       this.notify = notify;
       this.max = max;
+      this.ignore = ignore;
       this.mutDebounce = mutDebounce; //this.init();
     }
 
@@ -213,21 +215,24 @@
         var ns = this.seed.nextElementSibling;
 
         while (ns !== null) {
-          var isG = isF ? this.match(ns) : ns.matches(this.match);
+          if (this.ignore === null || !ns.matches(this.ignore)) {
+            var isG = isF ? this.match(ns) : ns.matches(this.match);
 
-          if (isG) {
-            this.matches.push(ns);
-            c++;
+            if (isG) {
+              this.matches.push(ns);
+              c++;
 
-            if (c >= this.max) {
-              this.notify(this);
-              return;
+              if (c >= this.max) {
+                this.notify(this);
+                return;
+              }
+
+              ;
             }
 
-            ;
+            this.sibCheck(ns, c);
           }
 
-          this.sibCheck(ns, c);
           ns = ns.nextElementSibling;
         }
 

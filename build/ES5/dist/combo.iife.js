@@ -166,12 +166,14 @@
   /*#__PURE__*/
   function () {
     function NavDown(seed, match, notify, max) {
-      var mutDebounce = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 50;
+      var ignore = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+      var mutDebounce = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 50;
       babelHelpers.classCallCheck(this, NavDown);
       this.seed = seed;
       this.match = match;
       this.notify = notify;
       this.max = max;
+      this.ignore = ignore;
       this.mutDebounce = mutDebounce; //this.init();
     }
 
@@ -213,21 +215,24 @@
         var ns = this.seed.nextElementSibling;
 
         while (ns !== null) {
-          var isG = isF ? this.match(ns) : ns.matches(this.match);
+          if (this.ignore === null || !ns.matches(this.ignore)) {
+            var isG = isF ? this.match(ns) : ns.matches(this.match);
 
-          if (isG) {
-            this.matches.push(ns);
-            c++;
+            if (isG) {
+              this.matches.push(ns);
+              c++;
 
-            if (c >= this.max) {
-              this.notify(this);
-              return;
+              if (c >= this.max) {
+                this.notify(this);
+                return;
+              }
+
+              ;
             }
 
-            ;
+            this.sibCheck(ns, c);
           }
 
-          this.sibCheck(ns, c);
           ns = ns.nextElementSibling;
         }
 
@@ -242,61 +247,12 @@
     return NavDown;
   }();
 
-  var p_d_if = 'p-d-if';
-
-  var PDNavDown =
-  /*#__PURE__*/
-  function (_NavDown) {
-    babelHelpers.inherits(PDNavDown, _NavDown);
-
-    function PDNavDown() {
-      var _this6;
-
-      babelHelpers.classCallCheck(this, PDNavDown);
-      _this6 = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(PDNavDown).apply(this, arguments));
-      _this6.children = [];
-      return _this6;
-    }
-
-    babelHelpers.createClass(PDNavDown, [{
-      key: "sibCheck",
-      value: function sibCheck(sib, c) {
-        if (sib.__aMO) return;
-        var attr = sib.getAttribute(p_d_if);
-
-        if (attr === null) {
-          sib.__aMO = true;
-          return;
-        }
-
-        var fec = sib.firstElementChild;
-        if (fec === null) return;
-
-        if (this.root.matches(attr)) {
-          var pdnd = new PDNavDown(fec, this.match, this.notify, this.max, this.mutDebounce);
-          pdnd.root = this.root;
-          this.children.push(pdnd);
-          pdnd.init();
-          sib.__aMO = true;
-        }
-      }
-    }, {
-      key: "getMatches",
-      value: function getMatches() {
-        var ret = this.matches;
-        this.children.forEach(function (child) {
-          ret = ret.concat(child.getMatches());
-        });
-        return ret;
-      }
-    }]);
-    return PDNavDown;
-  }(NavDown);
-
   var on = 'on';
   var noblock = 'noblock';
   var iff = 'if';
   var to = 'to';
+  var prop = 'prop';
+  var val = 'val';
 
   var P =
   /*#__PURE__*/
@@ -304,12 +260,12 @@
     babelHelpers.inherits(P, _XtallatX);
 
     function P() {
-      var _this7;
+      var _this6;
 
       babelHelpers.classCallCheck(this, P);
-      _this7 = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(P).call(this));
-      _this7._connected = false;
-      return _this7;
+      _this6 = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(P).call(this));
+      _this6._lastEvent = null;
+      return _this6;
     }
 
     babelHelpers.createClass(P, [{
@@ -320,15 +276,10 @@
         switch (name) {
           case iff:
           case on:
-            this[f] = newVal;
-            break;
-
+          case prop:
+          case val:
           case to:
-            this._destIsNA = newVal === '{NA}';
-            if (newVal.endsWith('}')) newVal += ';';
-            this._to = newVal;
-            this.parseTo();
-            if (this._lastEvent) this._hndEv(this._lastEvent);
+            this[f] = newVal;
             break;
 
           case noblock:
@@ -343,8 +294,8 @@
        */
 
     }, {
-      key: "getPSib",
-      value: function getPSib() {
+      key: "getPreviousSib",
+      value: function getPreviousSib() {
         var pS = this;
 
         while (pS && pS.tagName.startsWith('P-')) {
@@ -356,68 +307,23 @@
     }, {
       key: "connectedCallback",
       value: function connectedCallback() {
-        var _this8 = this;
-
         this.style.display = 'none';
 
-        this._upgradeProperties([on, to, noblock, iff]);
+        this._upgradeProperties([on, to, noblock, iff, prop, val]);
 
-        setTimeout(function () {
-          return _this8.doFake();
-        }, 50);
-      } //_addedSMO = false;
-
-    }, {
-      key: "doFake",
-      value: function doFake() {
-        if (!this._if && !this.hasAttribute('skip-init')) {
-          var lastEvent = this._lastEvent;
-
-          if (!lastEvent) {
-            lastEvent = {
-              target: this.getPSib(),
-              isFake: true
-            };
-          }
-
-          if (this._hndEv) this._hndEv(lastEvent);
-        } // if(!(<any>this)._addedSMO && (<any>this).addMutationObserver){
-        //     (<any>this).addMutationObserver(<any>this as HTMLElement, false);
-        //     this._addedSMO = true;
-        // }
-
+        this.init();
       }
     }, {
-      key: "detach",
-      value: function detach(pS) {
-        pS.removeEventListener(this._on, this._bndHndlEv);
-      }
-    }, {
-      key: "disconnectedCallback",
-      value: function disconnectedCallback() {
-        var pS = this.getPSib();
-        if (pS && this._bndHndlEv) this.detach(pS);
-      }
-    }, {
-      key: "_hndEv",
-      value: function _hndEv(e) {
-        if (this.hasAttribute('debug')) debugger;
-        if (!e) return;
-        if (e.stopPropagation && !this._noblock) e.stopPropagation();
-        if (this._if && !e.target.matches(this._if)) return;
-        this._lastEvent = e;
-
-        if (!this._cssPropMap) {
-          return;
-        }
-
-        this.pass(e);
+      key: "init",
+      value: function init() {
+        this.attchEvListnrs();
+        this.doFake();
       }
     }, {
       key: "attchEvListnrs",
       value: function attchEvListnrs() {
         var attrFilters = [];
-        var pS = this.getPSib();
+        var pS = this.getPreviousSib();
         if (!pS) return;
 
         if (this._bndHndlEv) {
@@ -438,60 +344,48 @@
         }
       }
     }, {
-      key: "onPropsChange",
-      value: function onPropsChange() {
-        if (!this._connected || !this._on || !this._to) return;
-        this.attchEvListnrs();
+      key: "skI",
+      value: function skI() {
+        return this.hasAttribute('skip-init');
       }
     }, {
-      key: "parseMapping",
-      value: function parseMapping(mapTokens, cssSelector) {
-        var splitPropPointer = mapTokens[1].split(':');
+      key: "doFake",
+      value: function doFake() {
+        if (!this._if && !this.skI()) {
+          var lastEvent = this._lastEvent;
 
-        this._cssPropMap.push({
-          cssSelector: cssSelector,
-          propTarget: splitPropPointer[0],
-          propSource: splitPropPointer.length > 0 ? splitPropPointer[1] : undefined
-        });
-      }
-    }, {
-      key: "parseTo",
-      value: function parseTo() {
-        var _this9 = this;
-
-        if (this._cssPropMap && this._to === this._lastTo) return;
-        this._lastTo = this._to;
-        this._cssPropMap = [];
-
-        var splitPassDown = this._to.split('};');
-
-        var onlyOne = splitPassDown.length <= 2;
-        splitPassDown.forEach(function (pdItem) {
-          if (!pdItem) return;
-          var mT = pdItem.split('{');
-          var cssSel = mT[0];
-
-          if (!cssSel && onlyOne) {
-            cssSel = '*';
-            _this9._m = 1;
-            _this9._hasMax = true;
+          if (!lastEvent) {
+            lastEvent = {
+              target: this.getPreviousSib(),
+              isFake: true
+            };
           }
 
-          _this9.parseMapping(mT, cssSel);
-        });
+          if (this._hndEv) this._hndEv(lastEvent);
+        }
+      }
+    }, {
+      key: "_hndEv",
+      value: function _hndEv(e) {
+        if (this.hasAttribute('debug')) debugger;
+        if (!e) return;
+        if (e.stopPropagation && !this._noblock) e.stopPropagation();
+        if (this._if && !e.target.matches(this._if)) return;
+        this._lastEvent = e;
+        this.pass(e);
       }
     }, {
       key: "setVal",
-      value: function setVal(e, target, map) {
+      value: function setVal(e, target) {
         var gpfp = this.getPropFromPath.bind(this);
-        var propFromEvent = map.propSource ? gpfp(e, map.propSource) : gpfp(e, 'detail.value') || gpfp(e, 'target.value');
-        this.commit(target, map, propFromEvent);
+        var propFromEvent = this.val ? gpfp(e, this.val) : gpfp(e, 'detail.value') || gpfp(e, 'target.value');
+        this.commit(target, propFromEvent);
       }
     }, {
       key: "commit",
-      value: function commit(target, map, val) {
+      value: function commit(target, val) {
         if (val === undefined) return;
-        target[map.propTarget] = val;
+        target[this.prop] = val;
       }
     }, {
       key: "getPropFromPath",
@@ -525,6 +419,17 @@
         return context;
       }
     }, {
+      key: "detach",
+      value: function detach(pS) {
+        pS.removeEventListener(this._on, this._bndHndlEv);
+      }
+    }, {
+      key: "disconnectedCallback",
+      value: function disconnectedCallback() {
+        var pS = this.getPreviousSib();
+        if (pS && this._bndHndlEv) this.detach(pS);
+      }
+    }, {
       key: "on",
       get: function get() {
         return this._on;
@@ -555,18 +460,27 @@
       },
       set: function set(val) {
         this.attr(iff, val);
-      } // _input: any;
-      // get input(){
-      //     return this._input;
-      // }
-      // set input(val){
-      //     this._input = val;
-      // }
-
+      }
+    }, {
+      key: "prop",
+      get: function get() {
+        return this._prop;
+      },
+      set: function set(val) {
+        this.attr(prop, val);
+      }
+    }, {
+      key: "val",
+      get: function get() {
+        return this._val;
+      },
+      set: function set(val) {
+        this.attr(prop, val);
+      }
     }], [{
       key: "observedAttributes",
       get: function get() {
-        return babelHelpers.get(babelHelpers.getPrototypeOf(P), "observedAttributes", this).concat([on, to, noblock, iff]);
+        return babelHelpers.get(babelHelpers.getPrototypeOf(P), "observedAttributes", this).concat([on, to, noblock, iff, prop, val]);
       }
     }]);
     return P;
@@ -588,42 +502,45 @@
     babelHelpers.inherits(PD, _P);
 
     function PD() {
-      var _this10;
+      var _this7;
 
       babelHelpers.classCallCheck(this, PD);
-      _this10 = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(PD).apply(this, arguments));
-      _this10._pdNavDown = []; //_hasMax!: boolean;
+      _this7 = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(PD).apply(this, arguments));
+      _this7._pdNavDown = null; //_hasMax!: boolean;
 
-      _this10._m = Infinity;
-      return _this10;
+      _this7._m = Infinity;
+      _this7._iIP = false;
+      return _this7;
     }
 
     babelHelpers.createClass(PD, [{
       key: "pass",
       value: function pass(e) {
-        var _this11 = this;
-
         this._lastEvent = e;
         this.attr('pds', '🌩️'); //this.passDown(this.nextElementSibling, e, 0);
 
-        this._pdNavDown.forEach(function (pdnd) {
-          _this11.applyProps(pdnd);
-        });
-
+        var count = this.applyProps(this._pdNavDown);
         this.attr('pds', '👂');
+        this.attr('mtch', count.toString());
+      }
+    }, {
+      key: "getMatches",
+      value: function getMatches(pd) {
+        return pd.matches;
       }
     }, {
       key: "applyProps",
       value: function applyProps(pd) {
-        var _this12 = this;
+        var _this8 = this;
 
-        pd.getMatches().forEach(function (el) {
-          _this12._cssPropMap.filter(function (map) {
-            return map.cssSelector === pd.match;
-          }).forEach(function (map) {
-            _this12.setVal(_this12._lastEvent, el, map);
-          });
+        //if(this._iIP && this.skI()) return;
+        if (this._iIP) return 0;
+        var matches = this.getMatches(pd); //const matches = pd.getMatches();
+
+        matches.forEach(function (el) {
+          _this8.setVal(_this8._lastEvent, el);
         });
+        return matches.length;
       }
     }, {
       key: "attributeChangedCallback",
@@ -631,39 +548,41 @@
         switch (name) {
           case m:
             if (newVal !== null) {
-              this._m = parseInt(newVal); //this._hasMax = true;
-            } else {//this._hasMax = false;
-              }
+              this._m = parseInt(newVal);
+            } else {}
 
         }
 
         babelHelpers.get(babelHelpers.getPrototypeOf(PD.prototype), "attributeChangedCallback", this).call(this, name, oldVal, newVal);
-        this.onPropsChange();
+      }
+    }, {
+      key: "newNavDown",
+      value: function newNavDown() {
+        var bndApply = this.applyProps.bind(this);
+        return new NavDown(this, this.to, bndApply, this.m);
       }
     }, {
       key: "connectedCallback",
       value: function connectedCallback() {
-        var _this13 = this;
-
-        babelHelpers.get(babelHelpers.getPrototypeOf(PD.prototype), "connectedCallback", this).call(this);
-
         this._upgradeProperties([m]);
 
-        this._connected = true;
         this.attr('pds', '📞');
-        var bndApply = this.applyProps.bind(this);
 
-        this._cssPropMap.forEach(function (pm) {
-          var pdnd = new PDNavDown(_this13, pm.cssSelector, function (nd) {
-            return bndApply(nd);
-          }, _this13.m);
-          pdnd.root = _this13;
-          pdnd.init();
+        if (!this.to) {
+          //apply to next only
+          this.to = '*';
+          this.m = 1;
+        }
 
-          _this13._pdNavDown.push(pdnd);
-        });
+        var pdnd = this.newNavDown(); //const pdnd = new PDNavDown(this, this.to, nd => bndApply(nd), this.m);
+        //pdnd.root = this;
 
-        this.onPropsChange();
+        pdnd.ignore = 'p-d,p-d-x,p-d-r,script';
+        this._iIP = true;
+        pdnd.init();
+        this._iIP = false;
+        this._pdNavDown = pdnd;
+        babelHelpers.get(babelHelpers.getPrototypeOf(PD.prototype), "connectedCallback", this).call(this);
       }
     }, {
       key: "m",
@@ -702,13 +621,13 @@
     babelHelpers.inherits(IfDiff, _XtallatX2);
 
     function IfDiff() {
-      var _this14;
+      var _this9;
 
       babelHelpers.classCallCheck(this, IfDiff);
-      _this14 = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(IfDiff).apply(this, arguments));
-      _this14._conn = false;
-      _this14._navDown = null;
-      return _this14;
+      _this9 = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(IfDiff).apply(this, arguments));
+      _this9._conn = false;
+      _this9._navDown = null;
+      return _this9;
     }
 
     babelHelpers.createClass(IfDiff, [{
@@ -743,7 +662,7 @@
     }, {
       key: "connectedCallback",
       value: function connectedCallback() {
-        var _this15 = this;
+        var _this10 = this;
 
         this.style.display = 'none';
 
@@ -753,10 +672,10 @@
         this._debouncer = debounce(function () {
           var getNew = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
-          _this15.passDown();
+          _this10.passDown();
         }, 16);
         setTimeout(function () {
-          _this15.init();
+          _this10.init();
         }, 50);
       }
     }, {
@@ -769,13 +688,13 @@
     }, {
       key: "loadTemplate",
       value: function loadTemplate(el) {
-        var _this16 = this;
+        var _this11 = this;
 
         var tmpl = el.querySelector('template');
 
         if (!tmpl) {
           setTimeout(function () {
-            _this16.loadTemplate(el);
+            _this11.loadTemplate(el);
           }, 50);
           return;
         }
@@ -787,7 +706,7 @@
     }, {
       key: "tagMatches",
       value: function tagMatches(nd) {
-        var _this17 = this;
+        var _this12 = this;
 
         var matches = nd.matches;
         var val = this.value;
@@ -797,7 +716,7 @@
 
           if (ds[t] === '0') {
             if (val) {
-              _this17.loadTemplate(el);
+              _this12.loadTemplate(el);
 
               el.dataset[t] = "1";
             }
@@ -809,7 +728,7 @@
     }, {
       key: "passDown",
       value: function passDown() {
-        var _this18 = this;
+        var _this13 = this;
 
         var val = this._if;
 
@@ -831,7 +750,7 @@
             var _tag = this._tag;
 
             var test = function test(el) {
-              return el.dataset && !!el.dataset[_this18._tag];
+              return el.dataset && !!el.dataset[_this13._tag];
             };
 
             var max = this._m ? this._m : Infinity;

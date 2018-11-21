@@ -114,11 +114,12 @@ function XtallatX(superClass) {
     };
 }
 class NavDown {
-    constructor(seed, match, notify, max, mutDebounce = 50) {
+    constructor(seed, match, notify, max, ignore = null, mutDebounce = 50) {
         this.seed = seed;
         this.match = match;
         this.notify = notify;
         this.max = max;
+        this.ignore = ignore;
         this.mutDebounce = mutDebounce;
         //this.init();
     }
@@ -144,17 +145,19 @@ class NavDown {
         this.matches = [];
         let ns = this.seed.nextElementSibling;
         while (ns !== null) {
-            let isG = isF ? this.match(ns) : ns.matches(this.match);
-            if (isG) {
-                this.matches.push(ns);
-                c++;
-                if (c >= this.max) {
-                    this.notify(this);
-                    return;
+            if (this.ignore === null || !ns.matches(this.ignore)) {
+                let isG = isF ? this.match(ns) : ns.matches(this.match);
+                if (isG) {
+                    this.matches.push(ns);
+                    c++;
+                    if (c >= this.max) {
+                        this.notify(this);
+                        return;
+                    }
+                    ;
                 }
-                ;
+                this.sibCheck(ns, c);
             }
-            this.sibCheck(ns, c);
             ns = ns.nextElementSibling;
         }
         this.notify(this);
@@ -265,8 +268,11 @@ class P extends XtallatX(HTMLElement) {
             }
         }
     }
+    skI() {
+        return this.hasAttribute('skip-init');
+    }
     doFake() {
-        if (!this._if && !this.hasAttribute('skip-init')) {
+        if (!this._if && !this.skI()) {
             let lastEvent = this._lastEvent;
             if (!lastEvent) {
                 lastEvent = {
@@ -350,9 +356,10 @@ const m = 'm';
 class PD extends P {
     constructor() {
         super(...arguments);
-        this._pdNavDown = [];
+        this._pdNavDown = null;
         //_hasMax!: boolean;
         this._m = Infinity;
+        this._iIP = false;
     }
     static get is() { return 'p-d'; }
     get m() {
@@ -368,10 +375,7 @@ class PD extends P {
         this._lastEvent = e;
         this.attr('pds', '🌩️');
         //this.passDown(this.nextElementSibling, e, 0);
-        let count = 0;
-        this._pdNavDown.forEach(pdnd => {
-            count += this.applyProps(pdnd);
-        });
+        const count = this.applyProps(this._pdNavDown);
         this.attr('pds', '👂');
         this.attr('mtch', count.toString());
     }
@@ -379,6 +383,9 @@ class PD extends P {
         return pd.matches;
     }
     applyProps(pd) {
+        //if(this._iIP && this.skI()) return;
+        if (this._iIP)
+            return 0;
         const matches = this.getMatches(pd); //const matches = pd.getMatches();
         matches.forEach(el => {
             this.setVal(this._lastEvent, el);
@@ -403,12 +410,19 @@ class PD extends P {
     connectedCallback() {
         this._upgradeProperties([m]);
         this.attr('pds', '📞');
+        if (!this.to) {
+            //apply to next only
+            this.to = '*';
+            this.m = 1;
+        }
         const pdnd = this.newNavDown();
         //const pdnd = new PDNavDown(this, this.to, nd => bndApply(nd), this.m);
         //pdnd.root = this;
-        pdnd.ignore = 'p-d,p-d-x,script';
+        pdnd.ignore = 'p-d,p-d-x,p-d-r,script';
+        this._iIP = true;
         pdnd.init();
-        this._pdNavDown.push(pdnd);
+        this._iIP = false;
+        this._pdNavDown = pdnd;
         super.connectedCallback();
     }
 }

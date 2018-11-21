@@ -114,11 +114,12 @@ function XtallatX(superClass) {
     };
 }
 class NavDown {
-    constructor(seed, match, notify, max, mutDebounce = 50) {
+    constructor(seed, match, notify, max, ignore = null, mutDebounce = 50) {
         this.seed = seed;
         this.match = match;
         this.notify = notify;
         this.max = max;
+        this.ignore = ignore;
         this.mutDebounce = mutDebounce;
         //this.init();
     }
@@ -144,17 +145,19 @@ class NavDown {
         this.matches = [];
         let ns = this.seed.nextElementSibling;
         while (ns !== null) {
-            let isG = isF ? this.match(ns) : ns.matches(this.match);
-            if (isG) {
-                this.matches.push(ns);
-                c++;
-                if (c >= this.max) {
-                    this.notify(this);
-                    return;
+            if (this.ignore === null || !ns.matches(this.ignore)) {
+                let isG = isF ? this.match(ns) : ns.matches(this.match);
+                if (isG) {
+                    this.matches.push(ns);
+                    c++;
+                    if (c >= this.max) {
+                        this.notify(this);
+                        return;
+                    }
+                    ;
                 }
-                ;
+                this.sibCheck(ns, c);
             }
-            this.sibCheck(ns, c);
             ns = ns.nextElementSibling;
         }
         this.notify(this);

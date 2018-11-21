@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "xtal-latx": "0.0.69"
+    "xtal-latx": "0.0.76"
   },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "^2.0.0",
@@ -8,7 +8,7 @@
     "tape": "^4.9.1",
     "@types/tape": "4.2.32",
     "xtal-test": "0.0.8",
-    "p-d.p-u": "0.0.80"
+    "p-d.p-u": "0.0.82"
   },
   "name": "if-diff",
   "version": "0.0.14",
