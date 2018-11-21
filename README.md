@@ -47,7 +47,7 @@ Rules:
 ```
 <custom-element-demo>
   <template>
-      <div>
+    <div>
       <style>
         [data-equals="-1"]{
           display: none;
@@ -61,11 +61,11 @@ Rules:
         Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
       </div>
       LHS: <input type="textbox"> 
-      <p-d on="input" to="if-diff{lhs}" m="2"></p-d>
+      <p-d on="input" to="if-diff" prop="lhs" m="2"></p-d>
       RHS: <input type="textbox">
-      <p-d on="input" to="if-diff{rhs}" m="2"></p-d>
+      <p-d on="input" to="if-diff" prop="rhs" m="2"></p-d>
       <if-diff if  equals tag="equals"></if-diff>
-      <p-d on="value-changed" to="[data-lhs-equals-rhs]{innerText}"></p-d>
+      <p-d on="value-changed" to="[data-lhs-equals-rhs]" prop="innerText"></p-d>
       <div data-equals="0">
           <template>
             <div>LHS == RHS</div>
@@ -73,7 +73,7 @@ Rules:
       </div>
 
       <if-diff if not_equals tag="notEquals"></if-diff>
-      <p-d on="value-changed" to="[data-lhs-not-equals-rhs]{innerText}"></p-d>
+      <p-d on="value-changed" to="[data-lhs-not-equals-rhs]" prop="innerText"></p-d>
       <div data-not-equals="0">
           <template>
               <div>LHS != RHS</div>
@@ -85,11 +85,11 @@ Rules:
       LHS Equals RHS: <span data-lhs-equals-rhs></span><br>
       LHS Doesn't equal RHS: <span data-lhs-not-equals-rhs></span>
       <!-- ========================  Script Refs ========================== -->
-      <!-- Polyfills Needed for MS browsers -->
+      <!-- Polyfills Needed for retro browsers -->
       <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
       <!-- End Polyfills -->
       <script type="module" src="https://cdn.jsdelivr.net/npm/if-diff@0.0.5/if-diff.iife.js"></script>
-      <script type="module" src="https://cdn.jsdelivr.net/npm/p-d.p-u@0.0.74/p-d.p-u.js"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/p-d.p-u@0.0.82/dist/p-d.iife.js"></script>
     </div>
   </template>
 </custom-element-demo>
