@@ -234,6 +234,8 @@ class P extends XtallatX(HTMLElement) {
         while (pS && pS.tagName.startsWith('P-')) {
             pS = pS.previousElementSibling;
         }
+        if (pS === null)
+            pS = this.parentElement;
         return pS;
     }
     connectedCallback() {
@@ -247,16 +249,15 @@ class P extends XtallatX(HTMLElement) {
     }
     ;
     attchEvListnrs() {
-        const attrFilters = [];
-        const pS = this.getPreviousSib();
-        if (!pS)
-            return;
         if (this._bndHndlEv) {
             return;
         }
         else {
             this._bndHndlEv = this._hndEv.bind(this);
         }
+        const pS = this.getPreviousSib();
+        if (!pS)
+            return;
         pS.addEventListener(this._on, this._bndHndlEv);
         const da = pS.getAttribute('disabled');
         if (da !== null) {
@@ -296,9 +297,15 @@ class P extends XtallatX(HTMLElement) {
         this._lastEvent = e;
         this.pass(e);
     }
+    //https://stackoverflow.com/questions/476436/is-there-a-null-coalescing-operator-in-javascript
+    $N(value, ifnull) {
+        if (value === null || value === undefined)
+            return ifnull;
+        return value;
+    }
     setVal(e, target) {
         const gpfp = this.getPropFromPath.bind(this);
-        const propFromEvent = this.val ? gpfp(e, this.val) : gpfp(e, 'detail.value') || gpfp(e, 'target.value');
+        const propFromEvent = this.val ? gpfp(e, this.val) : this.$N(gpfp(e, 'detail.value'), gpfp(e, 'target.value'));
         this.commit(target, propFromEvent);
     }
     commit(target, val) {

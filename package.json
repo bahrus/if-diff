@@ -4,11 +4,11 @@
   },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "^2.0.0",
-    "jiife": "0.0.6",
+    "jiife": "0.0.9",
     "tape": "^4.9.1",
     "@types/tape": "4.2.32",
-    "xtal-test": "0.0.8",
-    "p-d.p-u": "0.0.82"
+    "xtal-test": "0.0.10",
+    "p-d.p-u": "0.0.93"
   },
   "name": "if-diff",
   "version": "0.0.16",
@@ -16,5 +16,8 @@
   "main": "if-diff.html",
   "repository": "https://github.com/bahrus/if-diff",
   "author": "bahrus <anderson.bruce.b@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "test": "node createIIFE.js && tape test/*.js"
+  }
 }
