@@ -4,12 +4,13 @@ const test = require('tape');
 import { Page } from "puppeteer"; //typescript
 import { Test } from "tape";
 async function customTests(page: Page) {
-    const textContent = await page.$eval('#secondEditor', (c: any) => c.input);
+    await page.waitFor(4000);
+    const textContent = await page.$eval('#equalsStatus', (c: any) => c.dataset.equals);
     const TapeTestRunner = {
         test: test
     } as Test;
     TapeTestRunner.test('testing dev.html', (t: any) => {
-        t.equal(textContent.data[0].name, 'Harry Potter');
+        t.equal(textContent, '1');
         t.end();
     });
 

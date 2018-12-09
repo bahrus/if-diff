@@ -1,12 +1,13 @@
 const xt = require('xtal-test/index');
 const test = require('tape');
 async function customTests(page) {
-    const textContent = await page.$eval('#secondEditor', (c) => c.input);
+    await page.waitFor(4000);
+    const textContent = await page.$eval('#equalsStatus', (c) => c.dataset.equals);
     const TapeTestRunner = {
         test: test
     };
     TapeTestRunner.test('testing dev.html', (t) => {
-        t.equal(textContent.data[0].name, 'Harry Potter');
+        t.equal(textContent, '1');
         t.end();
     });
 }
