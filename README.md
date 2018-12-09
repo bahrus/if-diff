@@ -106,9 +106,8 @@ First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polyme
 
 ## Installation
 
-Install the component using [Bower](http://bower.io/):
 ```sh
-$ bower install if-diff --save
+$ npm install if-diff 
 ```
 
 ## Viewing Your Element
@@ -120,4 +119,6 @@ Open http://127.0.0.1:8081/components/if-diff
 
 ## Running Tests
 
-WIP
+```
+npm test
+```
