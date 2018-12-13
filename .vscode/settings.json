@@ -9,5 +9,6 @@
         ".ts",
         ".html",
         ".scss"
-    ]
+    ],
+    "html.experimental.custom.tags": ["./web-components.json", "node_modules/p-d.p-u/web-components.json"]
 }

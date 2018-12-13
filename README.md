@@ -96,6 +96,19 @@ Rules:
 ```
 -->  
 
+<!--
+```
+<custom-element-demo>
+<template>
+    <div>
+        <wc-info href="https://unpkg.com/if-diff@0.0.17/web-components.json"></wc-info>
+        <script type="module" src="https://unpkg.com/wc-info@0.0.8/wc-info.js?module"></script>
+    </div>
+</template>
+</custom-element-demo>
+```
+-->
+
 ## Commonality with p-d.p-u (a kind of dom-bind alternative)
 
 Not only does if-diff share the same fetish for unidirectional data flow as [p-d.p-u](https://www.webcomponents.org/element/p-d.p-u), they share a number of common modules.  As a result, while if-diff weighs around 1.6kb and p-d weighs around 1.9kb, combine them together, and due to the magic of code reuse, the combined size is ~2.5kb minified and gzipped.

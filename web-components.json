@@ -1,0 +1,30 @@
+{
+    "tags": [
+        {
+            "label": "if-diff",
+            "description": "An alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.",
+            "attributes": [
+                {
+                    "label": "if",
+                    "description": "Boolean property / attribute -- must be true to pass test(s)"
+                },
+                {
+                    "label": "lhs",
+                    "description": "LHS Operand."
+                },
+                {
+                    "label": "rhs",
+                    "description": "RHS Operand"
+                },
+                {
+                    "label": "equals",
+                    "description": "lhs must equal rhs to pass tests."
+                },
+                {
+                    "label": "not_equals",
+                    "description": "lhs must not equal rhs to pass tests."
+                }
+            ]
+        }
+    ]
+}
