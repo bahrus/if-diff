@@ -14,6 +14,19 @@ For example, suppose today is Monday.  The server could generate the syntax belo
 
 ## Syntax
 
+<!--
+```
+<custom-element-demo>
+<template>
+    <div>
+        <wc-info package-name="npm.if-diff" href="https://unpkg.com/if-diff@0.0.17/web-components.json"></wc-info>
+        <script type="module" src="https://unpkg.com/wc-info@0.0.10/wc-info.js?module"></script>
+    </div>
+</template>
+</custom-element-demo>
+```
+-->
+
 
 ```html
 <!-- Polymer notation -->
@@ -96,18 +109,7 @@ Rules:
 ```
 -->  
 
-<!--
-```
-<custom-element-demo>
-<template>
-    <div>
-        <wc-info href="https://unpkg.com/if-diff@0.0.17/web-components.json"></wc-info>
-        <script type="module" src="https://unpkg.com/wc-info@0.0.8/wc-info.js?module"></script>
-    </div>
-</template>
-</custom-element-demo>
-```
--->
+
 
 ## Commonality with p-d.p-u (a kind of dom-bind alternative)
 
