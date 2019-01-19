@@ -1,14 +1,14 @@
 {
   "dependencies": {
-    "xtal-latx": "0.0.85"
+    "xtal-latx": "0.0.88"
   },
   "devDependencies": {
-    "@webcomponents/webcomponentsjs": "2.2.1",
-    "jiife": "0.0.10",
-    "tape": "4.9.1",
-    "@types/tape": "4.2.32",
+    "@webcomponents/webcomponentsjs": "2.2.4",
+    "jiife": "0.0.11",
+    "tape": "4.9.2",
+    "@types/tape": "4.2.33",
     "xtal-test": "0.0.10",
-    "p-d.p-u": "0.0.94"
+    "p-d.p-u": "0.0.100"
   },
   "name": "if-diff",
   "version": "0.0.17",

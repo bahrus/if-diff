@@ -23,6 +23,10 @@
                 {
                     "label": "not_equals",
                     "description": "lhs must not equal rhs to pass tests."
+                },
+                {
+                    "label": "toggle_disabled",
+                    "description": "Toggle disabled attribute when test evaluation changes."
                 }
             ]
         }

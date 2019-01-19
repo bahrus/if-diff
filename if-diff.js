@@ -8,6 +8,7 @@ const rhs = 'rhs';
 const tag = 'tag';
 const equals = 'equals';
 const not_equals = 'not_equals';
+const toggle_disabled = 'toggle_disabled';
 const m$ = 'm'; //TODO:  share mixin with p-d.p-u?
 export class IfDiff extends XtallatX(HTMLElement) {
     constructor() {
@@ -48,6 +49,12 @@ export class IfDiff extends XtallatX(HTMLElement) {
     }
     set not_equals(nv) {
         this.attr(not_equals, nv, '');
+    }
+    get toggle_disabled() {
+        return this._toggle_disabled;
+    }
+    set toggle_disabled(nv) {
+        this.attr(toggle_disabled, nv, '');
     }
     get tag() {
         return this._tag;
@@ -125,6 +132,14 @@ export class IfDiff extends XtallatX(HTMLElement) {
             }
             else {
                 el.dataset[t] = val ? '1' : '-1';
+            }
+            if (this._toggle_disabled) {
+                if (val) {
+                    el.removeAttribute('disabled');
+                }
+                else {
+                    el.setAttribute('disabled', '');
+                }
             }
         });
     }

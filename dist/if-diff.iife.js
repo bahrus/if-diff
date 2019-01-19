@@ -114,6 +114,7 @@ function XtallatX(superClass) {
     };
 }
 class NavDown {
+    //_debouncer!: any;
     constructor(seed, match, notify, max, ignore = null, mutDebounce = 50) {
         this.seed = seed;
         this.match = match;
@@ -121,20 +122,35 @@ class NavDown {
         this.max = max;
         this.ignore = ignore;
         this.mutDebounce = mutDebounce;
+        this._inMutLoop = false;
         //this.init();
     }
     init() {
-        this._debouncer = debounce(() => {
-            this.sync();
-        }, this.mutDebounce);
+        // this._debouncer = debounce(() =>{
+        //     this.sync();
+        // }, this.mutDebounce);
         this.sync();
         this.addMutObs(this.seed.parentElement);
     }
     addMutObs(elToObs) {
         if (elToObs === null)
             return;
+        const nodes = [];
         this._mutObs = new MutationObserver((m) => {
-            this._debouncer(true);
+            this._inMutLoop = true;
+            m.forEach(mr => {
+                mr.addedNodes.forEach(node => {
+                    if (node.nodeType === 1) {
+                        const el = node;
+                        el.dataset.__pdWIP = '1';
+                        nodes.push(el);
+                    }
+                });
+            });
+            nodes.forEach(node => delete node.dataset.__pdWIP);
+            this.sync();
+            this._inMutLoop = false;
+            //this._debouncer(true);
         });
         this._mutObs.observe(elToObs, { childList: true });
         // (<any>elToObs)._addedMutObs = true;
@@ -172,6 +188,7 @@ const rhs = 'rhs';
 const tag = 'tag';
 const equals = 'equals';
 const not_equals = 'not_equals';
+const toggle_disabled = 'toggle_disabled';
 const m$ = 'm'; //TODO:  share mixin with p-d.p-u?
 class IfDiff extends XtallatX(HTMLElement) {
     constructor() {
@@ -212,6 +229,12 @@ class IfDiff extends XtallatX(HTMLElement) {
     }
     set not_equals(nv) {
         this.attr(not_equals, nv, '');
+    }
+    get toggle_disabled() {
+        return this._toggle_disabled;
+    }
+    set toggle_disabled(nv) {
+        this.attr(toggle_disabled, nv, '');
     }
     get tag() {
         return this._tag;
@@ -289,6 +312,14 @@ class IfDiff extends XtallatX(HTMLElement) {
             }
             else {
                 el.dataset[t] = val ? '1' : '-1';
+            }
+            if (this._toggle_disabled) {
+                if (val) {
+                    el.removeAttribute('disabled');
+                }
+                else {
+                    el.setAttribute('disabled', '');
+                }
             }
         });
     }
