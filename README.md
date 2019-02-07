@@ -12,21 +12,6 @@ if-diff allows the server to display content that should be initially displayed,
 
 For example, suppose today is Monday.  The server could generate the syntax below:
 
-## Syntax
-
-<!--
-```
-<custom-element-demo>
-<template>
-    <div>
-        <wc-info package-name="npm.if-diff" href="https://unpkg.com/if-diff@0.0.19/html.json"></wc-info>
-        <script type="module" src="https://unpkg.com/wc-info@0.0.26/wc-info.js?module"></script>
-    </div>
-</template>
-</custom-element-demo>
-```
--->
-
 
 ```html
 <!-- Polymer notation -->
@@ -109,7 +94,20 @@ Rules:
 ```
 -->  
 
+## Syntax
 
+<!--
+```
+<custom-element-demo>
+<template>
+    <div>
+        <wc-info package-name="npm.if-diff" href="https://unpkg.com/if-diff@0.0.19/html.json"></wc-info>
+        <script type="module" src="https://unpkg.com/wc-info@0.0.26/wc-info.js?module"></script>
+    </div>
+</template>
+</custom-element-demo>
+```
+-->
 
 ## Commonality with p-d.p-u (a kind of dom-bind alternative)
 
