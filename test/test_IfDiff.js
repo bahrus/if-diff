@@ -16,4 +16,3 @@ async function customTests(page) {
         path: 'demo/dev.iife.html'
     }, customTests);
 })();
-//# sourceMappingURL=test_IfDiff.js.map

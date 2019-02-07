@@ -6,7 +6,7 @@
 
 # \<if-diff\>
 
-\<if-diff\> is an alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
+\<if-diff\> is an alternative to Polymer's [dom-if](https://polymer-library.polymer-project.org/3.0/docs/devguide/templates#dom-if) element that allows comparison between two operands, as well as progressive enhancement.  See [if-else](https://github.com/matthewp/if-else) for another data-centric alternative.
 
 if-diff allows the server to display content that should be initially displayed, then adjusts what is displayed as conditions in the browser change.
 
@@ -19,8 +19,8 @@ For example, suppose today is Monday.  The server could generate the syntax belo
 <custom-element-demo>
 <template>
     <div>
-        <wc-info package-name="npm.if-diff" href="https://unpkg.com/if-diff@0.0.18/web-components.json"></wc-info>
-        <script type="module" src="https://unpkg.com/wc-info@0.0.10/wc-info.js?module"></script>
+        <wc-info package-name="npm.if-diff" href="https://unpkg.com/if-diff@0.0.19/html.json"></wc-info>
+        <script type="module" src="https://unpkg.com/wc-info@0.0.26/wc-info.js?module"></script>
     </div>
 </template>
 </custom-element-demo>
@@ -115,6 +115,10 @@ Rules:
 
 Not only does if-diff share the same fetish for unidirectional data flow as [p-d.p-u](https://www.webcomponents.org/element/p-d.p-u), they share a number of common modules.  As a result, while if-diff weighs around 1.6kb and p-d weighs around 1.9kb, combine them together, and due to the magic of code reuse, the combined size is ~2.5kb minified and gzipped.
 
+## Go to sleep mode
+
+It is quite common to have a user interface with multiple tabs, each tab depending on some common filters / inputs.  if-diff can be used in this scenario, and to help improve performance, it can toggle the disabled attribute on the target elements.  If the elements themselves know how to "go to sleep" when disabled, and then sync up with the new filters / inputs when disabled is removed, that could provide the most optimal performance.
+
 ## Install the Polymer-CLI
 
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your element locally.
@@ -129,7 +133,7 @@ $ npm install if-diff
 
 ```
 $ polymer serve
-Open http://127.0.0.1:8081/components/if-diff
+Open http://127.0.0.1:8081/
 ```
 
 ## Running Tests
