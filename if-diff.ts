@@ -1,7 +1,8 @@
-import {XtallatX, disabled} from 'xtal-latx/xtal-latx.js';
-import {define} from 'xtal-latx/define.js';
-import {debounce} from 'xtal-latx/debounce.js';
-import {NavDown} from 'xtal-latx/NavDown.js'
+import {XtallatX} from 'xtal-element/xtal-latx.js';
+import {disabled, hydrate, up} from 'trans-render/hydrate.js';
+import {define} from 'trans-render/define.js';
+import {debounce} from 'xtal-element/debounce.js';
+import {NavDown} from 'xtal-element/NavDown.js'
 const if$ = 'if';
 const lhs = 'lhs';
 const rhs = 'rhs';
@@ -11,7 +12,7 @@ const not_equals = 'not_equals';
 const toggle_disabled = 'toggle_disabled';
 const m$ = 'm'; //TODO:  share mixin with p-d.p-u?
 
-export class IfDiff extends XtallatX(HTMLElement){
+export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     static get is(){return 'if-diff';}
     static get observedAttributes(){
         return [if$, lhs, rhs, tag, equals, not_equals, disabled, m$];
@@ -99,7 +100,7 @@ export class IfDiff extends XtallatX(HTMLElement){
     }
     connectedCallback(){
         this.style.display = 'none';
-        this._upgradeProperties(IfDiff.observedAttributes);
+        this[up](IfDiff.observedAttributes);
         this._conn = true;
         this._debouncer = debounce((getNew: boolean = false) => {
             this.passDown();
