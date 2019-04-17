@@ -1,15 +1,15 @@
 {
   "dependencies": {
-    "xtal-element": "0.0.50",
-    "trans-render": "0.0.101"
+    "xtal-element": "0.0.54",
+    "trans-render": "0.0.102"
   },
   "devDependencies": {
-    "@webcomponents/webcomponentsjs": "2.2.8",
+    "@webcomponents/webcomponentsjs": "2.2.9",
     "jiife": "0.0.12",
     "tape": "4.10.1",
     "@types/tape": "4.2.33",
     "xtal-test": "0.0.10",
-    "p-d.p-u": "0.0.113"
+    "p-d.p-u": "0.0.115"
   },
   "name": "if-diff",
   "version": "0.0.22",
