@@ -13,6 +13,6 @@ async function customTests(page) {
 }
 (async () => {
     await xt.runTests({
-        path: 'demo/dev.iife.html'
+        path: 'demo/dev.html'
     }, customTests);
 })();

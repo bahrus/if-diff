@@ -29,7 +29,7 @@
       <p-d on="input" to="if-diff" prop="rhs" val="target.value" m="2"></p-d>
       <if-diff if equals tag="equals"></if-diff>
       <p-d on="value-changed" to="[data-lhs-equals-rhs]" prop="innerText"value="target.value"></p-d>
-      <div data-equals="0">
+      <div data-equals="0" id="equalsStatus">
           <template>
             <div>LHS == RHS</div>
           </template>
