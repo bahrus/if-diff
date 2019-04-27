@@ -10,6 +10,7 @@
   </head>
   <body>
     <div>
+      <xtal-sip selector="[data-imp]"></xtal-sip>
       <style>
         [data-equals="-1"]{
           display: none;
@@ -23,7 +24,7 @@
         Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
       </div>
       LHS: <input type="text"> 
-      <p-d on="input" to="if-diff" prop="lhs" val="target.value" m="2"></p-d>
+      <p-d on="input" to="if-diff" prop="lhs" val="target.value" m="2" data-imp></p-d>
       RHS: <input type="text">
       <p-d on="input" to="if-diff" prop="rhs" val="target.value" m="2"></p-d>
       <if-diff if equals tag="equals"></if-diff>
@@ -47,11 +48,24 @@
       LHS Equals RHS: <span data-lhs-equals-rhs></span><br>
       LHS Doesn't equal RHS: <span data-lhs-not-equals-rhs></span>
       <!-- ========================  Script Refs ========================== -->
-      <!-- Polyfills Needed for retro browsers -->
-      <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-      <!-- End Polyfills -->
-      <script type="module" src="../if-diff.js"></script>
-      <script type="module" src="https://unpkg.com/p-d.p-u@0.0.113/p-d.js?module"></script>
+
+
+      <!-- Use experimental import maps -->
+      <script defer src="https://cdn.jsdelivr.net/npm/es-module-shims@0.2.0/dist/es-module-shims.js"></script>
+      <script type="importmap-shim">
+        {
+          "imports": {
+            "xtal-element/":        "https://cdn.jsdelivr.net/npm/xtal-element@0.0.58/",
+            "trans-render/":        "https://cdn.jsdelivr.net/npm/trans-render@0.0.110/",
+            "xtal-sip/xtal-sip.js": "https://cdn.jsdelivr.net/npm/xtal-sip@0.0.63/xtal-sip.js",
+            "p-d.p-u/p-d.js":       "https://cdn.jsdelivr.net/npm/p-d.p-u@0.0.119/p-d.js#!"
+          }
+        }
+        </script>
+      <script  type="module-shim">
+        import '../if-diff.js';
+        import 'xtal-sip/xtal-sip.js';
+      </script>
     </div>
   </body>
 </html>
