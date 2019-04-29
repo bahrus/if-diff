@@ -130,12 +130,12 @@ $ npm install if-diff
 ## Viewing Your Element
 
 ```
-$ polymer serve
-Open http://127.0.0.1:8081/
+$ npm run serve
+Open http://localhost:3030/demo/dev
 ```
 
 ## Running Tests
 
 ```
-npm test
+$ npm test
 ```

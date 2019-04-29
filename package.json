@@ -8,7 +8,7 @@
     "jiife": "0.0.12",
     "tape": "4.10.1",
     "@types/tape": "4.2.33",
-    "xtal-test": "0.0.13",
+    "xtal-test": "0.0.18",
     "p-d.p-u": "0.0.119"
   },
   "name": "if-diff",
@@ -20,6 +20,7 @@
   "author": "bahrus <anderson.bruce.b@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "node createIIFE.js && tape test/*.js"
+    "test": "node createIIFE.js && tape test/*.js",
+    "serve": "node node_modules/xtal-test/serve.js"
   }
 }
