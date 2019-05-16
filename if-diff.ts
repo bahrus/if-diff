@@ -1,5 +1,5 @@
 import {XtallatX} from 'xtal-element/xtal-latx.js';
-import {disabled, hydrate, up} from 'trans-render/hydrate.js';
+import {disabled, hydrate} from 'trans-render/hydrate.js';
 import {define} from 'trans-render/define.js';
 import {debounce} from 'xtal-element/debounce.js';
 import {NavDown} from 'xtal-element/NavDown.js'
@@ -100,7 +100,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     }
     connectedCallback(){
         this.style.display = 'none';
-        this[up](IfDiff.observedAttributes);
+        this.propUp(IfDiff.observedAttributes);
         this._conn = true;
         this._debouncer = debounce((getNew: boolean = false) => {
             this.passDown();
