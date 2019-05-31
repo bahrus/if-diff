@@ -94,7 +94,7 @@ Rules:
             "xtal-sip":             "https://cdn.jsdelivr.net/npm/xtal-sip@0.0.80/xtal-sip.js",
             "xtal-element/":        "https://cdn.jsdelivr.net/npm/xtal-element@0.0.59/",
             "trans-render/":        "https://cdn.jsdelivr.net/npm/trans-render@0.0.111/",
-            "p-d":                  "https://cdn.jsdelivr.net/npm/p-d.p-u@0.0.123/p-d.js",
+            "p-d":                  "https://cdn.jsdelivr.net/npm/p-et-alia@0.0.4/p-d.js",
             "if-diff":              "https://cdn.jsdelivr.net/npm/if-diff@0.0.27/if-diff.js"
           }
         }
