@@ -14,10 +14,10 @@ For example, suppose today is Monday.  The server could generate the syntax belo
 
 
 ```html
-<!-- Polymer notation -->
-<if-diff if lhs="[[dayOfWeek]]" equals rhs="Monday" tag="manicMonday" m="1"></if-diff>
+<!-- Framework-neutral psuedo code:  Assume some framework / library sets property "lhs" based on -lhs attribute --> 
+<if-diff if -lhs=dayOfWeek equals rhs="Monday" tag="manicMonday" m="1"></if-diff>
 ...
-<if-diff if lhs="[[dayOfWeek]]" equals rhs="Tuesday" tag="rubyTuesday"></if-diff>
+<if-diff if -lhs=dayOfWeek equals rhs="Tuesday" tag="rubyTuesday"></if-diff>
 ...
 <div data-manic-monday="1">
   <div>I wish it was Sunday</div>
@@ -30,7 +30,7 @@ For example, suppose today is Monday.  The server could generate the syntax belo
 ...
 ```
 
-Generally, as will see, a data-* value of "1" should be interpreted as "matches", so assuming your css is consistent with that interpretation, the user will immediately see the desired text "I wish it was Sunday" before a single byte of JS is downloaded.  Since the text for Tuesday is not yet applicable, embedding the content inside a template tag will allow the browser to ignore whatever is inside until needed.  Only if the day changes would we need to display Tuesday.  At that point, the template needs to be cloned (and discarded).  So to fill in the details:
+Generally, as we will see, a data-* value of "1" should be interpreted as "matches", so assuming your css is consistent with that interpretation, the user will immediately see the desired text "I wish it was Sunday" before a single byte of JS is downloaded.  Since the text for Tuesday is not yet applicable, embedding the content inside a template tag will allow the browser to ignore whatever is inside until needed.  Only if the day changes would we need to display Tuesday.  At that point, the template needs to be cloned (and discarded).  So to fill in the details:
 
 Rules: 
 
