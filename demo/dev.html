@@ -24,10 +24,10 @@
         Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
       </div>
       LHS: <input type="text"> 
-      <p-d on="input" to="if-diff" prop="lhs" val="target.value" m="2"></p-d>
+      <p-d on="input" to="[-lhs]" prop="lhs" val="target.value" m="2"></p-d>
       RHS: <input type="text">
-      <p-d on="input" to="if-diff" prop="rhs" val="target.value" m="2"></p-d>
-      <if-diff if equals tag="equals" onvaluechanged="test()"></if-diff>
+      <p-d on="input" to="[-rhs]" prop="rhs" val="target.value" m="2"></p-d>
+      <if-diff if -lhs equals -rhs tag="equals" onvaluechanged="test()"></if-diff>
       <p-d on="value-changed" to="[data-lhs-equals-rhs]" prop="innerText" value="target.value"></p-d>
       <div data-equals="0" id="equalsStatus">
           <template>
@@ -35,7 +35,7 @@
           </template>
       </div>
 
-      <if-diff if not_equals tag="notEquals"></if-diff>
+      <if-diff if -lhs not_equals -rhs tag="notEquals"></if-diff>
       <p-d on="value-changed" to="[data-lhs-not-equals-rhs]" prop="innerText"></p-d>
       <div data-not-equals="0">
           <template>
@@ -58,7 +58,6 @@
             "xtal-sip":             "https://cdn.jsdelivr.net/npm/xtal-sip@0.0.80/xtal-sip.js",
             "xtal-element/":        "https://cdn.jsdelivr.net/npm/xtal-element@0.0.59/",
             "trans-render/":        "https://cdn.jsdelivr.net/npm/trans-render@0.0.111/",
-            "xtal-sip/xtal-sip.js": "https://cdn.jsdelivr.net/npm/xtal-sip@0.0.85/xtal-sip.js",
             "p-d":                  "https://cdn.jsdelivr.net/npm/p-d.p-u@0.0.123/p-d.js",
             "if-diff":              "../if-diff.js"
           }
