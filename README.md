@@ -14,7 +14,7 @@ For example, suppose today is Monday.  The server could generate the syntax belo
 
 
 ```html
-<!-- Framework-neutral psuedo code:  Assume some framework / library sets property "lhs" based on -lhs attribute --> 
+<!-- Framework-neutral pseudo code:  Assume some framework / library sets property "lhs" based on -lhs=dayOfWeek attribute --> 
 <if-diff if -lhs=dayOfWeek equals rhs="Monday" tag="manicMonday" m="1"></if-diff>
 ...
 <if-diff if -lhs=dayOfWeek equals rhs="Tuesday" tag="rubyTuesday"></if-diff>
