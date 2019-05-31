@@ -46,6 +46,7 @@ Rules:
 <custom-element-demo>
   <template>
     <div>
+      <xtal-sip><script nomodule>["p-d", "if-diff"]</script></xtal-sip>
       <style>
         [data-equals="-1"]{
           display: none;
@@ -58,19 +59,19 @@ Rules:
       <div> 
         Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
       </div>
-      LHS: <input type="textbox"> 
-      <p-d on="input" to="if-diff" prop="lhs" m="2"></p-d>
-      RHS: <input type="textbox">
-      <p-d on="input" to="if-diff" prop="rhs" m="2"></p-d>
-      <if-diff if  equals tag="equals"></if-diff>
-      <p-d on="value-changed" to="[data-lhs-equals-rhs]" prop="innerText"></p-d>
-      <div data-equals="0">
+      LHS: <input type="text"> 
+      <p-d on="input" to="[-lhs]" prop="lhs" val="target.value" m="2"></p-d>
+      RHS: <input type="text">
+      <p-d on="input" to="[-rhs]" prop="rhs" val="target.value" m="2"></p-d>
+      <if-diff if -lhs equals -rhs tag="equals" onvaluechanged="test()"></if-diff>
+      <p-d on="value-changed" to="[data-lhs-equals-rhs]" prop="innerText" value="target.value"></p-d>
+      <div data-equals="0" id="equalsStatus">
           <template>
             <div>LHS == RHS</div>
           </template>
       </div>
 
-      <if-diff if not_equals tag="notEquals"></if-diff>
+      <if-diff if -lhs not_equals -rhs tag="notEquals"></if-diff>
       <p-d on="value-changed" to="[data-lhs-not-equals-rhs]" prop="innerText"></p-d>
       <div data-not-equals="0">
           <template>
@@ -83,11 +84,24 @@ Rules:
       LHS Equals RHS: <span data-lhs-equals-rhs></span><br>
       LHS Doesn't equal RHS: <span data-lhs-not-equals-rhs></span>
       <!-- ========================  Script Refs ========================== -->
-      <!-- Polyfills Needed for retro browsers -->
-      <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-      <!-- End Polyfills -->
-      <script type="module" src="https://cdn.jsdelivr.net/npm/if-diff@0.0.5/if-diff.iife.js"></script>
-      <script type="module" src="https://cdn.jsdelivr.net/npm/p-d.p-u@0.0.82/dist/p-d.iife.js"></script>
+
+
+      <!-- Use experimental import maps -->
+      <script defer src="https://cdn.jsdelivr.net/npm/es-module-shims@0.2.0/dist/es-module-shims.js"></script>
+      <script type="importmap-shim">
+        {
+          "imports": {
+            "xtal-sip":             "https://cdn.jsdelivr.net/npm/xtal-sip@0.0.80/xtal-sip.js",
+            "xtal-element/":        "https://cdn.jsdelivr.net/npm/xtal-element@0.0.59/",
+            "trans-render/":        "https://cdn.jsdelivr.net/npm/trans-render@0.0.111/",
+            "p-d":                  "https://cdn.jsdelivr.net/npm/p-d.p-u@0.0.123/p-d.js",
+            "if-diff":              "https://cdn.jsdelivr.net/npm/if-diff@0.0.27/if-diff.js"
+          }
+        }
+        </script>
+      <script  type="module-shim">
+        import 'xtal-sip';
+      </script>
     </div>
   </template>
 </custom-element-demo>
