@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "trans-render": "0.0.111",
+    "trans-render": "0.0.112",
     "xtal-element": "0.0.59"
   },
   "devDependencies": {
@@ -8,8 +8,8 @@
     "jiife": "0.0.12",
     "tape": "4.10.2",
     "@types/tape": "4.2.33",
-    "xtal-test": "0.0.18",
-    "p-et-alia": "0.0.4"
+    "xtal-test": "0.0.19",
+    "p-et-alia": "0.0.5"
   },
   "name": "if-diff",
   "version": "0.0.28",
