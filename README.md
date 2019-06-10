@@ -15,9 +15,9 @@ For example, suppose today is Monday.  The server could generate the syntax belo
 
 ```html
 <!-- Framework-neutral pseudo code:  Assume some framework / library sets property "lhs" based on -lhs=dayOfWeek attribute --> 
-<if-diff if -lhs=dayOfWeek equals rhs="Monday" tag="manicMonday" m="1"></if-diff>
+<if-diff if -lhs=dayOfWeek equals rhs="Monday" data-key-name="manicMonday" m="1"></if-diff>
 ...
-<if-diff if -lhs=dayOfWeek equals rhs="Tuesday" tag="rubyTuesday"></if-diff>
+<if-diff if -lhs=dayOfWeek equals rhs="Tuesday" data-key-name="rubyTuesday"></if-diff>
 ...
 <div data-manic-monday="1">
   <div>I wish it was Sunday</div>
@@ -34,7 +34,7 @@ Generally, as we will see, a data-* value of "1" should be interpreted as "match
 
 Rules: 
 
-1.  The "tag" attribute refers to a data-* attribute / dataset.* property.  The case is based on the property name.
+1.  The "data-key-name" attribute refers to a data-* attribute / dataset.* property.  The case is based on the property name.
 2.  Only downstream sibling elements are checked for the data-* attribute.  This is to encourage unidirectional data flow, and keeping related things physically close.
 3.  Speaking of which, the optional  m attribute indicates the maximum number of elements that are getting affected by the *if-diff* tag.  Placing the *if-diff* element right above the elements it affects, and specifying "m" accurately, will improve performance and help reduce greenhouse emissions.
 4.  *if-diff* sets the data-* attribute to "1" when the condition is true, "-1" if not.  It is up to the application's css styling to interpret how this should display.
