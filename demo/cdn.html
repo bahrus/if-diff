@@ -24,9 +24,9 @@
         Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
       </div>
       <label for=lhs>LHS:</label><input id=lhs> 
-      <p-d on=input to=[-lhs] prop=lhs val=target.value m=2></p-d>
+      <p-d on=input to=[-lhs]  val=target.value m=2></p-d>
       <label for=rhs>RHS:</label><input id=rhs>
-      <p-d on=input to=[-rhs] prop=rhs val=target.value m=2></p-d>
+      <p-d on=input to=[-rhs]  val=target.value m=2></p-d>
       <if-diff if -lhs equals -rhs data-key-name=equals></if-diff>
       <p-d on=value-changed to=[data-lhs-equals-rhs] prop=textContent value=target.value></p-d>
       <div data-equals=0 id=equalsStatus>
@@ -59,7 +59,7 @@
             "xtal-sip":             "https://cdn.jsdelivr.net/npm/xtal-sip@0.0.90/xtal-sip.js",
             "xtal-element/":        "https://cdn.jsdelivr.net/npm/xtal-element@0.0.59/",
             "trans-render/":        "https://cdn.jsdelivr.net/npm/trans-render@0.0.111/",
-            "p-d":                  "https://cdn.jsdelivr.net/npm/p-et-alia@0.0.5/p-d.js",
+            "p-d":                  "https://cdn.jsdelivr.net/npm/p-et-alia@0.0.6/p-d.js",
             "if-diff":              "https://cdn.jsdelivr.net/npm/if-diff@0.0.30/if-diff.js"
           }
         }
