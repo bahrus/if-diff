@@ -6,7 +6,7 @@ import { NavDown } from 'xtal-element/NavDown.js';
 const if$ = 'if';
 const lhs = 'lhs';
 const rhs = 'rhs';
-const tag = 'tag';
+const data_key_name = 'data-key-name';
 const equals = 'equals';
 const not_equals = 'not_equals';
 const toggle_disabled = 'toggle_disabled';
@@ -19,7 +19,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
     }
     static get is() { return 'if-diff'; }
     static get observedAttributes() {
-        return [if$, lhs, rhs, tag, equals, not_equals, disabled, m$];
+        return [if$, lhs, rhs, data_key_name, equals, not_equals, disabled, m$];
     }
     get if() {
         return this._if;
@@ -57,11 +57,11 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
     set toggle_disabled(nv) {
         this.attr(toggle_disabled, nv, '');
     }
-    get tag() {
-        return this._tag;
+    get dataKeyName() {
+        return this._dataKeyName;
     }
-    set tag(nv) {
-        this.attr(tag, nv);
+    set dataKeyName(nv) {
+        this.attr(data_key_name, nv);
     }
     get m() {
         return this._m;
@@ -78,11 +78,13 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
             case if$:
                 this[u] = (nv !== null);
                 break;
-            case tag:
             case lhs:
             case rhs:
             case m$:
                 this[u] = nv;
+                break;
+            case data_key_name:
+                this._dataKeyName = nv;
                 break;
         }
         this.onPropsChange();
@@ -122,17 +124,17 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
     tagMatches(nd) {
         const matches = nd.matches;
         const val = this.value;
-        const t = this._tag;
+        const dataKeyName = this._dataKeyName;
         matches.forEach(el => {
             const ds = el.dataset;
-            if (ds[t] === '0') {
+            if (ds[dataKeyName] === '0') {
                 if (val) {
                     this.loadTemplate(el);
-                    el.dataset[t] = "1";
+                    el.dataset[dataKeyName] = "1";
                 }
             }
             else {
-                el.dataset[t] = val ? '1' : '-1';
+                el.dataset[dataKeyName] = val ? '1' : '-1';
             }
             if (this._toggle_disabled) {
                 if (val) {
@@ -158,10 +160,10 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
         this.de('value', {
             value: val
         });
-        if (this._tag) {
+        if (this._dataKeyName) {
             if (this._navDown === null) {
-                const tag = this._tag;
-                const test = (el) => el.dataset && !!el.dataset[this._tag];
+                const tag = this._dataKeyName;
+                const test = (el) => el.dataset && !!el.dataset[this._dataKeyName];
                 const max = this._m ? this._m : Infinity;
                 const bndTagMatches = this.tagMatches.bind(this);
                 this._navDown = new NavDown(this, test, (nd) => bndTagMatches(nd), max);
