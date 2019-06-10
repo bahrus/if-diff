@@ -59,21 +59,21 @@ Rules:
       <div> 
         Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
       </div>
-      LHS: <input type="text"> 
-      <p-d on="input" to="[-lhs]" prop="lhs" val="target.value" m="2"></p-d>
-      RHS: <input type="text">
-      <p-d on="input" to="[-rhs]" prop="rhs" val="target.value" m="2"></p-d>
-      <if-diff if -lhs equals -rhs tag="equals" onvaluechanged="test()"></if-diff>
-      <p-d on="value-changed" to="[data-lhs-equals-rhs]" prop="innerText" value="target.value"></p-d>
-      <div data-equals="0" id="equalsStatus">
+      <label for=lhs>LHS:</label><input id=lhs> 
+      <p-d on=input to=[-lhs] prop=lhs val=target.value m=2></p-d>
+      <label for=rhs>RHS:</label><input id=rhs>
+      <p-d on=input to=[-rhs] prop=rhs val=target.value m=2></p-d>
+      <if-diff if -lhs equals -rhs data-key-name=equals></if-diff>
+      <p-d on=value-changed to=[data-lhs-equals-rhs] prop=textContent value=target.value></p-d>
+      <div data-equals=0 id=equalsStatus>
           <template>
             <div>LHS == RHS</div>
           </template>
       </div>
 
-      <if-diff if -lhs not_equals -rhs tag="notEquals"></if-diff>
-      <p-d on="value-changed" to="[data-lhs-not-equals-rhs]" prop="innerText"></p-d>
-      <div data-not-equals="0">
+      <if-diff if -lhs not_equals -rhs data-key-name=notEquals></if-diff>
+      <p-d on=value-changed to=[data-lhs-not-equals-rhs] prop=textContent></p-d>
+      <div data-not-equals=0>
           <template>
               <div>LHS != RHS</div>
           </template>       
@@ -83,6 +83,7 @@ Rules:
 
       LHS Equals RHS: <span data-lhs-equals-rhs></span><br>
       LHS Doesn't equal RHS: <span data-lhs-not-equals-rhs></span>
+
       <!-- ========================  Script Refs ========================== -->
 
 
@@ -91,11 +92,11 @@ Rules:
       <script type="importmap-shim">
         {
           "imports": {
-            "xtal-sip":             "https://cdn.jsdelivr.net/npm/xtal-sip@0.0.80/xtal-sip.js",
+            "xtal-sip":             "https://cdn.jsdelivr.net/npm/xtal-sip@0.0.90/xtal-sip.js",
             "xtal-element/":        "https://cdn.jsdelivr.net/npm/xtal-element@0.0.59/",
             "trans-render/":        "https://cdn.jsdelivr.net/npm/trans-render@0.0.111/",
-            "p-d":                  "https://cdn.jsdelivr.net/npm/p-et-alia@0.0.4/p-d.js",
-            "if-diff":              "https://cdn.jsdelivr.net/npm/if-diff@0.0.27/if-diff.js"
+            "p-d":                  "https://cdn.jsdelivr.net/npm/p-et-alia@0.0.5/p-d.js",
+            "if-diff":              "https://cdn.jsdelivr.net/npm/if-diff@0.0.30/if-diff.js"
           }
         }
         </script>
