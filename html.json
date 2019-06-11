@@ -28,6 +28,10 @@
                 {
                     "name": "toggle_disabled",
                     "description": "Toggle disabled attribute when test evaluation changes."
+                },
+                {
+                    "name": "data-key-name",
+                    "description": "Name of dataset key to set to 1 if true and -1 if false, if dataset key is present"
                 }
             ]
         }

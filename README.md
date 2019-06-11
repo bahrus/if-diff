@@ -2,7 +2,9 @@
 
 <a href="https://nodei.co/npm/if-diff/"><img src="https://nodei.co/npm/if-diff.png"></a>
 
+<!--
 <img src="https://badgen.net/bundlephobia/minzip/if-diff">
+-->
 
 # \<if-diff\>
 
@@ -14,10 +16,10 @@ For example, suppose today is Monday.  The server could generate the syntax belo
 
 
 ```html
-<!-- Framework-neutral pseudo code:  Assume some framework / library sets property "lhs" based on -lhs=dayOfWeek attribute --> 
-<if-diff if -lhs=dayOfWeek equals rhs="Monday" data-key-name="manicMonday" m="1"></if-diff>
+<!-- Framework-neutral pseudo code:  Assume some framework / library sets property "lhs" based on -lhs:dayOfWeek attribute --> 
+<if-diff if -lhs:dayOfWeek equals rhs="Monday" data-key-name="manicMonday" m="1"></if-diff>
 ...
-<if-diff if -lhs=dayOfWeek equals rhs="Tuesday" data-key-name="rubyTuesday"></if-diff>
+<if-diff if -lhs:dayOfWeek equals rhs="Tuesday" data-key-name="rubyTuesday"></if-diff>
 ...
 <div data-manic-monday="1">
   <div>I wish it was Sunday</div>
@@ -116,17 +118,17 @@ Rules:
 <custom-element-demo>
 <template>
     <div>
-        <wc-info package-name="npm.if-diff" href="https://unpkg.com/if-diff@0.0.19/html.json"></wc-info>
-        <script type="module" src="https://unpkg.com/wc-info@0.0.26/wc-info.js?module"></script>
+        <wc-info package-name="npm.if-diff" href="https://unpkg.com/if-diff@0.0.33/html.json"></wc-info>
+        <script type="module" src="https://unpkg.com/wc-info@0.0.32/wc-info.js?module"></script>
     </div>
 </template>
 </custom-element-demo>
 ```
 -->
 
-## Commonality with p-d.p-u (a kind of dom-bind alternative)
+## Commonality with p-et-alia (a kind of dom-bind alternative)
 
-Not only does if-diff share the same fetish for unidirectional data flow as [p-d.p-u](https://www.webcomponents.org/element/p-d.p-u), they share a number of common modules.  As a result, while if-diff weighs around 1.6kb and p-d weighs around 1.9kb, combine them together, and due to the magic of code reuse, the combined size is ~2.5kb minified and gzipped.
+Not only does if-diff share the same fetish for unidirectional data flow as [p-et-alia](https://github.com/bahrus/p-et-alia), they share a number of common modules.  As a result, while if-diff weighs around 1.6kb and p-d weighs around 1.9kb, combine them together, and due to the magic of code reuse, the combined size is ~2.5kb minified and gzipped.
 
 ## Go to sleep mode
 
