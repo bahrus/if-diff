@@ -16,10 +16,10 @@ For example, suppose today is Monday.  The server could generate the syntax belo
 
 
 ```html
-<!-- Framework-neutral pseudo code:  Assume some framework / library sets property "lhs" based on -lhs:dayOfWeek attribute --> 
-<if-diff if -lhs:dayOfWeek equals rhs="Monday" data-key-name="manicMonday" m="1"></if-diff>
+<!-- Framework-neutral pseudo code:  Assume some framework / library sets property "lhs" based on lhs:=dayOfWeek attribute --> 
+<if-diff if lhs:=dayOfWeek equals rhs=Monday data-key-name=manicMonday m=1></if-diff>
 ...
-<if-diff if -lhs:dayOfWeek equals rhs="Tuesday" data-key-name="rubyTuesday"></if-diff>
+<if-diff if lhs:=dayOfWeek equals rhs=Tuesday data-key-name=rubyTuesday></if-diff>
 ...
 <div data-manic-monday="1">
   <div>I wish it was Sunday</div>
