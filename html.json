@@ -33,6 +33,19 @@
                     "name": "data-key-name",
                     "description": "Name of dataset key to set to 1 if true and -1 if false, if dataset key is present"
                 }
+            ],
+            "customEvents":[
+                {
+                    "name": "value-changed",
+                    "description": "Fires when evaluation of test changes",
+                    "detail":[
+                        {
+                            "name": "value",
+                            "description":  "Indicates whether the comparison is satisfied.",
+                            "type": "boolean"
+                        }
+                    ]
+                }
             ]
         }
     ]
