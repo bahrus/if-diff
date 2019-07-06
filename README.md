@@ -128,19 +128,39 @@ Rules:
 
 ## Commonality with p-et-alia (a kind of dom-bind alternative)
 
-Not only does if-diff share the same fetish for unidirectional data flow as [p-et-alia](https://github.com/bahrus/p-et-alia), they share a number of common modules.  As a result, while if-diff weighs around 1.6kb and p-d weighs around 1.9kb, combine them together, and due to the magic of code reuse, the combined size is ~2.5kb minified and gzipped.
+Not only does if-diff share the same fetish for unidirectional data flow as [p-et-alia](https://github.com/bahrus/p-et-alia), they share a number of common modules.  As a result, while if-diff weighs around 1.6kb and p-d weighs around 1.9kb, combine them together, and, due to the magic of code reuse, the combined size is ~2.5kb minified and gzipped.
 
-## Go to sleep mode
+## How to treat non visible content
+
+What should we do with a previously activated content that is now no longer applicable?  I.e. what should happen on Wednesday?
+
+if-diff agrees with dom-if's wisdom as far as the no-right-answer difficult trade-offs, and envies how it empowers developers to be able to choose [if snuffing out is the more humane thing to do](https://polymer-library.polymer-project.org/2.0/docs/devguide/templates#dom-if).
+
+My bias is towards hiding it, as I tend to work more with VM PC's, but with lots of memory. Especially when you are using an expensive to initialize component, like a fancy, virtual grid.  So if-diff operates on that assumption.  [Gas guzzling framework](https://www.infoq.com/news/2019/04/real-world-framework-benchmark/?utm_source=sumome&utm_medium=twitter&utm_campaign=sumome_share)'s routing solutions tend to perform abysmally in such a setting (even if caching data, etc), in my experience.  For that reason, the first mode described below was implemented first.
+
+### Go to sleep mode
 
 It is quite common to have a user interface with multiple tabs, each tab depending on some common filters / inputs.  if-diff can be used in this scenario, and to help improve performance, it can toggle the disabled attribute on the target elements.  If the elements themselves know how to "go to sleep" when disabled, and then sync up with the new filters / inputs when disabled is removed, that could provide the most optimal performance.
 
-## Avada Kedavra
+## Put to sleep mode [WIP]
 
-What should happen when a condition that was true, becomes false?  What should we do with the content?  Hide it, or destroy it?  My bias is towards hiding it, as I tend to work more with underpowered PC's using slow browsers, but with lots of memory, and heavy on using expensive to initialize components, but fast once that's done components, like fancy grids.  So if-diff operates on that assumption.  [Gas guzzling framework](https://www.infoq.com/news/2019/04/real-world-framework-benchmark/?utm_source=sumome&utm_medium=twitter&utm_campaign=sumome_share)'s routing solutions tend to perform abysmally in such a setting (even if caching data, etc), in my experience.
+What if the situation is reversed -- lots of DOM elements, requiring lots of repainting / css queries overhead, on a low memory device? 
 
-But that bias of mine is certainly not valid in all use cases.  Polymer wisely recognized that this is a decision full of trade-offs, and empowers developers to be able to choose [if avada kedavra is the more approriate remedy](https://polymer-library.polymer-project.org/2.0/docs/devguide/templates#dom-if).
+We provide one approach to this situation consistent (as we will see) with the general philosophy underlying this component and some of its kindred components.
 
-We provide the same, but with a different element -- if-diff-stiff, a riff on [stiff](http://maryroach.net/stiff.html)
+We do so with a different element -- if-diff-stiff, a riff on a [gif](http://maryroach.net/stiff.html)
+
+The problem is, how can we restore the content from the dead, including its current state of properties / attributes, when time once again fails to freeze at Sunday midnight? There are no "serializeThis", "deserializeThat" functions available in the DOM API, like there is for JSON.
+
+Aha!  I can you sense you glibly thinking via the Force.  
+
+"See, I told you -- you need a high-powered state manager, full of stores, thunking and discombobulating, to guide you through this resurrection of the UI."
+
+But if the purpose of this whole exercise is to reduce memory, isn't that almost defeating the purpose?  Granted, JavaScript objects often take up less memory than DOM elements, but now you have to hold on to both.
+
+Well, the solution if-diff-stiff proposes isn't too far off from that, but its focus will be on being flexible, and making sure history.state and other out-of RAM storage areas, including a remote store, can be used to restore state, along [these](https://github.com/bahrus/bi-st) [lines](https://github.com/bahrus/purr-sist)
+
+In fact, as far as I can see at the moment, if you stick to the data-centric approaches of those last links above, this component doesn't have to do much of anything (but we'll see).
 
 ## Installation
 
