@@ -129,6 +129,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
         el.appendChild(tmpl.content.cloneNode(true));
         tmpl.remove();
     }
+    
     //_lastMatches: Element[] | null = null;
     tagMatches(nd: NavDown){
         const matches = nd.matches;

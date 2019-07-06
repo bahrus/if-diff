@@ -134,9 +134,13 @@ Not only does if-diff share the same fetish for unidirectional data flow as [p-e
 
 It is quite common to have a user interface with multiple tabs, each tab depending on some common filters / inputs.  if-diff can be used in this scenario, and to help improve performance, it can toggle the disabled attribute on the target elements.  If the elements themselves know how to "go to sleep" when disabled, and then sync up with the new filters / inputs when disabled is removed, that could provide the most optimal performance.
 
-## Install the Polymer-CLI
+## Avada Kedavra
 
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your element locally.
+What should happen when a condition that was true, becomes false?  What should we do with the content?  Hide it, or destroy it?  My bias is towards hiding it, as I tend to work more with underpowered PC's using slow browsers, but with lots of memory, and heavy on using expensive to initialize components, but fast once that's done components, like fancy grids.  So if-diff operates on that assumption.  [Gas guzzling framework](https://www.infoq.com/news/2019/04/real-world-framework-benchmark/?utm_source=sumome&utm_medium=twitter&utm_campaign=sumome_share)'s routing solutions tend to perform abysmally in such a setting (even if caching data, etc), in my experience.
+
+But that bias of mine is certainly not valid in all use cases.  Polymer wisely recognized that this is a decision full of trade-offs, and empowers developers to be able to choose [if avada kedavra is the more approriate remedy](https://polymer-library.polymer-project.org/2.0/docs/devguide/templates#dom-if).
+
+We provide the same, but with a different element -- if-diff-stiff, a riff on [stiff](http://maryroach.net/stiff.html)
 
 ## Installation
 
