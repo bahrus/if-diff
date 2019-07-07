@@ -152,7 +152,7 @@ We plan to support one approach to this situation that is consistent with the ge
 
 We do so with a different element -- if-diff-then-stiff, a riff on a [gif](http://maryroach.net/stiff.html)
 
-The problem is, how can we restore the content from the dead, including its current state of properties / attributes, when time once again fails to freeze at Sunday midnight? There are no "serializeThis", "deserializeThat" functions available in the DOM API, like there is for JSON.
+The problem is, how can we restore / reincarnate the content from the dead, including its current state of properties / attributes, when time once again fails to freeze at Sunday midnight? There are no "serializeThis", "deserializeThat" functions available in the DOM API, like there is for JSON.
 
 Aha!  I can sense you glibly thinking via the Force.  
 
@@ -160,7 +160,7 @@ Aha!  I can sense you glibly thinking via the Force.
 
 But if the purpose of this whole exercise is to reduce memory, isn't that almost defeating the purpose?  Granted, JavaScript objects often take up less memory than DOM elements, but now you have to hold on to both.
 
-Well, the solution if-diff-then-stiff proposes isn't too far off from that, but its focus will be on being flexible, and making sure history.state and other out-of-RAM storage / experience areas, including a remote store, can be used to restore state, along [these](https://github.com/bahrus/bi-st) [lines](https://github.com/bahrus/purr-sist)
+Well, the solution if-diff-then-stiff proposes isn't too far off from that, but its focus will be on being flexible, and making sure history.state and other out-of-RAM storage / experience areas, including a remote store, can be used to preserve and restore state, along [these](https://github.com/bahrus/bi-st) [lines](https://github.com/bahrus/purr-sist)
 
 In fact, as far as I can see at the moment, if you stick to the data-centric approaches of those last links above, this component doesn't have to do much of anything (but we'll see).
 
