@@ -134,31 +134,33 @@ Not only does if-diff share the same fetish for unidirectional data flow as [p-e
 
 What should we do with a previously activated content that is now no longer applicable?  I.e. what should happen on Wednesday?
 
-if-diff agrees with dom-if's wisdom as far as the no-right-answer difficult trade-offs, and envies how it empowers developers to be able to choose [if snuffing out is the more humane thing to do](https://polymer-library.polymer-project.org/2.0/docs/devguide/templates#dom-if).
+My bias is towards hiding it, as I tend to work more with VM PC's, but with lots of memory. Especially when you are using an expensive to initialize component, like a fancy, virtual grid that needs to parse a significant amount of JSON.  So if-diff currently only supports that option.  [The gas guzzling framework in the room's](https://www.infoq.com/news/2019/04/real-world-framework-benchmark/?utm_source=sumome&utm_medium=twitter&utm_campaign=sumome_share) routing solutions tend to perform abysmally in such a setting (even if caching data, etc), in my experience.  For that reason, I lacked the enthusiasm to consider the wider community in the opposite direction, which isn't good.
 
-My bias is towards hiding it, as I tend to work more with VM PC's, but with lots of memory. Especially when you are using an expensive to initialize component, like a fancy, virtual grid.  So if-diff operates on that assumption.  [Gas guzzling framework](https://www.infoq.com/news/2019/04/real-world-framework-benchmark/?utm_source=sumome&utm_medium=twitter&utm_campaign=sumome_share)'s routing solutions tend to perform abysmally in such a setting (even if caching data, etc), in my experience.  For that reason, the first mode described below was implemented first.
+if-diff agrees with dom-if's wisdom as far as the no-right-answer / difficult trade-offs, and envies how it empowers developers to be able to choose [if ending DOM support is the more humane thing to do](https://polymer-library.polymer-project.org/2.0/docs/devguide/templates#dom-if).
 
-### Go to sleep mode
+So the plan is sketched below.
 
-It is quite common to have a user interface with multiple tabs, each tab depending on some common filters / inputs.  if-diff can be used in this scenario, and to help improve performance, it can toggle the disabled attribute on the target elements.  If the elements themselves know how to "go to sleep" when disabled, and then sync up with the new filters / inputs when disabled is removed, that could provide the most optimal performance.
+### Go to sleep mode [WIP]
 
-## Put to sleep mode [WIP]
+It is quite common to have a user interface with multiple tabs, each tab depending on some common filters / inputs.  if-diff can be used in this scenario, and to help improve performance, it can toggle the disabled attribute on the target elements.  If the elements themselves know how to "go to sleep" when disabled, and then sync up with the new filters / inputs when disabled is removed, that could provide the most optimal performance in a desktop / well-equipped tablet.
+
+### Put to sleep mode [WIP]
 
 What if the situation is reversed -- lots of DOM elements, requiring lots of repainting / css queries overhead, on a low memory device? 
 
-We provide one approach to this situation consistent (as we will see) with the general philosophy underlying this component and some of its kindred components.
+We plan to support one approach to this situation that is consistent with the general philosophy underlying this component and some of its kindred elements.
 
-We do so with a different element -- if-diff-stiff, a riff on a [gif](http://maryroach.net/stiff.html)
+We do so with a different element -- if-diff-then-stiff, a riff on a [gif](http://maryroach.net/stiff.html)
 
 The problem is, how can we restore the content from the dead, including its current state of properties / attributes, when time once again fails to freeze at Sunday midnight? There are no "serializeThis", "deserializeThat" functions available in the DOM API, like there is for JSON.
 
-Aha!  I can you sense you glibly thinking via the Force.  
+Aha!  I can sense you glibly thinking via the Force.  
 
 "See, I told you -- you need a high-powered state manager, full of stores, thunking and discombobulating, to guide you through this resurrection of the UI."
 
 But if the purpose of this whole exercise is to reduce memory, isn't that almost defeating the purpose?  Granted, JavaScript objects often take up less memory than DOM elements, but now you have to hold on to both.
 
-Well, the solution if-diff-stiff proposes isn't too far off from that, but its focus will be on being flexible, and making sure history.state and other out-of RAM storage areas, including a remote store, can be used to restore state, along [these](https://github.com/bahrus/bi-st) [lines](https://github.com/bahrus/purr-sist)
+Well, the solution if-diff-then-stiff proposes isn't too far off from that, but its focus will be on being flexible, and making sure history.state and other out-of-RAM storage / experience areas, including a remote store, can be used to restore state, along [these](https://github.com/bahrus/bi-st) [lines](https://github.com/bahrus/purr-sist)
 
 In fact, as far as I can see at the moment, if you stick to the data-centric approaches of those last links above, this component doesn't have to do much of anything (but we'll see).
 
