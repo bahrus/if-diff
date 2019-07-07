@@ -134,7 +134,7 @@ Not only does if-diff share the same fetish for unidirectional data flow as [p-e
 
 What should we do with a previously activated content that is now no longer applicable?  I.e. what should happen on Wednesday?
 
-My bias is towards hiding it, as I tend to work more with VM PC's, but with lots of memory. Especially when you are using an expensive to initialize component, like a fancy, virtual grid that needs to parse a significant amount of JSON.  So if-diff currently only supports that option.  [The gas guzzling framework in the room's](https://www.infoq.com/news/2019/04/real-world-framework-benchmark/?utm_source=sumome&utm_medium=twitter&utm_campaign=sumome_share) routing solutions tend to perform abysmally in such a setting (even if caching data, etc), in my experience.  For that reason, I lacked the enthusiasm to consider the wider community in the opposite direction, which isn't good.
+My bias is towards hiding it, as I tend to work more with VM PC's, but with lots of memory. Especially when you are using an expensive to initialize component, like a fancy, virtual grid.  So if-diff currently only supports that option.  [The gas guzzling framework in the room's](https://www.infoq.com/news/2019/04/real-world-framework-benchmark/?utm_source=sumome&utm_medium=twitter&utm_campaign=sumome_share) routing solutions tend to perform abysmally in such a setting (even if caching data, etc), in my experience.  For that reason, I lacked the enthusiasm to consider the wider community in the opposite direction, which isn't good.
 
 if-diff agrees with dom-if's wisdom as far as the no-right-answer / difficult trade-offs, and envies how it empowers developers to be able to choose [if ending DOM support is the more humane thing to do](https://polymer-library.polymer-project.org/2.0/docs/devguide/templates#dom-if).
 
@@ -148,9 +148,9 @@ It is quite common to have a user interface with multiple tabs, each tab dependi
 
 What if the situation is reversed -- lots of DOM elements, requiring lots of repainting / css queries overhead, on a low memory device? 
 
-We plan to support one approach to this situation that is consistent with the general philosophy underlying this component and some of its kindred elements.
+I plan to support one approach to this situation that is consistent with the general philosophy underlying this component and some of its kindred elements.
 
-We do so with a different element -- if-diff-then-stiff, a riff on a [gif](http://maryroach.net/stiff.html)
+I plan to do so with a different element -- if-diff-then-stiff, a riff on a [gif](http://maryroach.net/stiff.html)
 
 The problem is, how can we restore / reincarnate the content from the dead, including its current state of properties / attributes, when time once again fails to freeze at Sunday midnight? There are no "serializeThis", "deserializeThat" functions available in the DOM API, like there is for JSON.
 
