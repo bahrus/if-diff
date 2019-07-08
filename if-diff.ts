@@ -82,7 +82,6 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
             case if$:
                 (<any>this)[u] = (nv !== null);
                 break;
-            
             case lhs:
             case rhs:
             case m$:

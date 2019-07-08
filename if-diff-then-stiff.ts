@@ -4,8 +4,8 @@ import {define} from 'trans-render/define.js';
 const templKey = Symbol('cache');
 
 
-export class IfDiffStiff extends IfDiff{
-    static get is(){return 'if-diff-stiff';}
+export class IfDiffThenStiff extends IfDiff{
+    static get is(){return 'if-diff-then-stiff';}
 
     loadTemplate(el: Element){
         let tmpl  = (<any>el)[templKey] as HTMLTemplateElement | undefined | null;
@@ -45,4 +45,4 @@ export class IfDiffStiff extends IfDiff{
     }
 }
 
-define(IfDiffStiff);
+define(IfDiffThenStiff);
