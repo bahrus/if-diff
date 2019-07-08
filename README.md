@@ -144,7 +144,13 @@ So the plan is sketched below.
 
 It is quite common to have a user interface with multiple tabs, each tab depending on some common filters / inputs.  if-diff can be used in this scenario, and to help improve performance, it can toggle the disabled attribute on the target elements.  If the elements themselves know how to "go to sleep" when disabled, and then sync up with the new filters / inputs when disabled is removed, that could provide the most optimal performance in a desktop / well-equipped tablet.
 
-To use this feature, set attribute toggle-disabled or property toggleDisabled=true
+You can specify which elements to disable/enable based on the evaluation:
+
+```html
+<if-diff if -lhs equals -rhs data-key-name=manicMonday m=1 enable="my-sleeping-element"></if-diff>
+```
+
+The enable attribute will cause if-diff to find all elements matching the enable value (via css querySelectorAll), and remove all disabled attributes from matching nodes, when the test is true, and add the disabled attribute when the test is false.
 
 ### Put to sleep mode [WIP]
 
