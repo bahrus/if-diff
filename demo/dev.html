@@ -27,7 +27,7 @@
       <p-d on=input to=[-lhs] val=target.value m=2></p-d>
       <label for=rhs>RHS:</label><input id=rhs>
       <p-d on=input to=[-rhs] val=target.value m=2></p-d>
-      <if-diff if -lhs equals -rhs data-key-name=equals></if-diff>
+      <if-diff if -lhs equals -rhs data-key-name=equals enable="div"></if-diff>
       <p-d on=value-changed to=[data-lhs-equals-rhs] prop=textContent value=target.value></p-d>
       <div data-equals=0 id=equalsStatus>
           <template>

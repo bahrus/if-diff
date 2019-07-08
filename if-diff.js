@@ -16,6 +16,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
         super(...arguments);
         this._conn = false;
         this._navDown = null;
+        this._value = false;
     }
     static get is() { return 'if-diff'; }
     static get observedAttributes() {
@@ -81,6 +82,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
             case lhs:
             case rhs:
             case m$:
+            case enable:
                 this[u] = nv;
                 break;
             case data_key_name:
@@ -109,6 +111,15 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
             return;
         this._debouncer();
     }
+    get value() {
+        return this._value;
+    }
+    set value(nv) {
+        this._value = nv;
+        this.de('value', {
+            value: nv,
+        });
+    }
     loadTemplate(el) {
         const tmpl = el.querySelector('template');
         if (!tmpl) {
@@ -120,42 +131,37 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
         el.appendChild(tmpl.content.cloneNode(true));
         tmpl.remove();
     }
-    //_lastMatches: Element[] | null = null;
+    do(el, ds, val, dataKeyName) {
+        if (ds[dataKeyName] === '0') {
+            if (val) {
+                this.loadTemplate(el);
+                el.dataset[dataKeyName] = "1";
+            }
+        }
+        else {
+            el.dataset[dataKeyName] = val ? '1' : '-1';
+        }
+        if (this._enable) {
+            const action = (val ? 'remove' : 'set') + 'Attribute';
+            el.querySelectorAll(this._enable).forEach(child => child[action]('disabled', ''));
+        }
+    }
     tagMatches(nd) {
         const matches = nd.matches;
         const val = this.value;
         const dataKeyName = this._dataKeyName;
         matches.forEach(el => {
             const ds = el.dataset;
-            if (ds[dataKeyName] === '0') {
-                if (val) {
-                    this.loadTemplate(el);
-                    el.dataset[dataKeyName] = "1";
-                }
-            }
-            else {
-                el.dataset[dataKeyName] = val ? '1' : '-1';
-            }
-            if (this._enable) {
-                const action = (val ? 'remove' : 'set') + 'Attribute';
-                el.querySelectorAll(this._enable).forEach(child => child[action]('disabled', ''));
-            }
+            this.do(el, ds, val, dataKeyName);
         });
     }
     passDown() {
         let val = this._if;
         if (val && (this._equals || this._not_equals)) {
-            if (this._equals) {
-                val = (this._lhs === this._rhs);
-            }
-            else {
-                val = (this._lhs !== this._rhs);
-            }
+            const eq = this._lhs === this._rhs;
+            val = this._equals ? eq : !eq;
         }
         this.value = val;
-        this.de('value', {
-            value: val
-        });
         if (this._dataKeyName) {
             if (this._navDown === null) {
                 const tag = this._dataKeyName;
