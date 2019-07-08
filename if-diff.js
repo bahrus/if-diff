@@ -9,7 +9,7 @@ const rhs = 'rhs';
 const data_key_name = 'data-key-name';
 const equals = 'equals';
 const not_equals = 'not_equals';
-const toggle_disabled = 'toggle_disabled';
+const enable = 'enable';
 const m$ = 'm'; //TODO:  share mixin with p-d.p-u?
 export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
     constructor() {
@@ -19,7 +19,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
     }
     static get is() { return 'if-diff'; }
     static get observedAttributes() {
-        return [if$, lhs, rhs, data_key_name, equals, not_equals, disabled, m$];
+        return [if$, lhs, rhs, data_key_name, equals, not_equals, disabled, enable, m$];
     }
     get if() {
         return this._if;
@@ -51,11 +51,11 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
     set not_equals(nv) {
         this.attr(not_equals, nv, '');
     }
-    get toggle_disabled() {
-        return this._toggle_disabled;
+    get enable() {
+        return this._enable;
     }
-    set toggle_disabled(nv) {
-        this.attr(toggle_disabled, nv, '');
+    set enable(nv) {
+        this.attr(enable, nv);
     }
     get dataKeyName() {
         return this._dataKeyName;
@@ -136,13 +136,9 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
             else {
                 el.dataset[dataKeyName] = val ? '1' : '-1';
             }
-            if (this._toggle_disabled) {
-                if (val) {
-                    el.removeAttribute('disabled');
-                }
-                else {
-                    el.setAttribute('disabled', '');
-                }
+            if (this._enable) {
+                const action = (val ? 'remove' : 'set') + 'Attribute';
+                el.querySelectorAll(this._enable).forEach(child => child[action]('disabled', ''));
             }
         });
     }

@@ -140,9 +140,11 @@ if-diff agrees with dom-if's wisdom as far as the no-right-answer / difficult tr
 
 So the plan is sketched below.
 
-### Go to sleep mode [WIP]
+### Go to sleep mode
 
 It is quite common to have a user interface with multiple tabs, each tab depending on some common filters / inputs.  if-diff can be used in this scenario, and to help improve performance, it can toggle the disabled attribute on the target elements.  If the elements themselves know how to "go to sleep" when disabled, and then sync up with the new filters / inputs when disabled is removed, that could provide the most optimal performance in a desktop / well-equipped tablet.
+
+To use this feature, set attribute toggle-disabled or property toggleDisabled=true
 
 ### Put to sleep mode [WIP]
 
