@@ -132,13 +132,13 @@ Not only does if-diff share the same fetish for unidirectional data flow as [p-e
 
 ## How to treat non visible content
 
-What should we do with a previously activated content that is now no longer applicable?  I.e. what should happen on Wednesday?
+What should we do with previously activated content that is now no longer applicable?  I.e. what should happen on Wednesday?
 
-My bias is towards hiding it, as I tend to work more with VM PC's, but with lots of memory. Especially when you are using an expensive to initialize component, like a fancy, virtual grid.  So if-diff currently only supports that option.  [The gas guzzling framework in the room's](https://www.infoq.com/news/2019/04/real-world-framework-benchmark/?utm_source=sumome&utm_medium=twitter&utm_campaign=sumome_share) routing solutions tend to perform abysmally in such a setting (even if caching data, etc), in my experience.  For that reason, I lacked the enthusiasm to consider the wider community in the opposite direction, which isn't good.
+if-diff's bias is towards hiding rather than deleting.
 
-if-diff agrees with dom-if's wisdom as far as the no-right-answer / difficult trade-offs, and envies how it empowers developers to be able to choose [if ending DOM support is the more humane thing to do](https://polymer-library.polymer-project.org/2.0/docs/devguide/templates#dom-if).
+But if-diff agrees with dom-if's wisdom as far as the no-right-answer / difficult trade-offs, and envies how it empowers developers to be able to choose [if ending DOM support is the more humane thing to do](https://polymer-library.polymer-project.org/2.0/docs/devguide/templates#dom-if).
 
-So the plan is sketched below.
+But as we will see, we do provide an extension of if-diff that supports the more austere approach.
 
 ### Go to sleep mode
 
@@ -152,13 +152,13 @@ You can specify which elements to disable/enable based on the evaluation:
 
 The enable attribute will cause if-diff to find all elements matching the enable value (via css querySelectorAll), and remove all disabled attributes from matching nodes, when the test is true, and add the disabled attribute when the test is false.
 
-### Put to sleep mode [WIP]
+### Put to sleep mode
 
-What if the situation is reversed -- lots of DOM elements, requiring lots of repainting / css queries overhead, on a low memory device? 
+What if you need to deal with removing lots of DOM elements from view on a low memory device? 
 
-I plan to support one approach to this situation that is consistent with the general philosophy underlying this component and some of its kindred elements.
+So now, in order to free up memory for new DOM elements that need to display, we need to ask out of scope DOM elements that have seen better times [to throw themselves off a cliff](https://www.youtube.com/watch?v=DwD7f5ZWhAk).
 
-I plan to do so with a different element -- if-diff-then-stiff, a riff on a [gif](http://maryroach.net/stiff.html)
+A different element supports this harsh environment -- if-diff-then-stiff, a riff on a [gif](http://maryroach.net/stiff.html)
 
 The problem is, how can we restore / reincarnate the content from the dead, including its current state of properties / attributes, when time once again fails to freeze at Sunday midnight? There are no "serializeThis", "deserializeThat" functions available in the DOM API, like there is for JSON.
 
@@ -166,11 +166,10 @@ Aha!  I can sense you glibly thinking via the Force.
 
 "See, I told you -- you need a high-powered state manager, full of stores, thunking and discombobulating, to guide you through this resurrection of the UI."
 
-But if the purpose of this whole exercise is to reduce memory, isn't that almost defeating the purpose?  Granted, JavaScript objects often take up less memory than DOM elements, but now you have to hold on to both.
+But if the purpose of this whole exercise is to reduce memory, isn't that almost defeating the purpose?  Granted, JavaScript objects often take up less memory than DOM elements, but now you have to hold on to both (more or less).
 
-Well, the solution if-diff-then-stiff proposes isn't too far off from that, but its focus will be on being flexible, and making sure history.state and other out-of-RAM storage / experience areas, including a remote store, can be used to preserve and restore state, along [these](https://github.com/bahrus/bi-st) [lines](https://github.com/bahrus/purr-sist)
+if-diff-then-stiff argues "Why would you store state of these snuffed out DOM elements in the extremely limited RAM, leaving less room for keeping additional DOM in memory?  That seems incredibly cruel. Why not store the "state" in out-of-RAM storage areas, such as history.state, a remote store, IndexedDB, or SessionStorage?  Restoring state, should those DOM elements need to come back, could be done along [these](https://github.com/bahrus/bi-st) [lines](https://github.com/bahrus/purr-sist)
 
-In fact, as far as I can see at the moment, if you stick to the data-centric approaches of those last links above, this component doesn't have to do much of anything (but we'll see).
 
 ## Installation
 
