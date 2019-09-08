@@ -168,18 +168,15 @@ Aha!  I can sense you glibly thinking via the Force.
 
 But if the purpose of this whole exercise is to reduce memory, isn't that almost defeating the purpose?  Granted, JavaScript objects often take up less memory than DOM elements, but now you have to hold on to both (more or less).
 
-if-diff-then-stiff argues "Why would you store state of these snuffed out DOM elements in the extremely limited RAM, leaving less room for keeping additional DOM in memory?  That seems incredibly cruel. Why not store the "state" in out-of-RAM storage areas, such as history.state, a remote store, IndexedDB, or SessionStorage?  Restoring state, should those DOM elements need to come back, could be done along [these](https://github.com/bahrus/bi-st) [lines](https://github.com/bahrus/purr-sist)
+if-diff-then-stiff argues "Why would you store state of these snuffed out DOM elements in the extremely limited RAM, leaving less room for keeping additional DOM in memory?  That seems incredibly cruel. Why not store the 'state' in out-of-RAM storage areas, such as history.state (at least past states), a remote store, IndexedDB, or SessionStorage?"  
 
 
-## Installation
 
-```sh
-$ npm install if-diff 
-```
 
-## Viewing Your Element
+## Viewing Your Element Locally
 
 ```
+$ npm install
 $ npm run serve
 Open http://localhost:3030/demo/dev
 ```

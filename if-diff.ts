@@ -178,7 +178,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
                 const test = (el: Element | null) =>  (<any>el).dataset && !!(<HTMLElement>el).dataset[this._dataKeyName];
                 const max = this._m ? this._m : Infinity;
                 const bndTagMatches = this.tagMatches.bind(this);
-                this._navDown = new NavDown(this, test, (nd) => bndTagMatches(nd), max);
+                this._navDown = new NavDown(this, test, undefined, (nd) => bndTagMatches(nd), max);
                 this._navDown.init();
             }else{
                 this.tagMatches(this._navDown);
