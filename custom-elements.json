@@ -1,0 +1,118 @@
+{
+  "version": 2,
+  "tags": [
+    {
+      "name": "if-diff",
+      "description": "Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.",
+      "jsDoc": "/**\n * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.\n * @element if-diff\n */",
+      "attributes": [
+        {
+          "name": "if",
+          "description": "Boolean property / attribute -- must be true to pass test(s)",
+          "jsDoc": "/**\n     * Boolean property / attribute -- must be true to pass test(s)\n     * @attr\n     */",
+          "type": "any"
+        },
+        {
+          "name": "lhs",
+          "description": "LHS Operand.",
+          "jsDoc": "/**\n     * LHS Operand.\n     * @attr\n     */",
+          "type": "any"
+        },
+        {
+          "name": "rhs",
+          "description": "RHS Operand.",
+          "jsDoc": "/**\n     * RHS Operand.\n     * @attr\n     */",
+          "type": "any"
+        },
+        {
+          "name": "equals",
+          "description": "lhs must equal rhs to pass tests.",
+          "jsDoc": "/**\n     * lhs must equal rhs to pass tests.\n     * @attr\n     */",
+          "type": "any"
+        },
+        {
+          "name": "not-equals",
+          "description": "lhs must not equal rhs to pass tests.",
+          "jsDoc": "/**\n     * lhs must not equal rhs to pass tests.\n     * @attr not-equals\n     */",
+          "type": "any"
+        },
+        {
+          "name": "data-key-name",
+          "description": "Name of dataset key to set to 1 if true and -1 if false, if dataset key is present",
+          "jsDoc": "/**\n     * Name of dataset key to set to 1 if true and -1 if false, if dataset key is present\n     * @attr data-key-name\n     */",
+          "type": "any"
+        }
+      ],
+      "properties": [
+        {
+          "name": "disabled",
+          "type": "boolean"
+        },
+        {
+          "name": "evCount",
+          "type": "{ [key: string]: number; }"
+        },
+        {
+          "name": "asIs",
+          "type": "\"\" | \"-changed\""
+        },
+        {
+          "name": "if",
+          "description": "Boolean property / attribute -- must be true to pass test(s)",
+          "jsDoc": "/**\n     * Boolean property / attribute -- must be true to pass test(s)\n     * @attr\n     */",
+          "type": "any"
+        },
+        {
+          "name": "lhs",
+          "description": "LHS Operand.",
+          "jsDoc": "/**\n     * LHS Operand.\n     * @attr\n     */",
+          "type": "any"
+        },
+        {
+          "name": "rhs",
+          "description": "RHS Operand.",
+          "jsDoc": "/**\n     * RHS Operand.\n     * @attr\n     */",
+          "type": "any"
+        },
+        {
+          "name": "equals",
+          "description": "lhs must equal rhs to pass tests.",
+          "jsDoc": "/**\n     * lhs must equal rhs to pass tests.\n     * @attr\n     */",
+          "type": "any"
+        },
+        {
+          "name": "not_equals",
+          "description": "lhs must not equal rhs to pass tests.",
+          "jsDoc": "/**\n     * lhs must not equal rhs to pass tests.\n     * @attr not-equals\n     */",
+          "type": "any"
+        },
+        {
+          "name": "enable",
+          "description": "css selector of children of matching element  to remove disabled attribute",
+          "jsDoc": "/**\n     * css selector of children of matching element  to remove disabled attribute\n     */",
+          "type": "any"
+        },
+        {
+          "name": "dataKeyName",
+          "description": "Name of dataset key to set to 1 if true and -1 if false, if dataset key is present",
+          "jsDoc": "/**\n     * Name of dataset key to set to 1 if true and -1 if false, if dataset key is present\n     * @attr data-key-name\n     */",
+          "type": "any"
+        },
+        {
+          "name": "m",
+          "type": "any"
+        },
+        {
+          "name": "value",
+          "type": "any"
+        },
+        {
+          "name": "val",
+          "type": "\"set\" | \"remove\""
+        }
+      ],
+      "events": [],
+      "slots": []
+    }
+  ]
+}

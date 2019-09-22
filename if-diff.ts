@@ -12,6 +12,10 @@ const not_equals = 'not_equals';
 const enable = 'enable';
 const m$ = 'm'; //TODO:  share mixin with p-d.p-u?
 
+/**
+ * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
+ * @element if-diff
+ */
 export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     static get is(){return 'if-diff';}
     static get observedAttributes(){
@@ -21,6 +25,10 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     get if(){
         return this._if;
     }
+    /**
+     * Boolean property / attribute -- must be true to pass test(s)
+     * @attr
+     */
     set if(nv){
         this.attr(if$, !!nv, '');
     }
@@ -28,6 +36,10 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     get lhs(){
         return this._lhs;
     }
+    /**
+     * LHS Operand.
+     * @attr
+     */
     set lhs(nv){
         this.attr(lhs, nv.toString())
     }
@@ -35,6 +47,10 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     get rhs(){
         return this._rhs;
     }
+    /**
+     * RHS Operand.
+     * @attr
+     */
     set rhs(nv){
         this.attr(rhs, nv.toString())
     }
@@ -42,6 +58,10 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     get equals(){
         return this._equals;
     }
+    /**
+     * lhs must equal rhs to pass tests.
+     * @attr
+     */
     set equals(nv){
         this.attr(equals, nv, '');
     }
@@ -49,6 +69,10 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     get not_equals(){
         return this._not_equals;
     }
+    /**
+     * lhs must not equal rhs to pass tests.
+     * @attr not-equals
+     */
     set not_equals(nv){
         this.attr(not_equals, nv, '');
     }
@@ -56,6 +80,9 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     get enable(){
         return this._enable;
     }
+    /**
+     * css selector of children of matching element  to remove disabled attribute
+     */
     set enable(nv){
         this.attr(enable, nv);
     }
@@ -63,6 +90,10 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     get dataKeyName(){
         return this._dataKeyName;
     }
+    /**
+     * Name of dataset key to set to 1 if true and -1 if false, if dataset key is present
+     * @attr data-key-name
+     */
     set dataKeyName(nv){
         this.attr(data_key_name, nv)
     }
@@ -70,6 +101,9 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     get m(){
         return this._m;
     }
+    /**
+     * Maximum number of elements that are effected by condition.
+     */
     set m(v){
         this.attr(m$, v.toString());
     }

@@ -21,6 +21,7 @@
   "license": "MIT",
   "scripts": {
     "test": "node createIIFE.js && tape test/*.js",
-    "serve": "node node_modules/xtal-test/serve.js"
+    "serve": "node node_modules/xtal-test/serve.js",
+    "doc": "wca analyze if-*.js --outFile custom-elements.json"
   }
 }
