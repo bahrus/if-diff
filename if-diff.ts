@@ -2,7 +2,9 @@ import {XtallatX} from 'xtal-element/xtal-latx.js';
 import {disabled, hydrate} from 'trans-render/hydrate.js';
 import {define} from 'trans-render/define.js';
 import {debounce} from 'xtal-element/debounce.js';
-import {NavDown} from 'xtal-element/NavDown.js'
+import {NavDown} from 'xtal-element/NavDown.js';
+import {insertAdjacentTemplate} from 'trans-render/insertAdjacentTemplate.js';
+
 const if$ = 'if';
 const lhs = 'lhs';
 const rhs = 'rhs';
@@ -157,27 +159,33 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
         return this._value;
     }
     set value(nv){
+        if(nv === this._value) return;
         this._value = nv;
         this.de('value', {
             value: nv,
         });
     }
-    loadTemplate(el: Element){
+    loadTemplate(el: Element, dataKeyName: string){
         const tmpl = el.querySelector('template') as HTMLTemplateElement;
         if(!tmpl){
             setTimeout(() =>{
-                this.loadTemplate(el);
+                this.loadTemplate(el, dataKeyName);
             }, 50);
             return;
         }
-        el.appendChild(tmpl.content.cloneNode(true));
-        tmpl.remove();
+        const insertedElements = insertAdjacentTemplate(tmpl, el, 'afterend');
+        insertedElements.forEach(child =>{
+            (<HTMLElement>child).dataset[dataKeyName] = '1';
+        })
+        el.remove();
+        //el.appendChild(tmpl.content.cloneNode(true));
+        //tmpl.remove();
     }
 
     do(el: Element, ds: any, val: boolean, dataKeyName: string){
         if(ds[dataKeyName] === '0'){
             if(val){
-                this.loadTemplate(el);
+                this.loadTemplate(el, dataKeyName);
                 (<any>el).dataset[dataKeyName] = "1";
             }
         }else{
@@ -191,6 +199,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     
     tagMatches(nd: NavDown){
         const matches = nd.matches;
+        this.attr('mtch', matches.length.toString());
         const val = this.value;
         const dataKeyName = this._dataKeyName;
         matches.forEach(el =>{

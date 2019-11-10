@@ -10,7 +10,6 @@
   </head>
   <body>
     <div>
-      <xtal-sip><script nomodule>["p-d", "if-diff", "if-diff-then-stiff"]</script></xtal-sip>
       <style>
         [data-equals="-1"]{
           display: none;
@@ -24,9 +23,9 @@
         Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
       </div>
       <label for=lhs>LHS:</label><input id=lhs> 
-      <p-d on=input to=[-lhs] val=target.value m=2></p-d>
+      <p-d on=input to=[-lhs] val=target.value></p-d>
       <label for=rhs>RHS:</label><input id=rhs>
-      <p-d on=input to=[-rhs] val=target.value m=2></p-d>
+      <p-d on=input to=[-rhs] val=target.value></p-d>
       <if-diff if -lhs equals -rhs data-key-name=equals enable="div"></if-diff>
       <p-d on=value-changed to=[data-lhs-equals-rhs] prop=textContent value=target.value></p-d>
       <div data-equals=0 id=equalsStatus>
@@ -35,38 +34,36 @@
           </template>
       </div>
 
-      <if-diff-then-stiff if -lhs not_equals -rhs data-key-name=notEquals></if-diff-then-stiff>
+      <!-- <if-diff-then-stiff if -lhs not_equals -rhs data-key-name=notEquals></if-diff-then-stiff>
       <p-d on=value-changed to=[data-lhs-not-equals-rhs] prop=textContent></p-d>
       <div data-not-equals=0>
           <template>
               <div>LHS != RHS</div>
           </template>       
-      </div>
+      </div> -->
 
       
 
-      LHS Equals RHS: <span data-lhs-equals-rhs></span><br>
-      LHS Doesn't equal RHS: <span data-lhs-not-equals-rhs></span>
+      <!-- LHS Equals RHS: <span data-lhs-equals-rhs></span><br>
+      LHS Doesn't equal RHS: <span data-lhs-not-equals-rhs></span> -->
+
       <!-- ========================  Script Refs ========================== -->
 
 
       <!-- Use experimental import maps -->
-      <script defer src="https://cdn.jsdelivr.net/npm/es-module-shims@0.2.0/dist/es-module-shims.js"></script>
+      <script defer src="../node_modules/es-module-shims/dist/es-module-shims.js"></script>
       <script type="importmap-shim">
         {
           "imports": {
-            "xtal-sip":             "https://cdn.jsdelivr.net/npm/xtal-sip@0.0.90/xtal-sip.js",
-            "xtal-element/":        "https://cdn.jsdelivr.net/npm/xtal-element@0.0.59/",
-            "trans-render/":        "https://cdn.jsdelivr.net/npm/trans-render@0.0.111/",
-            "p-d":                  "https://cdn.jsdelivr.net/npm/p-et-alia@0.0.6/p-d.js",
-            "if-diff":              "../if-diff.js",
-            "if-diff-then-stiff":   "../if-diff-then-stiff.js"
+            "xtal-element/":        "../node_modules/xtal-element/",
+            "trans-render/":        "../node_modules/trans-render/"
           }
         }
         </script>
       <script  type="module-shim">
-        import 'xtal-sip';
+        import '../if-diff-then-stiff.js';
       </script>
+      <script type="module" src="https://cdn.pika.dev/pass-down"></script>
     </div>
   </body>
 </html>

@@ -1,15 +1,16 @@
 {
   "dependencies": {
-    "trans-render": "0.0.135",
-    "xtal-element": "0.0.86"
+    "trans-render": "0.0.137",
+    "xtal-element": "0.0.88"
   },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "2.3.0",
     "jiife": "0.0.14",
     "tape": "4.11.0",
     "@types/tape": "4.2.33",
-    "xtal-test": "0.0.20",
-    "p-et-alia": "0.0.53"
+    "xtal-test": "0.0.21",
+    "p-et-alia": "0.0.53",
+    "es-module-shims": "0.4.6"
   },
   "name": "if-diff",
   "version": "0.0.36",
