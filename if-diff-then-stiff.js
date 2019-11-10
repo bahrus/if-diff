@@ -15,6 +15,8 @@ export class IfDiffThenStiff extends IfDiff {
                 return;
             }
             el[templKey] = tmpl;
+        }
+        if (tmpl !== undefined && tmpl !== null) {
             const insertedElements = insertAdjacentTemplate(tmpl, el, 'afterend');
             insertedElements.forEach(child => {
                 child.dataset[dataKeyName] = '1';

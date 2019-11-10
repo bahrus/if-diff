@@ -20,6 +20,8 @@ export class IfDiffThenStiff extends IfDiff{
                 return;
             }
             (<any>el)[templKey] = tmpl;
+        }
+        if(tmpl !== undefined && tmpl !== null){
             const insertedElements = insertAdjacentTemplate(tmpl, el, 'afterend');
             insertedElements.forEach(child =>{
                 (<HTMLElement>child).dataset[dataKeyName] = '1';
@@ -27,6 +29,7 @@ export class IfDiffThenStiff extends IfDiff{
             (el as HTMLElement).style.display = 'none';
             el.innerHTML = '';
         }
+
 
     }
 
