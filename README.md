@@ -125,15 +125,17 @@ Rules:
 
 ## Commonality with p-et-alia (a kind of dom-bind alternative)
 
-Not only does if-diff share the same fetish for unidirectional data flow as [p-et-alia](https://github.com/bahrus/p-et-alia), they share a number of common modules.  As a result, while if-diff weighs around 1.6kb and p-d weighs around 1.9kb, combine them together, and, due to the magic of code reuse, the combined size is ~2.5kb minified and gzipped.
+Not only does if-diff share the same fetish for unidirectional data flow as [p-et-alia](https://github.com/bahrus/p-et-alia), they share a number of common modules.  
+
+<!--As a result, while if-diff and p-d weighs around 3kb, combine them together, and, due to the magic of code reuse, the combined size is ~2.5kb minified and gzipped.-->
 
 ## How to treat non visible content
 
-What should we do with previously activated content that is now no longer applicable?  I.e. what should happen on Wednesday?
+What should we do with previously activated content that is now no longer applicable for the time being?  I.e. what should happen on Wednesday?
 
 if-diff's bias is towards hiding rather than deleting.
 
-But if-diff agrees with dom-if's wisdom as far as the no-right-answer / difficult trade-offs, and envies how it empowers developers to be able to choose [if ending DOM support is the more humane thing to do](https://polymer-library.polymer-project.org/2.0/docs/devguide/templates#dom-if).
+But if-diff agrees with dom-if's wisdom as far as the no-right-answer / difficult trade-offs, and envies how dom-if empowers developers to be able to choose [if ending DOM support is the more humane thing to do](https://polymer-library.polymer-project.org/2.0/docs/devguide/templates#dom-if).
 
 But as we will see, we do provide an extension of if-diff that supports the more austere approach.
 
@@ -153,7 +155,7 @@ The enable attribute will cause if-diff to find all elements matching the enable
 
 What if you need to deal with removing lots of DOM elements from view on a low memory device? 
 
-So now, in order to free up memory for new DOM elements that need to display, we need to ask out of scope DOM elements that have seen better times [to throw themselves off a cliff](https://www.youtube.com/watch?v=DwD7f5ZWhAk).
+So now, in order to free up memory for new DOM elements that need to display, we need to ask out of scope DOM elements that have seen better days [to throw themselves off a cliff](https://www.youtube.com/watch?v=DwD7f5ZWhAk).
 
 A different element supports this harsh environment -- if-diff-then-stiff, a riff on a [gif](http://maryroach.net/stiff.html)
 
@@ -166,9 +168,6 @@ Aha!  I can sense you glibly thinking via the Force.
 But if the purpose of this whole exercise is to reduce memory, isn't that almost defeating the purpose?  Granted, JavaScript objects often take up less memory than DOM elements, but now you have to hold on to both (more or less).
 
 if-diff-then-stiff argues "Why would you store state of these snuffed out DOM elements in the extremely limited RAM, leaving less room for keeping additional DOM in memory?  That seems incredibly cruel. Why not store the 'state' in out-of-RAM storage areas, such as history.state (at least past states), a remote store, IndexedDB, or SessionStorage?"  
-
-
-
 
 ## Viewing Your Element Locally
 
