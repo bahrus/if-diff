@@ -2,9 +2,9 @@
 
 <a href="https://nodei.co/npm/if-diff/"><img src="https://nodei.co/npm/if-diff.png"></a>
 
-<!--
+
 <img src="https://badgen.net/bundlephobia/minzip/if-diff">
--->
+
 
 # \<if-diff\>
 
@@ -117,7 +117,7 @@ Rules:
 ```
 <custom-element-demo>
 <template>
-    <iframe src=https://bahrus.github.io/wc-info/syntax.html?npmPackage=if-diff></iframe>
+    <iframe src=https://bahrus.github.io/wc-info/syntax.html?npmPackage=if-diff style="width:100%;border:none;height:600px"></iframe>
 </template>
 </custom-element-demo>
 ```
