@@ -168,8 +168,6 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
             child.dataset[dataKeyName] = '1';
         });
         el.remove();
-        //el.appendChild(tmpl.content.cloneNode(true));
-        //tmpl.remove();
     }
     do(el, ds, val, dataKeyName) {
         if (ds[dataKeyName] === '0') {

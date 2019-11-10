@@ -177,8 +177,6 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
             (<HTMLElement>child).dataset[dataKeyName] = '1';
         })
         el.remove();
-        //el.appendChild(tmpl.content.cloneNode(true));
-        //tmpl.remove();
     }
 
     do(el: Element, ds: any, val: boolean, dataKeyName: string){
