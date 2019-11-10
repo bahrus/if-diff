@@ -150,8 +150,6 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
         return this._value;
     }
     set value(nv) {
-        if (nv === this._value)
-            return;
         this._value = nv;
         this.de('value', {
             value: nv,
@@ -185,7 +183,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
         }
         if (this._enable) {
             const action = (val ? 'remove' : 'set') + 'Attribute';
-            el.querySelectorAll(this._enable).forEach(child => child[action]('disabled', ''));
+            Array.from(el.querySelectorAll(this._enable)).concat(el).forEach(target => target[action]('disabled', ''));
         }
     }
     tagMatches(nd) {
@@ -204,6 +202,8 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
             const eq = this._lhs === this._rhs;
             val = this._equals ? eq : !eq;
         }
+        if (this._value === val)
+            return;
         this.value = val;
         if (this._dataKeyName) {
             if (this._navDown === null) {
