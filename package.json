@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "trans-render": "0.0.137",
-    "xtal-element": "0.0.88"
+    "xtal-element": "0.0.90"
   },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "2.3.0",
@@ -9,7 +9,7 @@
     "tape": "4.11.0",
     "@types/tape": "4.2.33",
     "xtal-test": "0.0.21",
-    "p-et-alia": "0.0.53",
+    "p-et-alia": "0.0.63",
     "es-module-shims": "0.4.6"
   },
   "name": "if-diff",
