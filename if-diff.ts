@@ -14,6 +14,35 @@ const not_equals = 'not_equals';
 const enable = 'enable';
 const m$ = 'm'; //TODO:  share mixin with p-d.p-u?
 
+//from https://gist.github.com/nicbell/6081098
+export function compare(obj1: any, obj2: any) {
+//Loop through properties in object 1
+for (const p in obj1) {
+    //Check property exists on both objects
+    if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
+
+    switch (typeof (obj1[p])) {
+    //Deep compare objects
+    case 'object':
+        if (!compare(obj1[p], obj2[p])) return false;
+        break;
+    //Compare function code
+    case 'function':
+        if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString())) return false;
+        break;
+    //Compare values
+    default:
+        if (obj1[p] != obj2[p]) return false;
+    }
+}
+
+//Check object 2 for any extra properties
+for (var p in obj2) {
+    if (typeof (obj1[p]) == 'undefined') return false;
+}
+return true;
+};
+
 /**
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
  * @element if-diff
@@ -34,7 +63,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     set if(nv){
         this.attr(if$, !!nv, '');
     }
-    _lhs!: string;
+    _lhs!: string | number | object;
     get lhs(){
         return this._lhs;
     }
@@ -43,9 +72,19 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
      * @attr
      */
     set lhs(nv){
-        this.attr(lhs, nv.toString())
+        switch(typeof nv){
+            case 'string':
+            case 'number':
+                this.attr(lhs, nv.toString());
+                break;
+            case 'object':
+                this._lhs = nv;
+                this.onPropsChange();
+                break;
+        }
+        
     }
-    _rhs!: string;
+    _rhs!: string | number | object;
     get rhs(){
         return this._rhs;
     }
@@ -54,7 +93,16 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
      * @attr
      */
     set rhs(nv){
-        this.attr(rhs, nv.toString())
+        switch(typeof nv){
+            case 'string':
+            case 'number':
+                this.attr(rhs, nv.toString());
+                break;
+            case 'object':
+                this._rhs = nv;
+                this.onPropsChange();
+                break;
+        }
     }
     _equals!: boolean;
     get equals(){
@@ -207,7 +255,12 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     passDown(){
         let val = this._if;
         if(val && (this._equals || this._not_equals)){
-            const eq = this._lhs === this._rhs;
+            let eq = false;
+            if(typeof this._lhs === 'object' && typeof this._rhs === 'object'){
+                eq = compare(this._lhs, this._rhs);
+            }else{
+                eq = this._lhs === this._rhs;
+            }
             val = this._equals ? eq : !eq;
         }
         if(this._value === val) return;
