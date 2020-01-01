@@ -14,6 +14,8 @@ const not_equals = 'not_equals';
 const enable = 'enable';
 const m$ = 'm'; //TODO:  share mixin with p-d.p-u?
 
+
+//TODO:  make dynamic import
 //from https://gist.github.com/nicbell/6081098
 export function compare(obj1: any, obj2: any) {
 //Loop through properties in object 1
