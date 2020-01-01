@@ -4,6 +4,7 @@ import {define} from 'trans-render/define.js';
 import {debounce} from 'xtal-element/debounce.js';
 import {NavDown} from 'xtal-element/NavDown.js';
 import {insertAdjacentTemplate} from 'trans-render/insertAdjacentTemplate.js';
+import {IfDiffProps} from 'types.d.js';
 
 const if$ = 'if';
 const lhs = 'lhs';
@@ -13,7 +14,7 @@ const equals = 'equals';
 const not_equals = 'not_equals';
 const enable = 'enable';
 const m$ = 'm'; //TODO:  share mixin with p-d.p-u?
-
+type prop = keyof IfDiffProps;
 
 /**
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
@@ -21,7 +22,7 @@ const m$ = 'm'; //TODO:  share mixin with p-d.p-u?
  * [More Info](https://github.com/bahrus/if-diff)
  * @element if-diff
  */
-export class IfDiff extends XtallatX(hydrate(HTMLElement)){
+export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProps{
     static get is(){return 'if-diff';}
     static get observedAttributes(){
         return [if$, lhs, rhs, data_key_name, equals, not_equals, disabled, enable, m$];
@@ -37,7 +38,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     set if(nv){
         this.attr(if$, !!nv, '');
     }
-    _lhs!: string | number | object;
+    _lhs!: boolean | string | number | object;
     get lhs(){
         return this._lhs;
     }
@@ -58,7 +59,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
         }
         
     }
-    _rhs!: string | number | object;
+    _rhs!: boolean | string | number | object;
     get rhs(){
         return this._rhs;
     }
@@ -162,7 +163,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)){
     }
     connectedCallback(){
         this.style.display = 'none';
-        this.propUp(IfDiff.observedAttributes);
+        this.propUp<prop[]>(['if', 'lhs', 'rhs', 'dataKeyName', 'equals', 'not_equals', 'disabled', 'enable', 'm']);
         this._conn = true;
         this._debouncer = debounce((getNew: boolean = false) => {
             this.passDown();

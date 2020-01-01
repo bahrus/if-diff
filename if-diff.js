@@ -152,7 +152,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
     }
     connectedCallback() {
         this.style.display = 'none';
-        this.propUp(IfDiff.observedAttributes);
+        this.propUp(['if', 'lhs', 'rhs', 'dataKeyName', 'equals', 'not_equals', 'disabled', 'enable', 'm']);
         this._conn = true;
         this._debouncer = debounce((getNew = false) => {
             this.passDown();
