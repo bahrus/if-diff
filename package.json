@@ -10,7 +10,7 @@
     "es-module-shims": "0.4.6"
   },
   "name": "if-diff",
-  "version": "0.0.40",
+  "version": "0.0.41",
   "description": "Alternative to Polymer's dom-if that allows comparing two properties rather than just binding to a single boolean property",
   "main": "if-diff.js",
   "module": "if-diff.js",
