@@ -4,12 +4,9 @@
     "xtal-element": "0.0.90"
   },
   "devDependencies": {
-    "@webcomponents/webcomponentsjs": "2.3.0",
-    "jiife": "0.0.14",
-    "tape": "4.11.0",
-    "@types/tape": "4.2.33",
-    "xtal-test": "0.0.21",
-    "p-et-alia": "0.0.63",
+    "@webcomponents/webcomponentsjs": "2.4.0",
+    "xtal-test": "0.0.31",
+    "p-et-alia": "0.0.66",
     "es-module-shims": "0.4.6"
   },
   "name": "if-diff",
@@ -21,7 +18,7 @@
   "author": "bahrus <anderson.bruce.b@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "node createIIFE.js && tape test/*.js",
+    "test": "node test/test-all.js",
     "serve": "node node_modules/xtal-test/serve.js",
     "doc": "wca analyze if-*.js --outFile custom-elements.json"
   }

@@ -2,6 +2,11 @@ import { IfDiff } from './if-diff.js';
 import { insertAdjacentTemplate } from 'trans-render/insertAdjacentTemplate.js';
 import { define } from 'trans-render/define.js';
 const templKey = Symbol('cache');
+/**
+ * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
+ * DOM deletion takes place on non matching elements.
+ * @element if-diff-then-stiff
+ */
 export class IfDiffThenStiff extends IfDiff {
     static get is() { return 'if-diff-then-stiff'; }
     loadTemplate(el, dataKeyName) {

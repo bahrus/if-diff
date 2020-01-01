@@ -1,118 +1,200 @@
 {
-  "version": 2,
+  "version": "experimental",
   "tags": [
     {
-      "name": "if-diff",
-      "description": "Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.",
-      "jsDoc": "/**\n * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.\n * @element if-diff\n */",
+      "name": "if-diff-then-stiff",
+      "description": "Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.\nDOM deletion takes place on non matching elements.",
       "attributes": [
         {
           "name": "if",
           "description": "Boolean property / attribute -- must be true to pass test(s)",
-          "jsDoc": "/**\n     * Boolean property / attribute -- must be true to pass test(s)\n     * @attr\n     */",
-          "type": "any"
+          "type": "boolean"
         },
         {
           "name": "lhs",
           "description": "LHS Operand.",
-          "jsDoc": "/**\n     * LHS Operand.\n     * @attr\n     */",
-          "type": "any"
+          "type": "string | number | object"
         },
         {
           "name": "rhs",
           "description": "RHS Operand.",
-          "jsDoc": "/**\n     * RHS Operand.\n     * @attr\n     */",
-          "type": "any"
+          "type": "string | number | object"
         },
         {
           "name": "equals",
           "description": "lhs must equal rhs to pass tests.",
-          "jsDoc": "/**\n     * lhs must equal rhs to pass tests.\n     * @attr\n     */",
-          "type": "any"
+          "type": "boolean"
         },
         {
           "name": "not-equals",
           "description": "lhs must not equal rhs to pass tests.",
-          "jsDoc": "/**\n     * lhs must not equal rhs to pass tests.\n     * @attr not-equals\n     */",
-          "type": "any"
+          "type": "boolean"
         },
         {
           "name": "data-key-name",
           "description": "Name of dataset key to set to 1 if true and -1 if false, if dataset key is present",
-          "jsDoc": "/**\n     * Name of dataset key to set to 1 if true and -1 if false, if dataset key is present\n     * @attr data-key-name\n     */",
-          "type": "any"
+          "type": "string"
+        },
+        {
+          "name": "disabled",
+          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
+          "type": "boolean"
         }
       ],
       "properties": [
         {
-          "name": "disabled",
+          "name": "if",
+          "attribute": "if",
+          "description": "Boolean property / attribute -- must be true to pass test(s)",
           "type": "boolean"
         },
         {
-          "name": "evCount",
-          "type": "{ [key: string]: number; }"
-        },
-        {
-          "name": "asIs",
-          "type": "\"\" | \"-changed\""
-        },
-        {
-          "name": "if",
-          "description": "Boolean property / attribute -- must be true to pass test(s)",
-          "jsDoc": "/**\n     * Boolean property / attribute -- must be true to pass test(s)\n     * @attr\n     */",
-          "type": "any"
-        },
-        {
           "name": "lhs",
+          "attribute": "lhs",
           "description": "LHS Operand.",
-          "jsDoc": "/**\n     * LHS Operand.\n     * @attr\n     */",
-          "type": "any"
+          "type": "string | number | object"
         },
         {
           "name": "rhs",
+          "attribute": "rhs",
           "description": "RHS Operand.",
-          "jsDoc": "/**\n     * RHS Operand.\n     * @attr\n     */",
-          "type": "any"
+          "type": "string | number | object"
         },
         {
           "name": "equals",
+          "attribute": "equals",
           "description": "lhs must equal rhs to pass tests.",
-          "jsDoc": "/**\n     * lhs must equal rhs to pass tests.\n     * @attr\n     */",
-          "type": "any"
+          "type": "boolean"
         },
         {
           "name": "not_equals",
+          "attribute": "not-equals",
           "description": "lhs must not equal rhs to pass tests.",
-          "jsDoc": "/**\n     * lhs must not equal rhs to pass tests.\n     * @attr not-equals\n     */",
-          "type": "any"
+          "type": "boolean"
         },
         {
           "name": "enable",
           "description": "css selector of children of matching element  to remove disabled attribute",
-          "jsDoc": "/**\n     * css selector of children of matching element  to remove disabled attribute\n     */",
-          "type": "any"
+          "type": "string"
         },
         {
           "name": "dataKeyName",
+          "attribute": "data-key-name",
           "description": "Name of dataset key to set to 1 if true and -1 if false, if dataset key is present",
-          "jsDoc": "/**\n     * Name of dataset key to set to 1 if true and -1 if false, if dataset key is present\n     * @attr data-key-name\n     */",
-          "type": "any"
+          "type": "string"
         },
         {
           "name": "m",
-          "type": "any"
+          "description": "Maximum number of elements that are effected by condition.",
+          "type": "number"
         },
         {
           "name": "value",
-          "type": "any"
+          "type": "boolean"
         },
         {
-          "name": "val",
-          "type": "\"set\" | \"remove\""
+          "name": "evCount",
+          "description": "Tracks how many times each event type was called.",
+          "type": "{ [key: string]: number; }",
+          "default": "{}"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "name": "if-diff",
+      "description": "Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.\nNo DOM deletion takes place on non matching elements.\n[More Info](https://github.com/bahrus/if-diff)",
+      "attributes": [
+        {
+          "name": "if",
+          "description": "Boolean property / attribute -- must be true to pass test(s)"
+        },
+        {
+          "name": "lhs",
+          "description": "LHS Operand."
+        },
+        {
+          "name": "rhs",
+          "description": "RHS Operand."
+        },
+        {
+          "name": "equals",
+          "description": "lhs must equal rhs to pass tests."
+        },
+        {
+          "name": "not-equals",
+          "description": "lhs must not equal rhs to pass tests."
+        },
+        {
+          "name": "data-key-name",
+          "description": "Name of dataset key to set to 1 if true and -1 if false, if dataset key is present"
+        },
+        {
+          "name": "disabled",
+          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
+          "type": "boolean"
         }
       ],
-      "events": [],
-      "slots": []
+      "properties": [
+        {
+          "name": "if",
+          "attribute": "if",
+          "description": "Boolean property / attribute -- must be true to pass test(s)"
+        },
+        {
+          "name": "lhs",
+          "attribute": "lhs",
+          "description": "LHS Operand."
+        },
+        {
+          "name": "rhs",
+          "attribute": "rhs",
+          "description": "RHS Operand."
+        },
+        {
+          "name": "equals",
+          "attribute": "equals",
+          "description": "lhs must equal rhs to pass tests."
+        },
+        {
+          "name": "not_equals",
+          "attribute": "not-equals",
+          "description": "lhs must not equal rhs to pass tests."
+        },
+        {
+          "name": "enable",
+          "description": "css selector of children of matching element  to remove disabled attribute"
+        },
+        {
+          "name": "dataKeyName",
+          "attribute": "data-key-name",
+          "description": "Name of dataset key to set to 1 if true and -1 if false, if dataset key is present"
+        },
+        {
+          "name": "m",
+          "description": "Maximum number of elements that are effected by condition."
+        },
+        {
+          "name": "value"
+        },
+        {
+          "name": "evCount",
+          "description": "Tracks how many times each event type was called.",
+          "type": "{ [key: string]: number; }",
+          "default": "{}"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
+          "type": "boolean"
+        }
+      ]
     }
   ]
 }

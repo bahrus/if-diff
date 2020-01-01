@@ -2,6 +2,7 @@
 
 <a href="https://nodei.co/npm/if-diff/"><img src="https://nodei.co/npm/if-diff.png"></a>
 
+[![Actions Status](https://github.com/bahrus/p-et-alia/workflows/CI/badge.svg)](https://github.com/bahrus/p-et-alia/actions?query=workflow%3ACI)
 
 <img src="https://badgen.net/bundlephobia/minzip/if-diff">
 

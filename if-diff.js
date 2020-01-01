@@ -12,40 +12,10 @@ const equals = 'equals';
 const not_equals = 'not_equals';
 const enable = 'enable';
 const m$ = 'm'; //TODO:  share mixin with p-d.p-u?
-//from https://gist.github.com/nicbell/6081098
-export function compare(obj1, obj2) {
-    //Loop through properties in object 1
-    for (const p in obj1) {
-        //Check property exists on both objects
-        if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p))
-            return false;
-        switch (typeof (obj1[p])) {
-            //Deep compare objects
-            case 'object':
-                if (!compare(obj1[p], obj2[p]))
-                    return false;
-                break;
-            //Compare function code
-            case 'function':
-                if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString()))
-                    return false;
-                break;
-            //Compare values
-            default:
-                if (obj1[p] != obj2[p])
-                    return false;
-        }
-    }
-    //Check object 2 for any extra properties
-    for (var p in obj2) {
-        if (typeof (obj1[p]) == 'undefined')
-            return false;
-    }
-    return true;
-}
-;
 /**
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
+ * No DOM deletion takes place on non matching elements.
+ * [More Info](https://github.com/bahrus/if-diff)
  * @element if-diff
  */
 export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
@@ -244,11 +214,12 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
             this.do(el, ds, val, dataKeyName);
         });
     }
-    passDown() {
+    async passDown() {
         let val = this._if;
         if (val && (this._equals || this._not_equals)) {
             let eq = false;
             if (typeof this._lhs === 'object' && typeof this._rhs === 'object') {
+                const { compare } = await import('./compare.js');
                 eq = compare(this._lhs, this._rhs);
             }
             else {
