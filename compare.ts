@@ -1,5 +1,13 @@
 //from https://gist.github.com/nicbell/6081098
 export function compare(obj1: any, obj2: any) {
+    if(Array.isArray(obj1) && Array.isArray(obj2)){
+        const obj1Length = obj1.length;
+        if(obj1Length !== obj2.length) return false;
+        for(let i = 0, ii = obj1Length; i < ii; i++){
+            if(!compare(obj1[i], obj2[i])) return false;
+        }
+        return true;
+    }
     //Loop through properties in object 1
     for (const p in obj1) {
         //Check property exists on both objects
