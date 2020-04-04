@@ -4,7 +4,7 @@
         "**/*.js": {"when": "$(basename).ts"},
         "**/*.js.map" : true
     },
-    "html.experimental.customData": ["./html.json", "node_modules/p-d.p-u/web-components.json"],
+    "html.customData": ["custom-elements.json", "node_modules/p-et-alia/custom-elements.json"],
     "json.schemas": [
         {
             "fileMatch": ["/html.json"],
