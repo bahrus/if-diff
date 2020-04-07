@@ -11,6 +11,12 @@
     <script>
         if1.lhs = 'stringVal';
         if1.rhs = 'stringVal';
+        if1.prop1 = {
+            greeting: 'hello'
+        };
+        if1.propProxyMap = {
+            'prop1': 'someRandomProp'
+        }
     </script>
     <div data-fly=0>
         <template>
@@ -21,6 +27,12 @@
     <script>
         if2.lhs = {hello:'world'};
         if2.rhs = {hello: 'world'};
+        if2.prop2 = {
+            greeting: 'goodbye'
+        };
+        if2.propProxyMap = {
+            'prop2': 'anotherRandomProp'
+        }
     </script>
     <div data-why=0>
         <template>

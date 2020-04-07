@@ -138,7 +138,7 @@ if-diff's bias is towards hiding rather than deleting.
 
 But if-diff agrees with dom-if's wisdom as far as the no-right-answer / difficult trade-offs, and envies how dom-if empowers developers to be able to choose [if ending DOM support is the more humane thing to do](https://polymer-library.polymer-project.org/2.0/docs/devguide/templates#dom-if).
 
-But as we will see, we do provide an extension of if-diff that supports the more austere approach.
+<!--But as we will see, we do provide an extension of if-diff that supports the more austere approach.-->
 
 ### Go to sleep mode
 
@@ -152,6 +152,11 @@ You can specify which elements to disable/enable based on the evaluation:
 
 The enable attribute will cause if-diff to find all elements matching the enable value (via css querySelectorAll), and remove all disabled attributes from matching nodes, when the test is true, and add the disabled attribute when the test is false.
 
+### Prop Passing
+
+More info on this for a later version.
+
+<!--
 ### Put to sleep mode
 
 What if you need to deal with removing lots of DOM elements from view on a low memory device? 
@@ -169,6 +174,7 @@ Aha!  I can sense you glibly thinking via the Force.
 But if the purpose of this whole exercise is to reduce memory, isn't that almost defeating the purpose?  Granted, JavaScript objects often take up less memory than DOM elements, but now you have to hold on to both (more or less).
 
 if-diff-then-stiff argues "Why would you store state of these snuffed out DOM elements in the extremely limited RAM, leaving less room for keeping additional DOM in memory?  That seems incredibly cruel. Why not store the 'state' in out-of-RAM storage areas, such as history.state (at least past states), a remote store, IndexedDB, or SessionStorage?"  
+-->
 
 ## Viewing Your Element Locally
 

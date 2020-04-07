@@ -163,7 +163,8 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
     }
     connectedCallback(){
         this.style.display = 'none';
-        this.propUp<prop[]>(['if', 'lhs', 'rhs', 'dataKeyName', 'equals', 'not_equals', 'disabled', 'enable', 'm']);
+        this.propUp<prop[]>(['if', 'lhs', 'rhs', 'dataKeyName', 'equals', 'not_equals', 'disabled', 
+            'enable', 'm', 'prop1', 'prop2', 'prop3', 'prop4', 'prop5', 'propProxyMap']);
         this._conn = true;
         this._debouncer = debounce((getNew: boolean = false) => {
             this.passDown();
@@ -200,6 +201,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
             (<HTMLElement>child).dataset[dataKeyName] = '1';
         })
         el.remove();
+        return insertedElements;
     }
 
     do(el: Element, ds: any, val: boolean, dataKeyName: string){
@@ -213,7 +215,16 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
         }
         if(this._enable){
             const action  = (val ? 'remove' : 'set') + 'Attribute';
-            Array.from(el.querySelectorAll(this._enable)).concat(el).forEach(target => (<any>target)[action]('disabled', ''))
+            Array.from(el.querySelectorAll(this._enable)).concat(el).forEach(target => (<any>target)[action]('disabled', ''));
+
+        }
+        if(this._propProxyMap){
+            for(const key in this._propProxyMap){
+                const val = (<any>this)[key];
+                if(val === undefined) continue;
+                const prop = (<any>this._propProxyMap)[key];
+                (<any>el)[prop] = val;
+            }
         }
     }
     
@@ -255,6 +266,116 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
         }
 
     }
+
+    _prop1: any | undefined;
+    get prop1(){
+        return this._prop1;
+    }
+    set prop1(val){
+        this._prop1 = val;
+        this.onPropsChange();
+    }
+
+    _prop2: any | undefined;
+    get prop2(){
+        return this._prop2;
+    }
+    set prop2(val){
+        this._prop2 = val;
+        this.onPropsChange();
+    }
+
+    _prop3: any | undefined;
+    get prop3(){
+        return this._prop3;
+    }
+    set prop3(val){
+        this._prop3 = val;
+        this.onPropsChange();
+    }
+
+    _prop4: any | undefined;
+    get prop4(){
+        return this._prop1;
+    }
+    set prop4(val){
+        this._prop4 = val;
+        this.onPropsChange();
+    }
+
+    _prop5: any | undefined;
+    get prop5(){
+        return this._prop5;
+    }
+    set prop5(val){
+        this._prop5 = val;
+        this.onPropsChange();
+    }
+
+    _propProxyMap: object | undefined;
+    get propProxyMap(){
+        return this._propProxyMap;
+    }
+    set propProxyMap(val){
+        this._propProxyMap = val;
+        this.onPropsChange();
+    }
+
+    // _prop6: any | undefined;
+    // get prop6(){
+    //     return this._prop5;
+    // }
+    // set prop6(val){
+    //     this._prop6 = val;
+    //     this.passDown();
+    // }
+
+    // _prop7: any | undefined;
+    // get prop7(){
+    //     return this._prop7;
+    // }
+    // set prop7(val){
+    //     this._prop7 = val;
+    //     this.passDown();
+    // }
+
+    // _prop8: any | undefined;
+    // get prop8(){
+    //     return this._prop8;
+    // }
+    // set prop8(val){
+    //     this._prop8 = val;
+    //     this.passDown();
+    // }
+
+    // _prop9: any | undefined;
+    // get prop9(){
+    //     return this._prop9;
+    // }
+    // set prop9(val){
+    //     this._prop9 = val;
+    //     this.passDown();
+    // }
+
+    // _prop10: any | undefined;
+    // get prop10(){
+    //     return this._prop1;
+    // }
+    // set prop10(val){
+    //     this._prop10 = val;
+    //     this.passDown();
+    // }
+
+    // _prop11: any | undefined;
+    // get prop11(){
+    //     return this._prop11;
+    // }
+    // set prop11(val){
+    //     this._prop11 = val;
+    //     this.passDown();
+    // }
+
+ 
 
     disconnect(){
         if(this._navDown)  this._navDown.disconnect();
