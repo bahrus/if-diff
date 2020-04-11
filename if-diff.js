@@ -12,6 +12,14 @@ const equals = 'equals';
 const not_equals = 'not_equals';
 const enable = 'enable';
 const m$ = 'm'; //TODO:  share mixin with p-d.p-u?
+const byos = 'byos'; //bring your own style
+const cTlRe = /[\w]([A-Z])/g;
+//https://vladimir-ivanov.net/camelcase-to-snake_case-and-vice-versa-with-javascript/
+export function camelToLisp(s) {
+    return s.replace(/[\w]([A-Z])/g, function (m) {
+        return m[0] + "-" + m[1];
+    }).toLowerCase();
+}
 /**
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
  * No DOM deletion takes place on non matching elements.
@@ -22,12 +30,77 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
     constructor() {
         super(...arguments);
         this._conn = false;
+        this._byos = false;
+        this._if = false;
         this._navDown = null;
         this._value = false;
     }
     static get is() { return 'if-diff'; }
     static get observedAttributes() {
-        return [if$, lhs, rhs, data_key_name, equals, not_equals, disabled, enable, m$];
+        return [if$, lhs, rhs, data_key_name, equals, not_equals, disabled, enable, m$, byos];
+    }
+    attributeChangedCallback(n, ov, nv) {
+        super.attributeChangedCallback(n, ov, nv);
+        const u = '_' + n;
+        switch (n) {
+            case equals:
+            case not_equals:
+            case if$:
+            case byos:
+                this[u] = (nv !== null);
+                break;
+            case lhs:
+            case rhs:
+            case m$:
+            case enable:
+                this[u] = nv;
+                break;
+            case data_key_name:
+                this._dataKeyName = nv;
+                break;
+        }
+        this.onPropsChange();
+    }
+    connectedCallback() {
+        this.style.display = 'none';
+        this.propUp([if$, lhs, rhs, 'dataKeyName', equals, not_equals, disabled,
+            enable, m$, 'prop1', 'prop2', 'prop3', 'prop4', 'prop5', 'prop6', 'prop7', 'propProxyMap', byos]);
+        this._conn = true;
+        this._debouncer = debounce((getNew = false) => {
+            this.passDown();
+        }, 16);
+        if (!this._byos) {
+            const style = document.createElement('style');
+            style.innerHTML = /* css */ `
+                [data-${camelToLisp(this._dataKeyName)}="-1"]{
+                    display: none;
+                }
+            `;
+            const rn = this.getRootNode();
+            if (rn.host !== undefined) {
+                rn.appendChild(style);
+            }
+            else {
+                document.head.appendChild(style);
+            }
+        }
+        setTimeout(() => {
+            this.init();
+        }, 50);
+    }
+    createDefaultStyle() {
+    }
+    init() {
+        this.passDown();
+    }
+    get byos() {
+        return this._byos;
+    }
+    /**
+     * Bring your own style.  If false (default), the if-diff adds a style to set target element's display to none when test fails.
+     */
+    set byos(val) {
+        this.attr(byos, val, '');
     }
     get if() {
         return this._if;
@@ -124,43 +197,6 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
      */
     set m(v) {
         this.attr(m$, v.toString());
-    }
-    attributeChangedCallback(n, ov, nv) {
-        super.attributeChangedCallback(n, ov, nv);
-        const u = '_' + n;
-        switch (n) {
-            case equals:
-            case not_equals:
-            case if$:
-                this[u] = (nv !== null);
-                break;
-            case lhs:
-            case rhs:
-            case m$:
-            case enable:
-                this[u] = nv;
-                break;
-            case data_key_name:
-                this._dataKeyName = nv;
-                break;
-        }
-        this.onPropsChange();
-    }
-    init() {
-        //this.addMutObs();
-        this.passDown();
-    }
-    connectedCallback() {
-        this.style.display = 'none';
-        this.propUp(['if', 'lhs', 'rhs', 'dataKeyName', 'equals', 'not_equals', 'disabled',
-            'enable', 'm', 'prop1', 'prop2', 'prop3', 'prop4', 'prop5', 'propProxyMap']);
-        this._conn = true;
-        this._debouncer = debounce((getNew = false) => {
-            this.passDown();
-        }, 16);
-        setTimeout(() => {
-            this.init();
-        }, 50);
     }
     onPropsChange() {
         if (!this._conn || this._disabled)
@@ -290,6 +326,20 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
         this._prop5 = val;
         this.onPropsChange();
     }
+    get prop6() {
+        return this._prop5;
+    }
+    set prop6(val) {
+        this._prop6 = val;
+        this.passDown();
+    }
+    get prop7() {
+        return this._prop7;
+    }
+    set prop7(val) {
+        this._prop7 = val;
+        this.passDown();
+    }
     get propProxyMap() {
         return this._propProxyMap;
     }
@@ -297,54 +347,6 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
         this._propProxyMap = val;
         this.onPropsChange();
     }
-    // _prop6: any | undefined;
-    // get prop6(){
-    //     return this._prop5;
-    // }
-    // set prop6(val){
-    //     this._prop6 = val;
-    //     this.passDown();
-    // }
-    // _prop7: any | undefined;
-    // get prop7(){
-    //     return this._prop7;
-    // }
-    // set prop7(val){
-    //     this._prop7 = val;
-    //     this.passDown();
-    // }
-    // _prop8: any | undefined;
-    // get prop8(){
-    //     return this._prop8;
-    // }
-    // set prop8(val){
-    //     this._prop8 = val;
-    //     this.passDown();
-    // }
-    // _prop9: any | undefined;
-    // get prop9(){
-    //     return this._prop9;
-    // }
-    // set prop9(val){
-    //     this._prop9 = val;
-    //     this.passDown();
-    // }
-    // _prop10: any | undefined;
-    // get prop10(){
-    //     return this._prop1;
-    // }
-    // set prop10(val){
-    //     this._prop10 = val;
-    //     this.passDown();
-    // }
-    // _prop11: any | undefined;
-    // get prop11(){
-    //     return this._prop11;
-    // }
-    // set prop11(val){
-    //     this._prop11 = val;
-    //     this.passDown();
-    // }
     disconnect() {
         if (this._navDown)
             this._navDown.disconnect();

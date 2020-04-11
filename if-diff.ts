@@ -14,7 +14,16 @@ const equals = 'equals';
 const not_equals = 'not_equals';
 const enable = 'enable';
 const m$ = 'm'; //TODO:  share mixin with p-d.p-u?
+const byos = 'byos'; //bring your own style
 type prop = keyof IfDiffProps;
+
+const cTlRe = /[\w]([A-Z])/g;
+//https://vladimir-ivanov.net/camelcase-to-snake_case-and-vice-versa-with-javascript/
+export function camelToLisp(s: string){
+    return s.replace(/[\w]([A-Z])/g, function(m) {
+        return m[0] + "-" + m[1];
+    }).toLowerCase();
+}
 
 /**
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
@@ -25,9 +34,80 @@ type prop = keyof IfDiffProps;
 export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProps{
     static get is(){return 'if-diff';}
     static get observedAttributes(){
-        return [if$, lhs, rhs, data_key_name, equals, not_equals, disabled, enable, m$];
+        return [if$, lhs, rhs, data_key_name, equals, not_equals, disabled, enable, m$, byos];
     }
-    _if!: boolean;
+    attributeChangedCallback(n: string, ov: string, nv: string){
+        super.attributeChangedCallback(n, ov, nv);
+        const u = '_' + n;
+        switch(n){
+            case equals:
+            case not_equals:
+            case if$:
+            case byos:
+                (<any>this)[u] = (nv !== null);
+                break;
+            case lhs:
+            case rhs:
+            case m$:
+            case enable:
+                (<any>this)[u] = nv;
+                break;
+            case data_key_name:
+                this._dataKeyName = nv;
+                break;
+
+            
+        }
+        this.onPropsChange();
+    }
+    _conn: boolean = false;
+    _debouncer!: any;
+    connectedCallback(){
+        this.style.display = 'none';
+        this.propUp<prop[]>([if$, lhs, rhs, 'dataKeyName', equals, not_equals, disabled, 
+            enable, m$, 'prop1', 'prop2', 'prop3', 'prop4', 'prop5', 'prop6', 'prop7', 'propProxyMap', byos]);
+        this._conn = true;
+        this._debouncer = debounce((getNew: boolean = false) => {
+            this.passDown();
+        }, 16);
+        if(!this._byos){
+            const style = document.createElement('style');
+            style.innerHTML = /* css */`
+                [data-${camelToLisp(this._dataKeyName)}="-1"]{
+                    display: none;
+                }
+            `;
+            const rn = this.getRootNode();
+            if((<any>rn).host !== undefined){
+                rn.appendChild(style);
+            }else{
+                document.head.appendChild(style);
+            }
+        }
+        setTimeout(() => {
+            this.init();
+        }, 50);
+
+    }
+    createDefaultStyle(){
+
+    }
+    init(){
+        this.passDown();
+    }
+
+    _byos = false;
+    get byos(){
+        return this._byos;
+    }
+    /**
+     * Bring your own style.  If false (default), the if-diff adds a style to set target element's display to none when test fails.
+     */
+    set byos(val){
+        this.attr(byos, val, '');
+    }
+
+    _if = false;
     get if(){
         return this._if;
     }
@@ -132,48 +212,9 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
     set m(v){
         this.attr(m$, v.toString());
     }
-    attributeChangedCallback(n: string, ov: string, nv: string){
-        super.attributeChangedCallback(n, ov, nv);
-        const u = '_' + n;
-        switch(n){
-            case equals:
-            case not_equals:
-            case if$:
-                (<any>this)[u] = (nv !== null);
-                break;
-            case lhs:
-            case rhs:
-            case m$:
-            case enable:
-                (<any>this)[u] = nv;
-                break;
-            case data_key_name:
-                this._dataKeyName = nv;
-                break;
-            
-        }
-        this.onPropsChange();
-    }
-    _conn: boolean = false;
-    _debouncer!: any;
-    _navDown: NavDown | null = null;
-    init(){
-        //this.addMutObs();
-        this.passDown();
-    }
-    connectedCallback(){
-        this.style.display = 'none';
-        this.propUp<prop[]>(['if', 'lhs', 'rhs', 'dataKeyName', 'equals', 'not_equals', 'disabled', 
-            'enable', 'm', 'prop1', 'prop2', 'prop3', 'prop4', 'prop5', 'propProxyMap']);
-        this._conn = true;
-        this._debouncer = debounce((getNew: boolean = false) => {
-            this.passDown();
-        }, 16);
-        setTimeout(() => {
-            this.init();
-        }, 50);
 
-    }
+    _navDown: NavDown | null = null;
+
     onPropsChange(){
         if(!this._conn || this._disabled) return;        
         this._debouncer();
@@ -312,6 +353,27 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
         this.onPropsChange();
     }
 
+
+
+    _prop6: any | undefined;
+    get prop6(){
+        return this._prop5;
+    }
+    set prop6(val){
+        this._prop6 = val;
+        this.passDown();
+    }
+
+    _prop7: any | undefined;
+    get prop7(){
+        return this._prop7;
+    }
+    set prop7(val){
+        this._prop7 = val;
+        this.passDown();
+    }
+
+
     _propProxyMap: object | undefined;
     get propProxyMap(){
         return this._propProxyMap;
@@ -320,62 +382,6 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
         this._propProxyMap = val;
         this.onPropsChange();
     }
-
-    // _prop6: any | undefined;
-    // get prop6(){
-    //     return this._prop5;
-    // }
-    // set prop6(val){
-    //     this._prop6 = val;
-    //     this.passDown();
-    // }
-
-    // _prop7: any | undefined;
-    // get prop7(){
-    //     return this._prop7;
-    // }
-    // set prop7(val){
-    //     this._prop7 = val;
-    //     this.passDown();
-    // }
-
-    // _prop8: any | undefined;
-    // get prop8(){
-    //     return this._prop8;
-    // }
-    // set prop8(val){
-    //     this._prop8 = val;
-    //     this.passDown();
-    // }
-
-    // _prop9: any | undefined;
-    // get prop9(){
-    //     return this._prop9;
-    // }
-    // set prop9(val){
-    //     this._prop9 = val;
-    //     this.passDown();
-    // }
-
-    // _prop10: any | undefined;
-    // get prop10(){
-    //     return this._prop1;
-    // }
-    // set prop10(val){
-    //     this._prop10 = val;
-    //     this.passDown();
-    // }
-
-    // _prop11: any | undefined;
-    // get prop11(){
-    //     return this._prop11;
-    // }
-    // set prop11(val){
-    //     this._prop11 = val;
-    //     this.passDown();
-    // }
-
- 
 
     disconnect(){
         if(this._navDown)  this._navDown.disconnect();
