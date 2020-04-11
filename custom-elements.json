@@ -13,12 +13,12 @@
         {
           "name": "lhs",
           "description": "LHS Operand.",
-          "type": "string | number | object"
+          "type": "string | number | boolean | object"
         },
         {
           "name": "rhs",
           "description": "RHS Operand.",
-          "type": "string | number | object"
+          "type": "string | number | boolean | object"
         },
         {
           "name": "equals",
@@ -43,6 +43,11 @@
       ],
       "properties": [
         {
+          "name": "byos",
+          "description": "Bring your own style.  If false (default), the if-diff adds a style to set target element's display to none when test fails.",
+          "type": "boolean"
+        },
+        {
           "name": "if",
           "attribute": "if",
           "description": "Boolean property / attribute -- must be true to pass test(s)",
@@ -52,13 +57,13 @@
           "name": "lhs",
           "attribute": "lhs",
           "description": "LHS Operand.",
-          "type": "string | number | object"
+          "type": "string | number | boolean | object"
         },
         {
           "name": "rhs",
           "attribute": "rhs",
           "description": "RHS Operand.",
-          "type": "string | number | object"
+          "type": "string | number | boolean | object"
         },
         {
           "name": "equals",
@@ -93,6 +98,31 @@
           "type": "boolean"
         },
         {
+          "name": "prop1"
+        },
+        {
+          "name": "prop2"
+        },
+        {
+          "name": "prop3"
+        },
+        {
+          "name": "prop4"
+        },
+        {
+          "name": "prop5"
+        },
+        {
+          "name": "prop6"
+        },
+        {
+          "name": "prop7"
+        },
+        {
+          "name": "propProxyMap",
+          "type": "object | undefined"
+        },
+        {
           "name": "evCount",
           "description": "Tracks how many times each event type was called.",
           "type": "{ [key: string]: number; }",
@@ -112,7 +142,8 @@
       "attributes": [
         {
           "name": "if",
-          "description": "Boolean property / attribute -- must be true to pass test(s)"
+          "description": "Boolean property / attribute -- must be true to pass test(s)",
+          "type": "boolean"
         },
         {
           "name": "lhs",
@@ -142,9 +173,15 @@
       ],
       "properties": [
         {
+          "name": "byos",
+          "description": "Bring your own style.  If false (default), the if-diff adds a style to set target element's display to none when test fails.",
+          "type": "boolean"
+        },
+        {
           "name": "if",
           "attribute": "if",
-          "description": "Boolean property / attribute -- must be true to pass test(s)"
+          "description": "Boolean property / attribute -- must be true to pass test(s)",
+          "type": "boolean"
         },
         {
           "name": "lhs",
@@ -181,6 +218,30 @@
         },
         {
           "name": "value"
+        },
+        {
+          "name": "prop1"
+        },
+        {
+          "name": "prop2"
+        },
+        {
+          "name": "prop3"
+        },
+        {
+          "name": "prop4"
+        },
+        {
+          "name": "prop5"
+        },
+        {
+          "name": "prop6"
+        },
+        {
+          "name": "prop7"
+        },
+        {
+          "name": "propProxyMap"
         },
         {
           "name": "evCount",
