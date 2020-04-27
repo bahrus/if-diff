@@ -1,4 +1,4 @@
-export interface IfDiffProps{
+export interface IfDiffProps extends Partial<HTMLElement>{
     if: boolean, 
     lhs: boolean | string | number | object, 
     rhs: boolean | string | number | object, 
