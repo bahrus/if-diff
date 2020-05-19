@@ -1,6 +1,6 @@
 import { IfDiff } from './if-diff.js';
 import { insertAdjacentTemplate } from 'trans-render/insertAdjacentTemplate.js';
-import { define } from 'trans-render/define.js';
+import { define } from 'xtal-element/xtal-latx.js';
 const templKey = Symbol('cache');
 /**
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
@@ -8,7 +8,6 @@ const templKey = Symbol('cache');
  * @element if-diff-then-stiff
  */
 export class IfDiffThenStiff extends IfDiff {
-    static get is() { return 'if-diff-then-stiff'; }
     loadTemplate(el, dataKeyName) {
         let tmpl = el[templKey];
         if (tmpl === undefined) {
@@ -49,10 +48,11 @@ export class IfDiffThenStiff extends IfDiff {
                 skipEnable = true;
             }
         }
-        if (this._enable && !skipEnable) {
+        if (this.enable && !skipEnable) {
             const action = (val ? 'remove' : 'set') + 'Attribute';
-            el.querySelectorAll(this._enable).forEach(child => child[action]('disabled', ''));
+            el.querySelectorAll(this.enable).forEach(child => child[action]('disabled', ''));
         }
     }
 }
+IfDiffThenStiff.is = 'if-diff-then-stiff';
 define(IfDiffThenStiff);

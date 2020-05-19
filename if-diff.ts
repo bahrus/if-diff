@@ -1,10 +1,10 @@
-import {XtallatX} from 'xtal-element/xtal-latx.js';
+import {XtallatX, define} from 'xtal-element/xtal-latx.js';
 import {disabled, hydrate} from 'trans-render/hydrate.js';
-import {define} from 'trans-render/define.js';
 import {debounce} from 'xtal-element/debounce.js';
 import {NavDown} from 'xtal-element/NavDown.js';
 import {insertAdjacentTemplate} from 'trans-render/insertAdjacentTemplate.js';
 import {IfDiffProps} from 'types.d.js';
+import {AttributeProps} from 'xtal-element/types.d.js';
 
 const if$ = 'if';
 const lhs = 'lhs';
@@ -32,48 +32,82 @@ export function camelToLisp(s: string){
  * @element if-diff
  */
 export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProps{
-    static get is(){return 'if-diff';}
-    static get observedAttributes(){
-        return [if$, lhs, rhs, data_key_name, equals, not_equals, disabled, enable, m$, byos];
-    }
-    attributeChangedCallback(n: string, ov: string, nv: string){
-        super.attributeChangedCallback(n, ov, nv);
-        const u = '_' + n;
-        switch(n){
-            case equals:
-            case not_equals:
-            case if$:
-            case byos:
-                (<any>this)[u] = (nv !== null);
-                break;
-            case lhs:
-            case rhs:
-            case m$:
-            case enable:
-                (<any>this)[u] = nv;
-                break;
-            case data_key_name:
-                this._dataKeyName = nv;
-                break;
 
-            
-        }
-        this.onPropsChange();
-    }
-    _conn: boolean = false;
+    static is = 'if-diff';
+
+    static attributeProps = ({byos, lhs, rhs, equals, not_equals, disabled, enable, dataKeyName, m}: IfDiff) => ({
+        boolean: ['if', byos, equals, not_equals, disabled],
+        string: [enable, dataKeyName],
+        numeric: [m],
+        object: [lhs, rhs],
+        parsedObject: [lhs, rhs]
+    }) as AttributeProps;
+
+    /**
+     * Bring your own style.  If false (default), the if-diff adds a style to set target element's display to none when test fails.
+     */
+    byos!: boolean;
+
+    /**
+     * Boolean property / attribute -- must be true to pass test(s)
+     * @attr
+     */
+    if!: boolean;
+
+
+    /**
+     * LHS Operand.
+     * @attr
+     */
+    lhs!: boolean | string | number | object;
+
+    /**
+     * RHS Operand.
+     * @attr
+     */
+    rhs!: boolean | string | number | object;
+
+    /**
+     * lhs must equal rhs to pass tests.
+     * @attr
+     */
+    equals!: boolean;
+
+    /**
+     * lhs must not equal rhs to pass tests.
+     * @attr not-equals
+     */
+    not_equals!: boolean;
+
+    /**
+     * css selector of children of matching element  to remove disabled attribute
+     */
+    enable!: string;
+
+
+    /**
+     * Name of dataset key to set to 1 if true and -1 if false, if dataset key is present
+     * @attr data-key-name
+     */
+    dataKeyName!: string;
+
+    /**
+     * Maximum number of elements that are effected by condition.
+     */
+    m!: number;
+
+
     _debouncer!: any;
     connectedCallback(){
         this.style.display = 'none';
-        this.propUp<prop[]>([if$, lhs, rhs, 'dataKeyName', equals, not_equals, disabled, 
-            enable, m$, 'prop1', 'prop2', 'prop3', 'prop4', 'prop5', 'prop6', 'prop7', 'propProxyMap', byos]);
-        this._conn = true;
         this._debouncer = debounce((getNew: boolean = false) => {
             this.passDown();
         }, 16);
-        if(!this._byos){
+        super.connectedCallback();
+        if(!this.byos){
             const style = document.createElement('style');
             style.innerHTML = /* css */`
-                [data-${camelToLisp(this._dataKeyName)}="-1"]{
+                [data-${camelToLisp(this.dataKeyName)}="-1"]{
                     display: none;
                 }
             `;
@@ -89,135 +123,21 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
         }, 50);
 
     }
-    createDefaultStyle(){
+    createDefaultStyle(){}
 
-    }
     init(){
         this.passDown();
     }
 
-    _byos = false;
-    get byos(){
-        return this._byos;
-    }
-    /**
-     * Bring your own style.  If false (default), the if-diff adds a style to set target element's display to none when test fails.
-     */
-    set byos(val){
-        this.attr(byos, val, '');
-    }
 
-    _if = false;
-    get if(){
-        return this._if;
-    }
-    /**
-     * Boolean property / attribute -- must be true to pass test(s)
-     * @attr
-     */
-    set if(nv){
-        this.attr(if$, !!nv, '');
-    }
-    _lhs!: boolean | string | number | object;
-    get lhs(){
-        return this._lhs;
-    }
-    /**
-     * LHS Operand.
-     * @attr
-     */
-    set lhs(nv){
-        switch(typeof nv){
-            case 'string':
-            case 'number':
-                this.attr(lhs, nv.toString());
-                break;
-            case 'object':
-                this._lhs = nv;
-                this.onPropsChange();
-                break;
-        }
-        
-    }
-    _rhs!: boolean | string | number | object;
-    get rhs(){
-        return this._rhs;
-    }
-    /**
-     * RHS Operand.
-     * @attr
-     */
-    set rhs(nv){
-        switch(typeof nv){
-            case 'string':
-            case 'number':
-                this.attr(rhs, nv.toString());
-                break;
-            case 'object':
-                this._rhs = nv;
-                this.onPropsChange();
-                break;
-        }
-    }
-    _equals!: boolean;
-    get equals(){
-        return this._equals;
-    }
-    /**
-     * lhs must equal rhs to pass tests.
-     * @attr
-     */
-    set equals(nv){
-        this.attr(equals, nv, '');
-    }
-    _not_equals!: boolean;
-    get not_equals(){
-        return this._not_equals;
-    }
-    /**
-     * lhs must not equal rhs to pass tests.
-     * @attr not-equals
-     */
-    set not_equals(nv){
-        this.attr(not_equals, nv, '');
-    }
-    _enable!: string;
-    get enable(){
-        return this._enable;
-    }
-    /**
-     * css selector of children of matching element  to remove disabled attribute
-     */
-    set enable(nv){
-        this.attr(enable, nv);
-    }
-    _dataKeyName!: string;
-    get dataKeyName(){
-        return this._dataKeyName;
-    }
-    /**
-     * Name of dataset key to set to 1 if true and -1 if false, if dataset key is present
-     * @attr data-key-name
-     */
-    set dataKeyName(nv){
-        this.attr(data_key_name, nv)
-    }
-    _m!: number;
-    get m(){
-        return this._m;
-    }
-    /**
-     * Maximum number of elements that are effected by condition.
-     */
-    set m(v){
-        this.attr(m$, v.toString());
-    }
 
     _navDown: NavDown | null = null;
 
-    onPropsChange(){
-        if(!this._conn || this._disabled) return;        
+    onPropsChange(name: string){
+        super.onPropsChange(name);
+        if(!this._connected || this._disabled) return;        
         this._debouncer();
+        
     }
     _value = false;
     get value(){
@@ -242,7 +162,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
             (<HTMLElement>child).dataset[dataKeyName] = '1';
         })
         el.remove();
-        return insertedElements;
+        //return insertedElements;
     }
 
     do(el: Element, ds: any, val: boolean, dataKeyName: string){
@@ -254,50 +174,50 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
         }else{
             (<any>el).dataset[dataKeyName] = val ? '1' : '-1';
         }
-        if(this._enable){
+        if(this.enable){
             const action  = (val ? 'remove' : 'set') + 'Attribute';
-            Array.from(el.querySelectorAll(this._enable)).concat(el).forEach(target => (<any>target)[action]('disabled', ''));
+            Array.from(el.querySelectorAll(this.enable)).concat(el).forEach(target => (<any>target)[action]('disabled', ''));
 
         }
-        if(this._propProxyMap){
-            for(const key in this._propProxyMap){
-                const val = (<any>this)[key];
-                if(val === undefined) continue;
-                const prop = (<any>this._propProxyMap)[key];
-                (<any>el)[prop] = val;
-            }
-        }
+        // if(this._propProxyMap){
+        //     for(const key in this._propProxyMap){
+        //         const val = (<any>this)[key];
+        //         if(val === undefined) continue;
+        //         const prop = (<any>this._propProxyMap)[key];
+        //         (<any>el)[prop] = val;
+        //     }
+        // }
     }
     
     tagMatches(nd: NavDown){
         const matches = nd.matches;
         this.attr('mtch', matches.length.toString());
         const val = this.value;
-        const dataKeyName = this._dataKeyName;
+        const dataKeyName = this.dataKeyName;
         matches.forEach(el =>{
             const ds = (<any>el).dataset;
             this.do(el, ds, val, dataKeyName);
         });
     }
     async passDown(){
-        let val = this._if;
-        if(val && (this._equals || this._not_equals)){
+        let val = this.if;
+        if(val && (this.equals || this.not_equals)){
             let eq = false;
-            if(typeof this._lhs === 'object' && typeof this._rhs === 'object'){
+            if(typeof this.lhs === 'object' && typeof this.rhs === 'object'){
                 const {compare} = await import('./compare.js');
-                eq = compare(this._lhs, this._rhs);
+                eq = compare(this.lhs, this.rhs);
             }else{
-                eq = this._lhs === this._rhs;
+                eq = this.lhs === this.rhs;
             }
-            val = this._equals ? eq : !eq;
+            val = this.equals ? eq : !eq;
         }
         if(this._value === val) return;
         this.value = val;
-        if(this._dataKeyName){
+        if(this.dataKeyName){
             if(this._navDown === null){
-                const tag = this._dataKeyName;
-                const test = (el: Element | null) =>  (<any>el).dataset && !!(<HTMLElement>el).dataset[this._dataKeyName];
-                const max = this._m ? this._m : Infinity;
+                const tag = this.dataKeyName;
+                const test = (el: Element | null) =>  (<any>el).dataset && !!(<HTMLElement>el).dataset[this.dataKeyName];
+                const max = this.m ? this.m : Infinity;
                 const bndTagMatches = this.tagMatches.bind(this);
                 this._navDown = new NavDown(this, test, undefined, (nd) => bndTagMatches(nd), max);
                 this._navDown.init();
@@ -308,80 +228,80 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
 
     }
 
-    _prop1: any | undefined;
-    get prop1(){
-        return this._prop1;
-    }
-    set prop1(val){
-        this._prop1 = val;
-        this.onPropsChange();
-    }
+    // _prop1: any | undefined;
+    // get prop1(){
+    //     return this._prop1;
+    // }
+    // set prop1(val){
+    //     this._prop1 = val;
+    //     this.onPropsChange();
+    // }
 
-    _prop2: any | undefined;
-    get prop2(){
-        return this._prop2;
-    }
-    set prop2(val){
-        this._prop2 = val;
-        this.onPropsChange();
-    }
+    // _prop2: any | undefined;
+    // get prop2(){
+    //     return this._prop2;
+    // }
+    // set prop2(val){
+    //     this._prop2 = val;
+    //     this.onPropsChange();
+    // }
 
-    _prop3: any | undefined;
-    get prop3(){
-        return this._prop3;
-    }
-    set prop3(val){
-        this._prop3 = val;
-        this.onPropsChange();
-    }
+    // _prop3: any | undefined;
+    // get prop3(){
+    //     return this._prop3;
+    // }
+    // set prop3(val){
+    //     this._prop3 = val;
+    //     this.onPropsChange();
+    // }
 
-    _prop4: any | undefined;
-    get prop4(){
-        return this._prop1;
-    }
-    set prop4(val){
-        this._prop4 = val;
-        this.onPropsChange();
-    }
+    // _prop4: any | undefined;
+    // get prop4(){
+    //     return this._prop1;
+    // }
+    // set prop4(val){
+    //     this._prop4 = val;
+    //     this.onPropsChange();
+    // }
 
-    _prop5: any | undefined;
-    get prop5(){
-        return this._prop5;
-    }
-    set prop5(val){
-        this._prop5 = val;
-        this.onPropsChange();
-    }
-
-
-
-    _prop6: any | undefined;
-    get prop6(){
-        return this._prop5;
-    }
-    set prop6(val){
-        this._prop6 = val;
-        this.passDown();
-    }
-
-    _prop7: any | undefined;
-    get prop7(){
-        return this._prop7;
-    }
-    set prop7(val){
-        this._prop7 = val;
-        this.passDown();
-    }
+    // _prop5: any | undefined;
+    // get prop5(){
+    //     return this._prop5;
+    // }
+    // set prop5(val){
+    //     this._prop5 = val;
+    //     this.onPropsChange();
+    // }
 
 
-    _propProxyMap: object | undefined;
-    get propProxyMap(){
-        return this._propProxyMap;
-    }
-    set propProxyMap(val){
-        this._propProxyMap = val;
-        this.onPropsChange();
-    }
+
+    // _prop6: any | undefined;
+    // get prop6(){
+    //     return this._prop5;
+    // }
+    // set prop6(val){
+    //     this._prop6 = val;
+    //     this.passDown();
+    // }
+
+    // _prop7: any | undefined;
+    // get prop7(){
+    //     return this._prop7;
+    // }
+    // set prop7(val){
+    //     this._prop7 = val;
+    //     this.passDown();
+    // }
+
+
+    // _propProxyMap: object | undefined;
+    // get propProxyMap(){
+    //     return this._propProxyMap;
+    // }
+    // set propProxyMap(val){
+    //     this._propProxyMap = val;
+    //     this.onPropsChange();
+    // }
 
     disconnect(){
         if(this._navDown)  this._navDown.disconnect();
