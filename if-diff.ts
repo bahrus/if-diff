@@ -35,13 +35,21 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
 
     static is = 'if-diff';
 
-    static attributeProps = ({byos, lhs, rhs, equals, not_equals, disabled, enable, dataKeyName, m}: IfDiff) => ({
-        boolean: ['if', byos, equals, not_equals, disabled],
-        string: [enable, dataKeyName],
-        numeric: [m],
-        object: [lhs, rhs],
-        parsedObject: [lhs, rhs]
-    }) as AttributeProps;
+    static attributeProps = ({byos, lhs, rhs, equals, not_equals, disabled, enable, dataKeyName, m}: IfDiff) =>{
+        const bool = ['if', byos, equals, not_equals, disabled];
+        const str = [enable, dataKeyName];
+        const numeric = [m];
+        const object = [lhs, rhs];
+        const refl = [...bool, ...str, ...numeric, ...object];
+        return {
+            boolean: bool,
+            string: str,
+            numeric: numeric,
+            object: object,
+            parsedObject: object,
+            reflect: refl
+        } as AttributeProps;
+    }
 
     /**
      * Bring your own style.  If false (default), the if-diff adds a style to set target element's display to none when test fails.
