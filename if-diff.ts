@@ -38,16 +38,16 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
     static attributeProps = ({byos, lhs, rhs, equals, not_equals, disabled, enable, dataKeyName, m}: IfDiff) =>{
         const bool = ['if', byos, equals, not_equals, disabled];
         const str = [enable, dataKeyName];
-        const numeric = [m];
-        const object = [lhs, rhs];
-        const refl = [...bool, ...str, ...numeric, ...object];
+        const num = [m];
+        const obj = [lhs, rhs];
+        const reflect = [...bool, ...str, ...num, ...obj];
         return {
-            boolean: bool,
-            string: str,
-            numeric: numeric,
-            object: object,
-            parsedObject: object,
-            reflect: refl
+            bool,
+            str,
+            num,
+            obj,
+            jsonProp: obj,
+            reflect
         } as AttributeProps;
     }
 
