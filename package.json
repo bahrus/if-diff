@@ -1,12 +1,12 @@
 {
   "dependencies": {
     "trans-render": "0.0.182",
-    "xtal-element": "0.0.156"
+    "xtal-element": "0.0.159"
   },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "2.4.3",
     "xtal-test": "0.0.44",
-    "p-et-alia": "0.0.79",
+    "p-et-alia": "0.0.80",
     "es-module-shims": "0.4.6"
   },
   "name": "if-diff",
