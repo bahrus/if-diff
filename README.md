@@ -45,6 +45,7 @@ Rules:
 5.  If *if-diff* encounters a data-* value of "0", this signifies there's exactly one template inside the DOM element, which needs cloning before changing to "1".  It will leave the template untouched if the condition is not satisfied.  This allows for lazy loading, especially if combined with a dynamic loader, like [xtal-sip](https://github.com/bahrus/xtal-sip).
 6.  The "if" attribute / property is actually an active participant in the logical evaluation.  If that attribute / property is false, then the evaluation will be false no matter what.  And as the demo below indicates, not_equals is also supported.
 
+<iframe src="demo/cdn.html"></iframe>
 
 ## Sample Usage
 
