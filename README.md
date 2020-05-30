@@ -48,13 +48,15 @@ Rules:
 
 ## Sample Usage
 
-```js
+```js script
 import 'https://unpkg.com/if-diff@0.0.50/if-diff.js?module';
 import 'https://unpkg.com/p-et-alia@0.0.86/p-d.js?module';
 ```
 
-```html
-<div>
+```js story
+export const usage = () => {
+  return html`
+  <div>
   <h3>Basic if-diff demo.</h3>
   <div> 
     Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
@@ -85,7 +87,11 @@ import 'https://unpkg.com/p-et-alia@0.0.86/p-d.js?module';
   LHS Doesn't equal RHS: <span data-lhs-not-equals-rhs></span>
 
 </div>
+  `;
+};
 ```
+
+
 
 ## Syntax
 
