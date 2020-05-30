@@ -6,8 +6,6 @@
 
 <img src="https://badgen.net/bundlephobia/minzip/if-diff">
 
-**NB** To see live demos, install [https://chrome.google.com/webstore/detail/mdjs-viewer/ifkkmomkjknligelmlcnakclabgohafe](the mdjs chrome extension)
-
 # \<if-diff\>
 
 \<if-diff\> is an alternative to Polymer's [dom-if](https://polymer-library.polymer-project.org/3.0/docs/devguide/templates#dom-if) element that allows comparison between two operands, as well as progressive enhancement.  See [if-else](https://github.com/matthewp/if-else) for another data-centric alternative.
@@ -45,66 +43,10 @@ Rules:
 5.  If *if-diff* encounters a data-* value of "0", this signifies there's exactly one template inside the DOM element, which needs cloning before changing to "1".  It will leave the template untouched if the condition is not satisfied.  This allows for lazy loading, especially if combined with a dynamic loader, like [xtal-sip](https://github.com/bahrus/xtal-sip).
 6.  The "if" attribute / property is actually an active participant in the logical evaluation.  If that attribute / property is false, then the evaluation will be false no matter what.  And as the demo below indicates, not_equals is also supported.
 
-<iframe src="demo/cdn.html"></iframe>
 
-## Sample Usage
+## [Demo](https://jsfiddle.net/bahrus/w24t0ra1/)
 
-```js script
-import 'https://unpkg.com/if-diff@0.0.50/if-diff.js?module';
-import 'https://unpkg.com/p-et-alia@0.0.86/p-d.js?module';
-```
-
-```js story
-export const usage = () => {
-  return html`
-  <div>
-  <h3>Basic if-diff demo.</h3>
-  <div> 
-    Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
-  </div>
-  <label for=lhs>LHS:</label><input id=lhs> 
-  <p-d on=input to=[-lhs]  val=target.value m=2></p-d>
-  <label for=rhs>RHS:</label><input id=rhs>
-  <p-d on=input to=[-rhs]  val=target.value m=2></p-d>
-  <if-diff if -lhs equals -rhs data-key-name=equals></if-diff>
-  <p-d on=value-changed to=[data-lhs-equals-rhs] prop=textContent value=target.value></p-d>
-  <div data-equals=0 id=equalsStatus>
-      <template>
-        <div>LHS == RHS</div>
-      </template>
-  </div>
-
-  <if-diff if -lhs not_equals -rhs data-key-name=notEquals></if-diff>
-  <p-d on=value-changed to=[data-lhs-not-equals-rhs] prop=textContent></p-d>
-  <div data-not-equals=0>
-      <template>
-          <div>LHS != RHS</div>
-      </template>       
-  </div>
-
-  
-
-  LHS Equals RHS: <span data-lhs-equals-rhs></span><br>
-  LHS Doesn't equal RHS: <span data-lhs-not-equals-rhs></span>
-
-</div>
-  `;
-};
-```
-
-
-
-## Syntax
-
-<!--
-```
-<custom-element-demo>
-<template>
-    <iframe src=https://bahrus.github.io/wc-info/syntax.html?npmPackage=if-diff style="width:100%;border:none;height:600px"></iframe>
-</template>
-</custom-element-demo>
-```
--->
+## [Syntax](https://bahrus.github.io/api-viewer/index.html?npmPackage=if-diff)
 
 ## Commonality with p-et-alia (a kind of dom-bind alternative)
 

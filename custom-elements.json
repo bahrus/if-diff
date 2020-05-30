@@ -3,6 +3,7 @@
   "tags": [
     {
       "name": "if-diff-then-stiff",
+      "path": "./if-diff-then-stiff.js",
       "description": "Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.\nDOM deletion takes place on non matching elements.",
       "attributes": [
         {
@@ -31,6 +32,11 @@
           "type": "boolean"
         },
         {
+          "name": "includes",
+          "description": "For strings, this means lhs.indexOf(rhs) > -1\r\nFor arrays, this means lhs intersect rhs = rhs\r\nFor numbers, this means lhs >= rhs\r\nFor objects, this means all the properties of rhs match the same properties of lhs",
+          "type": "boolean"
+        },
+        {
           "name": "data-key-name",
           "description": "Name of dataset key to set to 1 if true and -1 if false, if dataset key is present",
           "type": "string"
@@ -78,6 +84,12 @@
           "type": "boolean"
         },
         {
+          "name": "includes",
+          "attribute": "includes",
+          "description": "For strings, this means lhs.indexOf(rhs) > -1\r\nFor arrays, this means lhs intersect rhs = rhs\r\nFor numbers, this means lhs >= rhs\r\nFor objects, this means all the properties of rhs match the same properties of lhs",
+          "type": "boolean"
+        },
+        {
           "name": "enable",
           "description": "css selector of children of matching element  to remove disabled attribute",
           "type": "string"
@@ -95,38 +107,25 @@
         },
         {
           "name": "value",
-          "type": "boolean"
-        },
-        {
-          "name": "prop1"
-        },
-        {
-          "name": "prop2"
-        },
-        {
-          "name": "prop3"
-        },
-        {
-          "name": "prop4"
-        },
-        {
-          "name": "prop5"
-        },
-        {
-          "name": "prop6"
-        },
-        {
-          "name": "prop7"
-        },
-        {
-          "name": "propProxyMap",
-          "type": "object | undefined"
+          "description": "Computed based on values of  if / equals / not_equals / includes",
+          "type": "boolean",
+          "default": "false"
         },
         {
           "name": "evCount",
           "description": "Tracks how many times each event type was called.",
           "type": "{ [key: string]: number; }",
           "default": "{}"
+        },
+        {
+          "name": "self",
+          "type": "this",
+          "default": "\"this\""
+        },
+        {
+          "name": "propActions",
+          "type": "PropAction<HTMLElement>[]",
+          "default": "[null]"
         },
         {
           "name": "disabled",
@@ -138,33 +137,9 @@
     },
     {
       "name": "if-diff",
+      "path": "./if-diff.js",
       "description": "Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.\nNo DOM deletion takes place on non matching elements.\n[More Info](https://github.com/bahrus/if-diff)",
       "attributes": [
-        {
-          "name": "if",
-          "description": "Boolean property / attribute -- must be true to pass test(s)",
-          "type": "boolean"
-        },
-        {
-          "name": "lhs",
-          "description": "LHS Operand."
-        },
-        {
-          "name": "rhs",
-          "description": "RHS Operand."
-        },
-        {
-          "name": "equals",
-          "description": "lhs must equal rhs to pass tests."
-        },
-        {
-          "name": "not-equals",
-          "description": "lhs must not equal rhs to pass tests."
-        },
-        {
-          "name": "data-key-name",
-          "description": "Name of dataset key to set to 1 if true and -1 if false, if dataset key is present"
-        },
         {
           "name": "disabled",
           "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
@@ -173,81 +148,22 @@
       ],
       "properties": [
         {
-          "name": "byos",
-          "description": "Bring your own style.  If false (default), the if-diff adds a style to set target element's display to none when test fails.",
-          "type": "boolean"
-        },
-        {
-          "name": "if",
-          "attribute": "if",
-          "description": "Boolean property / attribute -- must be true to pass test(s)",
-          "type": "boolean"
-        },
-        {
-          "name": "lhs",
-          "attribute": "lhs",
-          "description": "LHS Operand."
-        },
-        {
-          "name": "rhs",
-          "attribute": "rhs",
-          "description": "RHS Operand."
-        },
-        {
-          "name": "equals",
-          "attribute": "equals",
-          "description": "lhs must equal rhs to pass tests."
-        },
-        {
-          "name": "not_equals",
-          "attribute": "not-equals",
-          "description": "lhs must not equal rhs to pass tests."
-        },
-        {
-          "name": "enable",
-          "description": "css selector of children of matching element  to remove disabled attribute"
-        },
-        {
-          "name": "dataKeyName",
-          "attribute": "data-key-name",
-          "description": "Name of dataset key to set to 1 if true and -1 if false, if dataset key is present"
-        },
-        {
-          "name": "m",
-          "description": "Maximum number of elements that are effected by condition."
-        },
-        {
           "name": "value"
-        },
-        {
-          "name": "prop1"
-        },
-        {
-          "name": "prop2"
-        },
-        {
-          "name": "prop3"
-        },
-        {
-          "name": "prop4"
-        },
-        {
-          "name": "prop5"
-        },
-        {
-          "name": "prop6"
-        },
-        {
-          "name": "prop7"
-        },
-        {
-          "name": "propProxyMap"
         },
         {
           "name": "evCount",
           "description": "Tracks how many times each event type was called.",
           "type": "{ [key: string]: number; }",
           "default": "{}"
+        },
+        {
+          "name": "self",
+          "type": "this",
+          "default": "\"this\""
+        },
+        {
+          "name": "propActions",
+          "type": "PropAction<HTMLElement>[] | undefined"
         },
         {
           "name": "disabled",
