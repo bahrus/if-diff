@@ -154,9 +154,8 @@ The enable attribute will cause if-diff to find all elements matching the enable
 
 ### Prop Passing
 
-More info on this for a later version.
+More info on this in a later version.
 
-<!--
 ### Put to sleep mode
 
 What if you need to deal with removing lots of DOM elements from view on a low memory device? 
@@ -165,7 +164,7 @@ So now, in order to free up memory for new DOM elements that need to display, we
 
 A different element supports this harsh environment -- if-diff-then-stiff, a riff on a [gif](http://maryroach.net/stiff.html)
 
-The problem is, how can we restore / reincarnate the content from the dead, including its current state of properties / attributes, when time once again fails to freeze at Sunday midnight? There are no "serializeThis", "deserializeThat" functions available in the DOM API, like there is for JSON.
+The problem is, how can we restore / reincarnate the content from the dead, including its current state of properties / attributes, when time once again fails to freeze at Sunday midnight? There are no "serializeThis", "deserializeThat" functions available in the DOM API, like there is for JS Objects <=> JSON.
 
 Aha!  I can sense you glibly thinking via the Force.  
 
@@ -174,7 +173,12 @@ Aha!  I can sense you glibly thinking via the Force.
 But if the purpose of this whole exercise is to reduce memory, isn't that almost defeating the purpose?  Granted, JavaScript objects often take up less memory than DOM elements, but now you have to hold on to both (more or less).
 
 if-diff-then-stiff argues "Why would you store state of these snuffed out DOM elements in the extremely limited RAM, leaving less room for keeping additional DOM in memory?  That seems incredibly cruel. Why not store the 'state' in out-of-RAM storage areas, such as history.state (at least past states), a remote store, IndexedDB, or SessionStorage?"  
--->
+
+### 
+
+```html
+<if-x if history with-path  includes >
+```
 
 ## Viewing Your Element Locally
 
