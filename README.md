@@ -174,11 +174,7 @@ But if the purpose of this whole exercise is to reduce memory, isn't that almost
 
 if-diff-then-stiff argues "Why would you store state of these snuffed out DOM elements in the extremely limited RAM, leaving less room for keeping additional DOM in memory?  That seems incredibly cruel. Why not store the 'state' in out-of-RAM storage areas, such as history.state (at least past states), a remote store, IndexedDB, or SessionStorage?"  
 
-### 
 
-```html
-<if-x if history with-path  includes >
-```
 
 ## Viewing Your Element Locally
 
