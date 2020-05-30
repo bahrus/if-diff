@@ -10,15 +10,6 @@
   </head>
   <body>
     <div>
-      <xtal-sip><script nomodule>["p-d", "if-diff"]</script></xtal-sip>
-      <style>
-        [data-equals="-1"]{
-          display: none;
-        }
-        [data-not-equals="-1"]{
-          display: none;
-        }
-      </style>
       <h3>Basic if-diff demo.</h3>
       <div> 
         Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
@@ -49,24 +40,8 @@
       LHS Doesn't equal RHS: <span data-lhs-not-equals-rhs></span>
 
       <!-- ========================  Script Refs ========================== -->
-
-
-      <!-- Use experimental import maps -->
-      <script defer src="https://cdn.jsdelivr.net/npm/es-module-shims@0.2.0/dist/es-module-shims.js"></script>
-      <script type="importmap-shim">
-        {
-          "imports": {
-            "xtal-sip":             "https://cdn.jsdelivr.net/npm/xtal-sip@0.0.90/xtal-sip.js",
-            "xtal-element/":        "https://cdn.jsdelivr.net/npm/xtal-element@0.0.59/",
-            "trans-render/":        "https://cdn.jsdelivr.net/npm/trans-render@0.0.111/",
-            "p-d":                  "https://cdn.jsdelivr.net/npm/p-et-alia@0.0.6/p-d.js",
-            "if-diff":              "https://cdn.jsdelivr.net/npm/if-diff@0.0.30/if-diff.js"
-          }
-        }
-        </script>
-      <script  type="module-shim">
-        import 'xtal-sip';
-      </script>
+      <script type=module src=https://unpkg.com/if-diff@0.0.50/if-diff.js?module></script>
+      <script type=module src=https://unpkg.com/p-et-alia@0.0.86/p-d.js?module></script>
     </div>
   </body>
 </html>

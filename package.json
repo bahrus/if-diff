@@ -7,7 +7,9 @@
     "@webcomponents/webcomponentsjs": "2.4.3",
     "xtal-test": "0.0.44",
     "p-et-alia": "0.0.86",
-    "es-module-shims": "0.4.6"
+    "es-module-shims": "0.4.6",
+    "es-dev-server": "1.50.6",
+    "@mdjs/core": "0.3.2"
   },
   "name": "if-diff",
   "version": "0.0.50",
@@ -20,6 +22,7 @@
   "scripts": {
     "test": "node test/test-all.js",
     "serve": "node node_modules/xtal-test/serve.js",
+    "start": "es-dev-server",
     "doc": "wca analyze if-*.js --outFile custom-elements.json"
   }
 }

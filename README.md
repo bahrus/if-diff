@@ -6,6 +6,7 @@
 
 <img src="https://badgen.net/bundlephobia/minzip/if-diff">
 
+**NB** To see live demos, install [https://chrome.google.com/webstore/detail/mdjs-viewer/ifkkmomkjknligelmlcnakclabgohafe](the mdjs chrome extension)
 
 # \<if-diff\>
 
@@ -44,73 +45,47 @@ Rules:
 5.  If *if-diff* encounters a data-* value of "0", this signifies there's exactly one template inside the DOM element, which needs cloning before changing to "1".  It will leave the template untouched if the condition is not satisfied.  This allows for lazy loading, especially if combined with a dynamic loader, like [xtal-sip](https://github.com/bahrus/xtal-sip).
 6.  The "if" attribute / property is actually an active participant in the logical evaluation.  If that attribute / property is false, then the evaluation will be false no matter what.  And as the demo below indicates, not_equals is also supported.
 
-<!--
+
+## Sample Usage
+
+```js
+import 'https://unpkg.com/if-diff@0.0.50/if-diff.js?module';
+import 'https://unpkg.com/p-et-alia@0.0.86/p-d.js?module';
 ```
-<custom-element-demo>
-  <template>
-    <div>
-      <xtal-sip><script nomodule>["p-d", "if-diff"]</script></xtal-sip>
-      <style>
-        [data-equals="-1"]{
-          display: none;
-        }
-        [data-not-equals="-1"]{
-          display: none;
-        }
-      </style>
-      <h3>Basic if-diff demo.</h3>
-      <div> 
-        Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
-      </div>
-      <label for=lhs>LHS:</label><input id=lhs> 
-      <p-d on=input to=[-lhs]  val=target.value m=2></p-d>
-      <label for=rhs>RHS:</label><input id=rhs>
-      <p-d on=input to=[-rhs]  val=target.value m=2></p-d>
-      <if-diff if -lhs equals -rhs data-key-name=equals></if-diff>
-      <p-d on=value-changed to=[data-lhs-equals-rhs] prop=textContent value=target.value></p-d>
-      <div data-equals=0 id=equalsStatus>
-          <template>
-            <div>LHS == RHS</div>
-          </template>
-      </div>
 
-      <if-diff if -lhs not_equals -rhs data-key-name=notEquals></if-diff>
-      <p-d on=value-changed to=[data-lhs-not-equals-rhs] prop=textContent></p-d>
-      <div data-not-equals=0>
-          <template>
-              <div>LHS != RHS</div>
-          </template>       
-      </div>
+```html
+<div>
+  <h3>Basic if-diff demo.</h3>
+  <div> 
+    Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
+  </div>
+  <label for=lhs>LHS:</label><input id=lhs> 
+  <p-d on=input to=[-lhs]  val=target.value m=2></p-d>
+  <label for=rhs>RHS:</label><input id=rhs>
+  <p-d on=input to=[-rhs]  val=target.value m=2></p-d>
+  <if-diff if -lhs equals -rhs data-key-name=equals></if-diff>
+  <p-d on=value-changed to=[data-lhs-equals-rhs] prop=textContent value=target.value></p-d>
+  <div data-equals=0 id=equalsStatus>
+      <template>
+        <div>LHS == RHS</div>
+      </template>
+  </div>
 
-      
+  <if-diff if -lhs not_equals -rhs data-key-name=notEquals></if-diff>
+  <p-d on=value-changed to=[data-lhs-not-equals-rhs] prop=textContent></p-d>
+  <div data-not-equals=0>
+      <template>
+          <div>LHS != RHS</div>
+      </template>       
+  </div>
 
-      LHS Equals RHS: <span data-lhs-equals-rhs></span><br>
-      LHS Doesn't equal RHS: <span data-lhs-not-equals-rhs></span>
+  
 
-      <!-- ========================  Script Refs ========================== -->
+  LHS Equals RHS: <span data-lhs-equals-rhs></span><br>
+  LHS Doesn't equal RHS: <span data-lhs-not-equals-rhs></span>
 
-
-      <!-- Use experimental import maps -->
-      <script defer src="https://cdn.jsdelivr.net/npm/es-module-shims@0.2.0/dist/es-module-shims.js"></script>
-      <script type="importmap-shim">
-        {
-          "imports": {
-            "xtal-sip":             "https://cdn.jsdelivr.net/npm/xtal-sip@0.0.90/xtal-sip.js",
-            "xtal-element/":        "https://cdn.jsdelivr.net/npm/xtal-element@0.0.59/",
-            "trans-render/":        "https://cdn.jsdelivr.net/npm/trans-render@0.0.111/",
-            "p-d":                  "https://cdn.jsdelivr.net/npm/p-et-alia@0.0.6/p-d.js",
-            "if-diff":              "https://cdn.jsdelivr.net/npm/if-diff@0.0.30/if-diff.js"
-          }
-        }
-        </script>
-      <script  type="module-shim">
-        import 'xtal-sip';
-      </script>
-    </div>
-  </template>
-</custom-element-demo>
+</div>
 ```
--->  
 
 ## Syntax
 
