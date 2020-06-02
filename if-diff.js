@@ -61,7 +61,7 @@ let IfDiff = /** @class */ (() => {
         onPropsChange(name) {
             super.onPropsChange(name);
             if (name === 'if')
-                this._debouncer();
+                this.debouncer();
         }
         loadTemplate(el, dataKeyName) {
             const tmpl = el.querySelector('template');

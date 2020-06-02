@@ -1,6 +1,6 @@
 import {XtallatX, define, camelToLisp} from 'xtal-element/xtal-latx.js';
 import {PropAction} from 'xtal-element/types.d.js';
-import {disabled, hydrate} from 'trans-render/hydrate.js';
+import {hydrate} from 'trans-render/hydrate.js';
 import {debounce} from 'xtal-element/debounce.js';
 import {NavDown} from 'xtal-element/NavDown.js';
 import {insertAdjacentTemplate} from 'trans-render/insertAdjacentTemplate.js';
@@ -151,7 +151,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
 
     onPropsChange(name: string){
         super.onPropsChange(name);
-        if(name === 'if') this._debouncer();
+        if(name === 'if') this.debouncer();
     }
 
     loadTemplate(el: Element, dataKeyName: string){
