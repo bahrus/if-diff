@@ -103,12 +103,18 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
     value: boolean = false;
 
     _debouncer!: any;
+    get debouncer(){
+        if(this._debouncer === undefined){
+            this._debouncer = debounce((getNew: boolean = false) => {
+                this.evaluateAndPassDown();
+            }, 16);
+        }
+        return this._debouncer;
+    }
+
 
     connectedCallback(){
         this.style.display = 'none';
-        this._debouncer = debounce((getNew: boolean = false) => {
-            this.evaluateAndPassDown();
-        }, 16);
         super.connectedCallback();
         if(!this.byos){
             const style = document.createElement('style');
@@ -137,7 +143,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
 
     propActions = [
         ({lhs, equals, rhs, not_equals, includes, disabled}: IfDiff) =>{
-            this._debouncer();
+            this.debouncer();
         }
     ] as PropAction[];
 
@@ -145,7 +151,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
 
     onPropsChange(name: string){
         super.onPropsChange(name);
-        if(name === 'if' && this._debouncer) this._debouncer();
+        if(name === 'if') this._debouncer();
     }
 
     loadTemplate(el: Element, dataKeyName: string){

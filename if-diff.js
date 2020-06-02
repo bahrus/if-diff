@@ -19,16 +19,21 @@ let IfDiff = /** @class */ (() => {
             this.value = false;
             this.propActions = [
                 ({ lhs, equals, rhs, not_equals, includes, disabled }) => {
-                    this._debouncer();
+                    this.debouncer();
                 }
             ];
             this._navDown = null;
         }
+        get debouncer() {
+            if (this._debouncer === undefined) {
+                this._debouncer = debounce((getNew = false) => {
+                    this.evaluateAndPassDown();
+                }, 16);
+            }
+            return this._debouncer;
+        }
         connectedCallback() {
             this.style.display = 'none';
-            this._debouncer = debounce((getNew = false) => {
-                this.evaluateAndPassDown();
-            }, 16);
             super.connectedCallback();
             if (!this.byos) {
                 const style = document.createElement('style');
@@ -55,7 +60,7 @@ let IfDiff = /** @class */ (() => {
         }
         onPropsChange(name) {
             super.onPropsChange(name);
-            if (name === 'if' && this._debouncer)
+            if (name === 'if')
                 this._debouncer();
         }
         loadTemplate(el, dataKeyName) {
