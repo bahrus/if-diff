@@ -55,7 +55,7 @@ let IfDiff = /** @class */ (() => {
         }
         onPropsChange(name) {
             super.onPropsChange(name);
-            if (name === 'if')
+            if (name === 'if' && this._debouncer)
                 this._debouncer();
         }
         loadTemplate(el, dataKeyName) {

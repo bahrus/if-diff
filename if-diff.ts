@@ -145,7 +145,7 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
 
     onPropsChange(name: string){
         super.onPropsChange(name);
-        if(name === 'if') this._debouncer();
+        if(name === 'if' && this._debouncer) this._debouncer();
     }
 
     loadTemplate(el: Element, dataKeyName: string){
