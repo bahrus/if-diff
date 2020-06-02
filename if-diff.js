@@ -97,10 +97,7 @@ let IfDiff = /** @class */ (() => {
                 this.do(el, ds, val, dataKeyName);
             });
         }
-        async evaluateAndPassDown() {
-            if (this._disabled) {
-                return;
-            }
+        async evaluate() {
             let val = this.if;
             if (val) {
                 if (this.equals || this.not_equals) {
@@ -119,6 +116,13 @@ let IfDiff = /** @class */ (() => {
                     val = includes(this.lhs, this.rhs);
                 }
             }
+            return val;
+        }
+        async evaluateAndPassDown() {
+            if (this.disabled) {
+                return;
+            }
+            let val = await this.evaluate();
             if (this.value === val)
                 return;
             this.value = val;

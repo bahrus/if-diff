@@ -41,7 +41,7 @@ Rules:
 3.  Speaking of which, the optional  m attribute indicates the maximum number of elements that are getting affected by the *if-diff* tag.  Placing the *if-diff* element right above the element(s) it affects, and specifying "m" accurately, will improve performance and help reduce greenhouse emissions.
 4.  *if-diff* sets the data-* attribute to "1" when the condition is true, "-1" if not.  It is up to the application's css styling to interpret how this should display.
 5.  If *if-diff* encounters a data-* value of "0", this signifies there's exactly one template inside the DOM element, which needs cloning before changing to "1".  It will leave the template untouched if the condition is not satisfied.  This allows for lazy loading, especially if combined with a dynamic loader, like [xtal-sip](https://github.com/bahrus/xtal-sip).
-6.  The "if" attribute / property is actually an active participant in the logical evaluation.  If that attribute / property is false, then the evaluation will be false no matter what.  And as the demo below indicates, not_equals is also supported.
+6.  The "if" attribute / property is actually an active participant in the logical evaluation.  If that attribute / property is false, then the evaluation will be false no matter what.  And as the demo below indicates, not_equals is also supported, as is "includes."  Additional / alternative evaluation logic can be inserted by overriding method async evaluate();
 
 
 ## [Demo](https://jsfiddle.net/bahrus/w24t0ra1/)
