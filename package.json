@@ -12,7 +12,7 @@
     "@mdjs/core": "0.3.2"
   },
   "name": "if-diff",
-  "version": "0.0.52",
+  "version": "0.0.53",
   "description": "Alternative to Polymer's dom-if that allows comparing two properties rather than just binding to a single boolean property",
   "main": "if-diff.js",
   "module": "if-diff.js",
