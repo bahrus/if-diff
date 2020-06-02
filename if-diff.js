@@ -55,7 +55,7 @@ let IfDiff = /** @class */ (() => {
         }
         onPropsChange(name) {
             super.onPropsChange(name);
-            if (name === 'if' && this.isConnected)
+            if (name === 'if' && this._debouncer !== undefined)
                 this._debouncer();
         }
         loadTemplate(el, dataKeyName) {
