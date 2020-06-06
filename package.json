@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "trans-render": "0.0.184",
-    "xtal-element": "0.0.183"
+    "trans-render": "0.0.186",
+    "xtal-element": "0.0.190"
   },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "2.4.3",
