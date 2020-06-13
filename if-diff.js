@@ -1,3 +1,16 @@
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
 import { XtallatX, define, camelToLisp } from 'xtal-element/xtal-latx.js';
 import { hydrate } from 'trans-render/hydrate.js';
 import { debounce } from 'xtal-element/debounce.js';
@@ -10,6 +23,7 @@ import { insertAdjacentTemplate } from 'trans-render/insertAdjacentTemplate.js';
  * @element if-diff
  */
 let IfDiff = /** @class */ (() => {
+    var _debouncer;
     class IfDiff extends XtallatX(hydrate(HTMLElement)) {
         constructor() {
             super(...arguments);
@@ -17,20 +31,21 @@ let IfDiff = /** @class */ (() => {
              * Computed based on values of  if / equals / not_equals / includes
              */
             this.value = false;
+            _debouncer.set(this, void 0);
             this.propActions = [
                 ({ lhs, equals, rhs, not_equals, includes, disabled }) => {
-                    this.debouncer();
+                    this.queueEval();
                 }
             ];
             this._navDown = null;
         }
-        get debouncer() {
-            if (this._debouncer === undefined) {
-                this._debouncer = debounce((getNew = false) => {
+        get queueEval() {
+            if (__classPrivateFieldGet(this, _debouncer) === undefined) {
+                __classPrivateFieldSet(this, _debouncer, debounce((getNew = false) => {
                     this.evaluateAndPassDown();
-                }, 16);
+                }, 16));
             }
-            return this._debouncer;
+            return __classPrivateFieldGet(this, _debouncer);
         }
         connectedCallback() {
             this.style.display = 'none';
@@ -61,7 +76,7 @@ let IfDiff = /** @class */ (() => {
         onPropsChange(name) {
             super.onPropsChange(name);
             if (name === 'if')
-                this.debouncer();
+                this.queueEval();
         }
         loadTemplate(el, dataKeyName) {
             const tmpl = el.querySelector('template');
@@ -150,6 +165,7 @@ let IfDiff = /** @class */ (() => {
                 this._navDown.disconnect();
         }
     }
+    _debouncer = new WeakMap();
     IfDiff.is = 'if-diff';
     IfDiff.attributeProps = ({ byos, lhs, rhs, equals, not_equals, disabled, enable, dataKeyName, m, value }) => {
         const bool = ['if', byos, equals, not_equals, disabled];
