@@ -18,3 +18,11 @@ export interface IfDiffProps extends Partial<HTMLElement>{
     // propProxyMap: object | undefined,
     byos: boolean,
 }
+
+export interface IfDiffEventNameMap {
+    'template-cloned': TemplateClonedDetail;
+}
+
+export interface TemplateClonedDetail {
+    clonedTemplate: DocumentFragment;
+}

@@ -1,10 +1,10 @@
-import {XtallatX, define, camelToLisp} from 'xtal-element/xtal-latx.js';
+import {XtallatX, define, camelToLisp, de} from 'xtal-element/xtal-latx.js';
 import {PropAction} from 'xtal-element/types.d.js';
 import {hydrate} from 'trans-render/hydrate.js';
 import {debounce} from 'xtal-element/debounce.js';
 import {NavDown} from 'xtal-element/NavDown.js';
 import {insertAdjacentTemplate} from 'trans-render/insertAdjacentTemplate.js';
-import {IfDiffProps} from 'types.d.js';
+import {IfDiffProps, IfDiffEventNameMap, TemplateClonedDetail} from 'types.d.js';
 import {AttributeProps} from 'xtal-element/types.d.js';
 
 
@@ -162,7 +162,13 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
             }, 50);
             return;
         }
-        const insertedElements = insertAdjacentTemplate(tmpl, el, 'afterend');
+
+        const insertedElements = insertAdjacentTemplate(tmpl, el, 'afterend', clone => {
+            const detail = {
+                clonedTemplate: clone
+            } as TemplateClonedDetail;
+            this.emit('template-cloned', detail);
+        });
         insertedElements.forEach(child =>{
             (<HTMLElement>child).dataset[dataKeyName] = '1';
         })
@@ -185,7 +191,14 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
         }
 
     }
-    
+   /**
+   * All events emitted pass through this method
+   * @param evt 
+   */
+    emit<K extends keyof IfDiffEventNameMap>(type: K,  detail: IfDiffEventNameMap[K]){
+        this[de](type, detail, true);
+    }
+
     tagMatches(nd: NavDown){
         const matches = nd.matches;
         this.attr('mtch', matches.length.toString());
@@ -245,3 +258,9 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
 
 }
 define(IfDiff);
+
+declare global {
+    interface HTMLElementTagNameMap {
+        "if-diff": IfDiff,
+    }
+}
