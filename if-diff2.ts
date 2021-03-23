@@ -20,6 +20,15 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
         xc.hydrate(this, slicedPropDefs);
     }
 
+    disconnectedCallback(){
+        if(this.lhsLazyMt && this.rhsLazyMt){
+            const range = document.createRange();
+            range.setStart(this.lhsLazyMt, 0);
+            range.setEnd(this.rhsLazyMt, 0);
+            range.deleteContents();
+        }
+    }
+
     onPropChange(n: string, propDef: PropDef, newVal: any){
         this.reactor.addToQueue(propDef, newVal);
     }
