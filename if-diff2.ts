@@ -26,11 +26,6 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
 
     disabled: boolean | undefined;
 
-    /**
-     * Boolean property / attribute -- must be true to pass test(s)
-     * @attr
-     */
-    if: boolean | undefined;
 
 
     /**
@@ -75,10 +70,88 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
      * Computed based on values of  if / equals / not_equals / includes 
      */
     value: boolean = false;
+
+    lhsLazyMt: any | undefined;
+
+    rhsLazyMt: any | undefined;
+
+    _if: boolean | undefined;
+    /**
+     * Boolean property / attribute -- must be true to pass test(s)
+     * @attr
+     */
+    get if(){
+        return !!this._if;
+    }
+    set if(val){
+        this._if = val;
+        linkValue(this);
+    }
+
+}
+
+
+const linkValue = ({lhs, equals, rhs, notEquals, includes, disabled, self}: IfDiff) => {
+    if(disabled) return;
+    evaluate(self);
+}
+
+async function evaluate(self: IfDiff){
+    let val = self.if;
+    if(val){
+        if(self.equals || self.notEquals){
+            let eq = false;
+            if(typeof self.lhs === 'object' && typeof self.rhs === 'object'){
+                const {compare} = await import('./compare.js');
+                eq = compare(self.lhs, self.rhs);
+            }else{
+                eq = self.lhs === self.rhs;
+            }
+            val = self.equals ? eq : !eq;
+        }else if(self.includes){
+            const {includes} = await import('./includes.js');
+            val = includes(self.lhs, self.rhs);
+        }
+    }
+    if(val !== self.value){
+        (<any>self)[slicedPropDefs!.propLookup!.value!.alias!] = val;
+    }
+    findTemplate(self);
+}
+
+function findTemplate(self: IfDiff){
+    if(self.lhsLazyMt !== undefined) return;
+    const templ = self.querySelector('template');
+    if(templ === null){
+        setTimeout(() => findTemplate(self), 50);
+        return;
+    }
+    createLazyMts(self, templ);
+}
+
+function createLazyMts(self: IfDiff, templ: HTMLTemplateElement){
+    const lhsLazyMt = document.createElement('lazy-mt') as ; //TODO provide type file for lazymt
+    lhsLazyMt.enter = true;
+    self.insertAdjacentElement('afterend', lhsLazyMt);
+    const rhsLazyMt = document.createElement('lazy-mt') as any;
+    rhsLazyMt.enter = true;
+    lhsLazyMt.insertAdjacentElement('afterend', rhsLazyMt);
+    self.lhsLazyMt = lhsLazyMt;
+    self.rhsLazyMt = rhsLazyMt;
+}
+
+const toggleMt = ({value, lhsLazyMt, rhsLazyMt}: IfDiff) => {
+    if(value){
+        lhsLazyMt.mount = true;
+        rhsLazyMt.mount = true;
+        lhsLazyMt.removeAttribute('hidden');
+    }else{
+        lhsLazyMt.setAttribute('hidden');
+    }
 }
 
 const propActions = [
-
+    linkValue, toggleMt
 ] as PropAction[];
 
 const baseProp: PropDef = {
@@ -90,6 +163,10 @@ const bool1: PropDef = {
     ...baseProp,
     type: Boolean,
 };
+// const bool2: PropDef = {
+//     ...bool1,
+//     stopReactionsIfFalsy: true,
+// }
 const str1: PropDef = {
     ...baseProp,
     type: String,
@@ -104,9 +181,14 @@ const obj2: PropDef = {
     type: Object,
     obfuscate: true
 }
+const obj3: PropDef = {
+    ...baseProp,
+    type: Object,
+    stopReactionsIfFalsy: true,
+}
 const propDefMap: PropDefMap<IfDiff> = {
     if: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
-    lhs: obj1, rhs: obj1, value: obj2,
+    lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 xc.letThereBeProps(IfDiff, slicedPropDefs, 'onPropChange');
