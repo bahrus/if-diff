@@ -10,14 +10,6 @@
   </head>
   <body>
     <div>
-      <!-- <style>
-        [data-equals="-1"]{
-          display: none;
-        }
-        [data-not-equals="-1"]{
-          display: none;
-        }
-      </style> -->
       <h3>Basic if-diff demo.</h3>
       <div> 
         Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
@@ -49,21 +41,18 @@
 
       <!-- ========================  Script Refs ========================== -->
 
-
-      <!-- Use experimental import maps -->
-      <script defer src="../node_modules/es-module-shims/dist/es-module-shims.js"></script>
-      <script type="importmap-shim">
+      <script type="importmap">
         {
           "imports": {
             "xtal-element/":        "../node_modules/xtal-element/",
-            "trans-render/":        "../node_modules/trans-render/"
+            "trans-render/":        "../node_modules/trans-render/",
+            "pass-down/":           "../node_modules/pass-down/"
           }
         }
         </script>
-      <script  type="module-shim">
+      <script  type="module">
         import '../if-diff-then-stiff.js';
       </script>
-      <script type="module" src="https://cdn.pika.dev/pass-down"></script>
     </div>
   </body>
 </html>
