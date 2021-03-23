@@ -12,10 +12,6 @@ export class IfDiff extends HTMLElement {
         this.self = this;
         this.propActions = propActions;
         this.reactor = new xc.Rx(this);
-        /**
-         * Computed based on values of  if / equals / not_equals / includes
-         */
-        this.value = false;
     }
     connectedCallback() {
         this.style.display = 'none';
@@ -32,26 +28,15 @@ export class IfDiff extends HTMLElement {
     onPropChange(n, propDef, newVal) {
         this.reactor.addToQueue(propDef, newVal);
     }
-    /**
-     * Boolean property / attribute -- must be true to pass test(s)
-     * @attr
-     */
-    get if() {
-        return !!this._if;
-    }
-    set if(val) {
-        this._if = val;
-        linkValue(this);
-    }
 }
 IfDiff.is = 'if-diff';
-const linkValue = ({ lhs, equals, rhs, notEquals, includes, disabled, self }) => {
+const linkValue = ({ iff, lhs, equals, rhs, notEquals, includes, disabled, self }) => {
     if (disabled)
         return;
     evaluate(self);
 };
 async function evaluate(self) {
-    let val = self.if;
+    let val = self.iff;
     if (val) {
         if (self.equals || self.notEquals) {
             let eq = false;
@@ -85,23 +70,27 @@ function findTemplate(self) {
     createLazyMts(self, templ);
 }
 function createLazyMts(self, templ) {
-    const lhsLazyMt = document.createElement('lazy-mt'); //TODO provide type file for lazymt
-    lhsLazyMt.enter = true;
+    const lhsLazyMt = document.createElement('lazy-mt');
+    const eLHS = lhsLazyMt;
+    lhsLazyMt.setAttribute('enter', '');
     self.insertAdjacentElement('afterend', lhsLazyMt);
+    eLHS.insertAdjacentElement('afterend', templ);
     const rhsLazyMt = document.createElement('lazy-mt');
-    rhsLazyMt.enter = true;
-    lhsLazyMt.insertAdjacentElement('afterend', rhsLazyMt);
+    rhsLazyMt.setAttribute('exit', '');
+    templ.insertAdjacentElement('afterend', rhsLazyMt);
     self.lhsLazyMt = lhsLazyMt;
     self.rhsLazyMt = rhsLazyMt;
 }
 const toggleMt = ({ value, lhsLazyMt, rhsLazyMt }) => {
     if (value) {
-        lhsLazyMt.mount = true;
-        rhsLazyMt.mount = true;
+        lhsLazyMt.setAttribute('mount', '');
+        rhsLazyMt.setAttribute('mount', '');
         lhsLazyMt.removeAttribute('hidden');
+        rhsLazyMt.removeAttribute('hidden');
     }
     else {
-        lhsLazyMt.setAttribute('hidden');
+        lhsLazyMt.setAttribute('hidden', '');
+        rhsLazyMt.setAttribute('hidden', '');
     }
 };
 const propActions = [
@@ -139,7 +128,7 @@ const obj3 = {
     stopReactionsIfFalsy: true,
 };
 const propDefMap = {
-    if: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
+    iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
     lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);

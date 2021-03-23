@@ -1,6 +1,7 @@
 import {xc, PropAction, PropDef, PropDefMap, ReactiveSurface} from 'xtal-element/lib/XtalCore.js';
 import {IfDiffProps} from './types.d.js';
 import('lazy-mt/lazy-mt.js');
+import {LazyMTProps} from 'lazy-mt/types.d.js';
 
 /**
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
@@ -78,35 +79,28 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
     /**
      * Computed based on values of  if / equals / not_equals / includes 
      */
-    value: boolean = false;
+    value: boolean | undefined;
 
-    lhsLazyMt: any | undefined;
+    lhsLazyMt: LazyMTProps | undefined;
 
-    rhsLazyMt: any | undefined;
+    rhsLazyMt: LazyMTProps | undefined;
 
-    _if: boolean | undefined;
     /**
      * Boolean property / attribute -- must be true to pass test(s)
      * @attr
      */
-    get if(){
-        return !!this._if;
-    }
-    set if(val){
-        this._if = val;
-        linkValue(this);
-    }
+    iff: boolean | undefined;
 
 }
 
 
-const linkValue = ({lhs, equals, rhs, notEquals, includes, disabled, self}: IfDiff) => {
+const linkValue = ({iff, lhs, equals, rhs, notEquals, includes, disabled, self}: IfDiff) => {
     if(disabled) return;
     evaluate(self);
 }
 
 async function evaluate(self: IfDiff){
-    let val = self.if;
+    let val = self.iff;
     if(val){
         if(self.equals || self.notEquals){
             let eq = false;
@@ -139,25 +133,31 @@ function findTemplate(self: IfDiff){
 }
 
 function createLazyMts(self: IfDiff, templ: HTMLTemplateElement){
-    const lhsLazyMt = document.createElement('lazy-mt') as ; //TODO provide type file for lazymt
-    lhsLazyMt.enter = true;
-    self.insertAdjacentElement('afterend', lhsLazyMt);
+    const lhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
+    const eLHS = lhsLazyMt as Element;
+    lhsLazyMt.setAttribute('enter', '');
+    self.insertAdjacentElement('afterend', lhsLazyMt as Element);
+    eLHS.insertAdjacentElement('afterend', templ);
     const rhsLazyMt = document.createElement('lazy-mt') as any;
-    rhsLazyMt.enter = true;
-    lhsLazyMt.insertAdjacentElement('afterend', rhsLazyMt);
+    rhsLazyMt.setAttribute('exit', '');
+    templ.insertAdjacentElement('afterend', rhsLazyMt);
     self.lhsLazyMt = lhsLazyMt;
     self.rhsLazyMt = rhsLazyMt;
 }
 
 const toggleMt = ({value, lhsLazyMt, rhsLazyMt}: IfDiff) => {
     if(value){
-        lhsLazyMt.mount = true;
-        rhsLazyMt.mount = true;
-        lhsLazyMt.removeAttribute('hidden');
+        lhsLazyMt!.setAttribute('mount', '');
+        rhsLazyMt!.setAttribute('mount', '');
+        lhsLazyMt!.removeAttribute('hidden');
+        rhsLazyMt!.removeAttribute('hidden');
     }else{
-        lhsLazyMt.setAttribute('hidden');
+        lhsLazyMt!.setAttribute('hidden', '');
+        rhsLazyMt!.setAttribute('hidden', '');
     }
 }
+
+
 
 const propActions = [
     linkValue, toggleMt
@@ -196,7 +196,7 @@ const obj3: PropDef = {
     stopReactionsIfFalsy: true,
 }
 const propDefMap: PropDefMap<IfDiff> = {
-    if: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
+    iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
     lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);

@@ -15,16 +15,16 @@
         Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
       </div>
       <label for=lhs>LHS:</label><input id=lhs> 
-      <p-d on=input to=[-lhs] val=target.value m=2></p-d>
+      <p-d on=input to=[-lhs] val=target.value m=2 init-val=value></p-d>
       <label for=rhs>RHS:</label><input id=rhs>
-      <p-d on=input to=[-rhs] val=target.value m=2></p-d>
-      <if-diff if -lhs equals -rhs>
+      <p-d on=input to=[-rhs] val=target.value m=2 init-val=value></p-d>
+      <if-diff iff -lhs equals -rhs>
           <template>
             <div>LHS == RHS</div>
           </template>
       </if-diff>
       <p-d on=value-changed to=[data-lhs-not-equals-rhs] prop=textContent></p-d>
-      <if-diff if -lhs not-equals -rhs>
+      <if-diff iff -lhs not-equals -rhs>
           <template>
             <div>LHS != RHS</div>
           </template>
@@ -42,7 +42,9 @@
             "xtal-element/":        "../node_modules/xtal-element/",
             "trans-render/":        "../node_modules/trans-render/",
             "pass-down/":           "../node_modules/pass-down/",
-            "lazy-mt/":             "../node_modules/lazy-mt/"
+            "lazy-mt/":             "../node_modules/lazy-mt/",
+            "on-to-me/":            "../node_modules/on-to-me/",
+            "mut-obs/":             "../node_modules/mut-obs/"
           }
         }
         </script>
