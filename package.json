@@ -1,15 +1,13 @@
 {
   "dependencies": {
     "lazy-mt": "0.0.1",
-    "trans-render": "0.0.258",
-    "xtal-element": "0.0.297"
+    "trans-render": "0.0.280",
+    "xtal-element": "0.0.367"
   },
   "devDependencies": {
-    "@mdjs/core": "0.3.2",
-    "@webcomponents/webcomponentsjs": "2.4.4",
+    "@mdjs/core": "^0.1.9",
     "es-dev-server": "1.57.4",
-    "es-module-shims": "0.5.2",
-    "p-et-alia": "0.0.115",
+    "pass-down": "0.0.14",
     "xtal-test": "0.0.50"
   },
   "name": "if-diff",

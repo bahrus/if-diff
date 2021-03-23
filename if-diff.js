@@ -12,7 +12,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return value;
 };
 var _debouncer;
-import { XtallatX, define, camelToLisp } from 'xtal-element/xtal-latx.js';
+import { XtallatX, define, camelToLisp, de } from 'xtal-element/xtal-latx.js';
 import { hydrate } from 'trans-render/hydrate.js';
 import { debounce } from 'xtal-element/debounce.js';
 import { NavDown } from 'xtal-element/NavDown.js';
@@ -85,7 +85,12 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
             }, 50);
             return;
         }
-        const insertedElements = insertAdjacentTemplate(tmpl, el, 'afterend');
+        const insertedElements = insertAdjacentTemplate(tmpl, el, 'afterend', clone => {
+            const detail = {
+                clonedTemplate: clone
+            };
+            this.emit('template-cloned', detail);
+        });
         insertedElements.forEach(child => {
             child.dataset[dataKeyName] = '1';
         });
@@ -105,6 +110,13 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
             const action = (val ? 'remove' : 'set') + 'Attribute';
             Array.from(el.querySelectorAll(this.enable)).concat(el).forEach(target => target[action]('disabled', ''));
         }
+    }
+    /**
+    * All events emitted pass through this method
+    * @param evt
+    */
+    emit(type, detail) {
+        this[de](type, detail, true);
     }
     tagMatches(nd) {
         const matches = nd.matches;
