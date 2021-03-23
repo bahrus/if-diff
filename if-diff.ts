@@ -259,8 +259,3 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
 }
 define(IfDiff);
 
-declare global {
-    interface HTMLElementTagNameMap {
-        "if-diff": IfDiff,
-    }
-}

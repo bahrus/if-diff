@@ -2,11 +2,9 @@ export interface IfDiffProps extends Partial<HTMLElement>{
     if?: boolean, 
     lhs?: boolean | string | number | object , 
     rhs?: boolean | string | number | object, 
-    setAttr? : string,
-    setClass? : string,
-    setPart?: string,
     equals?: boolean, 
-    notEquals?: boolean, 
+    notEquals?: boolean,
+    includes?: boolean,
     disabled?: boolean | number, 
 }
 

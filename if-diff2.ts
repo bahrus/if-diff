@@ -1,6 +1,13 @@
 import {xc, PropAction, PropDef, PropDefMap, ReactiveSurface} from 'xtal-element/lib/XtalCore.js';
 import {IfDiffProps} from './types.d.js';
+import('lazy-mt/lazy-mt.js');
 
+/**
+ * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
+ * No DOM deletion takes place on non matching elements.
+ * [More Info](https://github.com/bahrus/if-diff)
+ * @element if-diff
+ */
 export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface {
     static is = 'if-diff';
 
@@ -8,41 +15,47 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
     propActions = propActions;
     reactor = new xc.Rx(this);
 
-    /**
-     * Bring your own style.  If false (default), the if-diff adds a style to set target element's display to none when test fails.
-    */
-    byos!: boolean;
+    connectedCallback(){
+        this.style.display = 'none';
+        xc.hydrate(this, slicedPropDefs);
+    }
+
+    onPropChange(n: string, propDef: PropDef, newVal: any){
+        this.reactor.addToQueue(propDef, newVal);
+    }
+
+    disabled: boolean | undefined;
 
     /**
      * Boolean property / attribute -- must be true to pass test(s)
      * @attr
      */
-    if!: boolean;
+    if: boolean | undefined;
 
 
     /**
      * LHS Operand.
      * @attr
      */
-    lhs!: boolean | string | number | object;
+    lhs: boolean | string | number | object | undefined;
 
     /**
      * RHS Operand.
      * @attr
      */
-    rhs!: boolean | string | number | object;
+    rhs: boolean | string | number | object | undefined;
 
     /**
      * lhs must equal rhs to pass tests.
      * @attr
      */
-    equals!: boolean;
+    equals: boolean | undefined;
 
     /**
      * lhs must not equal rhs to pass tests.
      * @attr not-equals
      */
-    not_equals!: boolean;
+    notEquals: boolean | undefined;
 
     /**
      * For strings, this means lhs.indexOf(rhs) > -1
@@ -51,24 +64,12 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
      * For objects, this means all the properties of rhs match the same properties of lhs
      * @attr includes
      */
-    includes!: boolean; 
-
-    /**
-     * css selector of children of matching element  to remove disabled attribute
-     */
-    enable!: string;
-
-
-    /**
-     * Name of dataset key to set to 1 if true and -1 if false, if dataset key is present
-     * @attr data-key-name
-     */
-    dataKeyName!: string;
+    includes: boolean | undefined; 
 
     /**
      * Maximum number of elements that are effected by condition.
      */
-    m!: number;
+    m: number | undefined;
 
     /**
      * Computed based on values of  if / equals / not_equals / includes 
@@ -80,4 +81,39 @@ const propActions = [
 
 ] as PropAction[];
 
+const baseProp: PropDef = {
+    dry: true,
+    async: true,
+};
+
+const bool1: PropDef = {
+    ...baseProp,
+    type: Boolean,
+};
+const str1: PropDef = {
+    ...baseProp,
+    type: String,
+};
+const obj1: PropDef = {
+    ...baseProp,
+    type: Object,
+    parse: true,
+};
+const obj2: PropDef = {
+    ...baseProp,
+    type: Object,
+    obfuscate: true
+}
+const propDefMap: PropDefMap<IfDiff> = {
+    if: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
+    lhs: obj1, rhs: obj1, value: obj2,
+};
+const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
+xc.letThereBeProps(IfDiff, slicedPropDefs, 'onPropChange');
 xc.define(IfDiff);
+
+declare global {
+    interface HTMLElementTagNameMap {
+        "if-diff": IfDiff,
+    }
+}

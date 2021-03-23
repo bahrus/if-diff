@@ -1,15 +1,16 @@
 {
   "dependencies": {
+    "lazy-mt": "0.0.1",
     "trans-render": "0.0.258",
     "xtal-element": "0.0.297"
   },
   "devDependencies": {
+    "@mdjs/core": "0.3.2",
     "@webcomponents/webcomponentsjs": "2.4.4",
-    "xtal-test": "0.0.48",
-    "p-et-alia": "0.0.115",
-    "es-module-shims": "0.5.2",
     "es-dev-server": "1.57.4",
-    "@mdjs/core": "0.3.2"
+    "es-module-shims": "0.5.2",
+    "p-et-alia": "0.0.115",
+    "xtal-test": "0.0.50"
   },
   "name": "if-diff",
   "version": "0.0.61",
