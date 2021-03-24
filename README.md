@@ -8,7 +8,10 @@
 
 # \<if-diff\>
 
-[TODO] Make if-diff extend passdown, but observe two elements
+
+[TODO] mutation observer
+[TODO] progressive enhancement
+[TODO] stiff
 
 \<if-diff\> is an alternative to Polymer's [dom-if](https://polymer-library.polymer-project.org/3.0/docs/devguide/templates#dom-if) element that allows comparison between two operands, as well as progressive enhancement.  See [if-else](https://github.com/matthewp/if-else) for another data-centric alternative.
 

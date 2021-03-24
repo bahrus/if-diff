@@ -1,197 +1,186 @@
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, privateMap) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to get private field on non-instance");
-    }
-    return privateMap.get(receiver);
-};
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, privateMap, value) {
-    if (!privateMap.has(receiver)) {
-        throw new TypeError("attempted to set private field on non-instance");
-    }
-    privateMap.set(receiver, value);
-    return value;
-};
-var _debouncer;
-import { XtallatX, define, camelToLisp, de } from 'xtal-element/xtal-latx.js';
-import { hydrate } from 'trans-render/hydrate.js';
-import { debounce } from 'xtal-element/debounce.js';
-import { NavDown } from 'xtal-element/NavDown.js';
-import { insertAdjacentTemplate } from 'trans-render/insertAdjacentTemplate.js';
+import { xc } from 'xtal-element/lib/XtalCore.js';
+import('lazy-mt/lazy-mt.js');
+import 'mut-obs/mut-obs.js';
+const p_d_std = 'p_d_std';
+const attachedParents = new WeakSet();
 /**
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
  * No DOM deletion takes place on non matching elements.
  * [More Info](https://github.com/bahrus/if-diff)
  * @element if-diff
  */
-export class IfDiff extends XtallatX(hydrate(HTMLElement)) {
+export class IfDiff extends HTMLElement {
     constructor() {
         super(...arguments);
-        /**
-         * Computed based on values of  if / equals / not_equals / includes
-         */
-        this.value = false;
-        _debouncer.set(this, void 0);
-        this.propActions = [
-            ({ lhs, equals, rhs, not_equals, includes, disabled }) => {
-                this.queueEval();
-            }
-        ];
-        this._navDown = null;
-    }
-    get queueEval() {
-        if (__classPrivateFieldGet(this, _debouncer) === undefined) {
-            __classPrivateFieldSet(this, _debouncer, debounce((getNew = false) => {
-                this.evaluateAndPassDown();
-            }, 16));
-        }
-        return __classPrivateFieldGet(this, _debouncer);
+        this.self = this;
+        this.propActions = propActions;
+        this.reactor = new xc.Rx(this);
     }
     connectedCallback() {
         this.style.display = 'none';
-        super.connectedCallback();
-        if (!this.byos) {
-            const style = document.createElement('style');
-            style.innerHTML = /* css */ `
-                [data-${camelToLisp(this.dataKeyName)}="-1"]{
-                    display: none;
-                }
-            `;
-            const rn = this.getRootNode();
-            if (rn.host !== undefined) {
-                rn.appendChild(style);
-            }
-            else {
-                document.head.appendChild(style);
-            }
-        }
-        setTimeout(() => {
-            this.init();
-        }, 50);
+        xc.hydrate(this, slicedPropDefs);
     }
-    createDefaultStyle() { }
-    init() {
-        this.evaluateAndPassDown();
-    }
-    onPropsChange(name) {
-        super.onPropsChange(name);
-        if (name === 'if')
-            this.queueEval();
-    }
-    loadTemplate(el, dataKeyName) {
-        const tmpl = el.querySelector('template');
-        if (!tmpl) {
-            setTimeout(() => {
-                this.loadTemplate(el, dataKeyName);
-            }, 50);
-            return;
-        }
-        const insertedElements = insertAdjacentTemplate(tmpl, el, 'afterend', clone => {
-            const detail = {
-                clonedTemplate: clone
-            };
-            this.emit('template-cloned', detail);
-        });
-        insertedElements.forEach(child => {
-            child.dataset[dataKeyName] = '1';
-        });
-        el.remove();
-    }
-    do(el, ds, val, dataKeyName) {
-        if (ds[dataKeyName] === '0') {
-            if (val) {
-                this.loadTemplate(el, dataKeyName);
-                el.dataset[dataKeyName] = "1";
-            }
-        }
-        else {
-            el.dataset[dataKeyName] = val ? '1' : '-1';
-        }
-        if (this.enable) {
-            const action = (val ? 'remove' : 'set') + 'Attribute';
-            Array.from(el.querySelectorAll(this.enable)).concat(el).forEach(target => target[action]('disabled', ''));
+    disconnectedCallback() {
+        if (this.lhsLazyMt && this.rhsLazyMt) {
+            const range = document.createRange();
+            range.setStart(this.lhsLazyMt, 0);
+            range.setEnd(this.rhsLazyMt, 0);
+            range.deleteContents();
+            this.lhsLazyMt.remove();
+            this.rhsLazyMt.remove();
         }
     }
-    /**
-    * All events emitted pass through this method
-    * @param evt
-    */
-    emit(type, detail) {
-        this[de](type, detail, true);
-    }
-    tagMatches(nd) {
-        const matches = nd.matches;
-        this.attr('mtch', matches.length.toString());
-        const val = this.value;
-        const dataKeyName = this.dataKeyName;
-        matches.forEach(el => {
-            const ds = el.dataset;
-            this.do(el, ds, val, dataKeyName);
-        });
-    }
-    async evaluate() {
-        let val = this.if;
-        if (val) {
-            if (this.equals || this.not_equals) {
-                let eq = false;
-                if (typeof this.lhs === 'object' && typeof this.rhs === 'object') {
-                    const { compare } = await import('./compare.js');
-                    eq = compare(this.lhs, this.rhs);
-                }
-                else {
-                    eq = this.lhs === this.rhs;
-                }
-                val = this.equals ? eq : !eq;
-            }
-            else if (this.includes) {
-                const { includes } = await import('./includes.js');
-                val = includes(this.lhs, this.rhs);
-            }
-        }
-        return val;
-    }
-    async evaluateAndPassDown() {
-        if (this.disabled) {
-            return;
-        }
-        let val = await this.evaluate();
-        if (this.value === val)
-            return;
-        this.value = val;
-        if (this.dataKeyName) {
-            if (this._navDown === null) {
-                const tag = this.dataKeyName;
-                const test = (el) => el.dataset && !!el.dataset[this.dataKeyName];
-                const max = this.m ? this.m : Infinity;
-                const bndTagMatches = this.tagMatches.bind(this);
-                this._navDown = new NavDown(this, test, undefined, (nd) => bndTagMatches(nd), max);
-                this._navDown.init();
-            }
-            else {
-                this.tagMatches(this._navDown);
-            }
-        }
-    }
-    disconnect() {
-        if (this._navDown)
-            this._navDown.disconnect();
+    onPropChange(n, propDef, newVal) {
+        this.reactor.addToQueue(propDef, newVal);
     }
 }
-_debouncer = new WeakMap();
 IfDiff.is = 'if-diff';
-IfDiff.attributeProps = ({ byos, lhs, rhs, equals, not_equals, disabled, enable, dataKeyName, m, value }) => {
-    const bool = ['if', byos, equals, not_equals, disabled];
-    const str = [enable, dataKeyName];
-    const num = [m];
-    const obj = [lhs, rhs];
-    const reflect = [...bool, ...str, ...num, ...obj];
-    return {
-        bool,
-        str,
-        num,
-        obj,
-        jsonProp: obj,
-        reflect,
-        notify: [value]
-    };
+const styleMap = new WeakSet();
+const linkValue = ({ iff, lhs, equals, rhs, notEquals, includes, disabled, self }) => {
+    if (disabled)
+        return;
+    evaluate(self);
 };
-define(IfDiff);
+async function evaluate(self) {
+    let val = self.iff;
+    if (val) {
+        if (self.equals || self.notEquals) {
+            let eq = false;
+            if (typeof self.lhs === 'object' && typeof self.rhs === 'object') {
+                const { compare } = await import('./compare.js');
+                eq = compare(self.lhs, self.rhs);
+            }
+            else {
+                eq = self.lhs === self.rhs;
+            }
+            val = self.equals ? eq : !eq;
+        }
+        else if (self.includes) {
+            const { includes } = await import('./includes.js');
+            val = includes(self.lhs, self.rhs);
+        }
+    }
+    if (val !== self.value) {
+        self[slicedPropDefs.propLookup.value.alias] = val;
+    }
+    findTemplate(self);
+}
+function findTemplate(self) {
+    if (self.lhsLazyMt !== undefined)
+        return;
+    const templ = self.querySelector('template');
+    if (templ === null) {
+        setTimeout(() => findTemplate(self), 50);
+        return;
+    }
+    createLazyMts(self, templ);
+}
+function createLazyMts(self, templ) {
+    let rootNode = self.getRootNode();
+    if (rootNode.host === undefined) {
+        rootNode = document.head;
+    }
+    if (!styleMap.has(rootNode)) {
+        styleMap.add(rootNode);
+        const style = document.createElement('style');
+        style.innerHTML = /* css */ `
+            [data-if-diff-display="false"]{
+                display:none;
+            }
+        `;
+        rootNode.appendChild(style);
+    }
+    const lhsLazyMt = document.createElement('lazy-mt');
+    const eLHS = lhsLazyMt;
+    lhsLazyMt.setAttribute('enter', '');
+    self.insertAdjacentElement('afterend', lhsLazyMt);
+    eLHS.insertAdjacentElement('afterend', templ);
+    const rhsLazyMt = document.createElement('lazy-mt');
+    rhsLazyMt.setAttribute('exit', '');
+    templ.insertAdjacentElement('afterend', rhsLazyMt);
+    self.lhsLazyMt = lhsLazyMt;
+    self.rhsLazyMt = rhsLazyMt;
+    addMutObj(self);
+}
+function addMutObj(self) {
+    const parent = self.parentElement;
+    if (parent !== null) {
+        if (!attachedParents.has(parent)) {
+            attachedParents.add(parent);
+            const mutObs = document.createElement('mut-obs');
+            const s = mutObs.setAttribute.bind(mutObs);
+            s('bubbles', '');
+            s('dispatch', p_d_std);
+            s('child-list', '');
+            s('observe', 'parentElement');
+            s('on', '*');
+            parent.appendChild(mutObs);
+        }
+        parent.addEventListener(p_d_std, e => {
+            e.stopPropagation();
+            changeDisplay(self.lhsLazyMt, self.rhsLazyMt, !!self.value);
+        });
+    }
+}
+const toggleMt = ({ value, lhsLazyMt, rhsLazyMt }) => {
+    if (value) {
+        lhsLazyMt.setAttribute('mount', '');
+        rhsLazyMt.setAttribute('mount', '');
+        changeDisplay(lhsLazyMt, rhsLazyMt, true);
+    }
+    else {
+        changeDisplay(lhsLazyMt, rhsLazyMt, false);
+    }
+};
+function changeDisplay(lhsLazyMt, rhsLazyMt, display) {
+    let ns = lhsLazyMt;
+    //TODO: mutation observer
+    while (ns !== null) {
+        ns.dataset.ifDiffDisplay = display.toString();
+        if (ns === rhsLazyMt)
+            return;
+        ns = ns.nextElementSibling;
+    }
+}
+const propActions = [
+    linkValue, toggleMt
+];
+const baseProp = {
+    dry: true,
+    async: true,
+};
+const bool1 = {
+    ...baseProp,
+    type: Boolean,
+};
+// const bool2: PropDef = {
+//     ...bool1,
+//     stopReactionsIfFalsy: true,
+// }
+const str1 = {
+    ...baseProp,
+    type: String,
+};
+const obj1 = {
+    ...baseProp,
+    type: Object,
+    parse: true,
+};
+const obj2 = {
+    ...baseProp,
+    type: Object,
+    notify: true,
+    obfuscate: true
+};
+const obj3 = {
+    ...baseProp,
+    type: Object,
+    stopReactionsIfFalsy: true,
+};
+const propDefMap = {
+    iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
+    lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3
+};
+const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
+xc.letThereBeProps(IfDiff, slicedPropDefs, 'onPropChange');
+xc.define(IfDiff);

@@ -1,12 +1,12 @@
-import {XtallatX, define, camelToLisp, de} from 'xtal-element/xtal-latx.js';
-import {PropAction} from 'xtal-element/types.d.js';
-import {hydrate} from 'trans-render/hydrate.js';
-import {debounce} from 'xtal-element/debounce.js';
-import {NavDown} from 'xtal-element/NavDown.js';
-import {insertAdjacentTemplate} from 'trans-render/insertAdjacentTemplate.js';
-import {IfDiffProps, IfDiffEventNameMap, TemplateClonedDetail} from 'types.d.js';
-import {AttributeProps} from 'xtal-element/types.d.js';
+import {xc, PropAction, PropDef, PropDefMap, ReactiveSurface} from 'xtal-element/lib/XtalCore.js';
+import {IfDiffProps} from './types.d.js';
+import('lazy-mt/lazy-mt.js');
+import {LazyMTProps} from 'lazy-mt/types.d.js';
+import  'mut-obs/mut-obs.js';
+import {MutObs} from 'mut-obs/mut-obs.js';
 
+const p_d_std = 'p_d_std';
+const attachedParents = new WeakSet<Element>();
 
 /**
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
@@ -14,62 +14,60 @@ import {AttributeProps} from 'xtal-element/types.d.js';
  * [More Info](https://github.com/bahrus/if-diff)
  * @element if-diff
  */
-export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProps{
-
+export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface {
     static is = 'if-diff';
 
-    static attributeProps = ({byos, lhs, rhs, equals, not_equals, disabled, enable, dataKeyName, m, value}: IfDiff) =>{
-        const bool = ['if', byos, equals, not_equals, disabled];
-        const str = [enable, dataKeyName];
-        const num = [m];
-        const obj = [lhs, rhs];
-        const reflect = [...bool, ...str, ...num, ...obj];
-        return {
-            bool,
-            str,
-            num,
-            obj,
-            jsonProp: obj,
-            reflect,
-            notify: [value]
-        } as AttributeProps;
+    self = this;
+    propActions = propActions;
+    reactor = new xc.Rx(this);
+
+    connectedCallback(){
+        this.style.display = 'none';
+        xc.hydrate(this, slicedPropDefs);
     }
 
-    /**
-     * Bring your own style.  If false (default), the if-diff adds a style to set target element's display to none when test fails.
-     */
-    byos!: boolean;
+    disconnectedCallback(){
+        if(this.lhsLazyMt && this.rhsLazyMt){
+            const range = document.createRange();
+            range.setStart(this.lhsLazyMt, 0);
+            range.setEnd(this.rhsLazyMt, 0);
+            range.deleteContents();
+            this.lhsLazyMt.remove();
+            this.rhsLazyMt.remove();
+        }
+    }
 
-    /**
-     * Boolean property / attribute -- must be true to pass test(s)
-     * @attr
-     */
-    if!: boolean;
+    onPropChange(n: string, propDef: PropDef, newVal: any){
+        this.reactor.addToQueue(propDef, newVal);
+    }
+
+    disabled: boolean | undefined;
+
 
 
     /**
      * LHS Operand.
      * @attr
      */
-    lhs!: boolean | string | number | object;
+    lhs: boolean | string | number | object | undefined;
 
     /**
      * RHS Operand.
      * @attr
      */
-    rhs!: boolean | string | number | object;
+    rhs: boolean | string | number | object | undefined;
 
     /**
      * lhs must equal rhs to pass tests.
      * @attr
      */
-    equals!: boolean;
+    equals: boolean | undefined;
 
     /**
      * lhs must not equal rhs to pass tests.
      * @attr not-equals
      */
-    not_equals!: boolean;
+    notEquals: boolean | undefined;
 
     /**
      * For strings, this means lhs.indexOf(rhs) > -1
@@ -78,184 +76,192 @@ export class IfDiff extends XtallatX(hydrate(HTMLElement)) implements IfDiffProp
      * For objects, this means all the properties of rhs match the same properties of lhs
      * @attr includes
      */
-    includes!: boolean; 
-
-    /**
-     * css selector of children of matching element  to remove disabled attribute
-     */
-    enable!: string;
-
-
-    /**
-     * Name of dataset key to set to 1 if true and -1 if false, if dataset key is present
-     * @attr data-key-name
-     */
-    dataKeyName!: string;
+    includes: boolean | undefined; 
 
     /**
      * Maximum number of elements that are effected by condition.
      */
-    m!: number;
+    m: number | undefined;
 
     /**
      * Computed based on values of  if / equals / not_equals / includes 
      */
-    value: boolean = false;
+    value: boolean | undefined;
 
-    #debouncer!: any;
-    get queueEval(){
-        if(this.#debouncer === undefined){
-            this.#debouncer = debounce((getNew: boolean = false) => {
-                this.evaluateAndPassDown();
-            }, 16);
-        }
-        return this.#debouncer;
-    }
+    lhsLazyMt: LazyMTProps | undefined;
 
+    rhsLazyMt: LazyMTProps | undefined;
 
-    connectedCallback(){
-        this.style.display = 'none';
-        super.connectedCallback();
-        if(!this.byos){
-            const style = document.createElement('style');
-            style.innerHTML = /* css */`
-                [data-${camelToLisp(this.dataKeyName)}="-1"]{
-                    display: none;
-                }
-            `;
-            const rn = this.getRootNode();
-            if((<any>rn).host !== undefined){
-                rn.appendChild(style);
-            }else{
-                document.head.appendChild(style);
-            }
-        }
-        setTimeout(() => {
-            this.init();
-        }, 50);
+    /**
+     * Boolean property / attribute -- must be true to pass test(s)
+     * @attr
+     */
+    iff: boolean | undefined;
 
-    }
-    createDefaultStyle(){}
-
-    init(){
-        this.evaluateAndPassDown();
-    }
-
-    propActions = [
-        ({lhs, equals, rhs, not_equals, includes, disabled}: IfDiff) =>{
-            this.queueEval();
-        }
-    ] as PropAction[];
-
-    _navDown: NavDown | null = null;
-
-    onPropsChange(name: string){
-        super.onPropsChange(name);
-        if(name === 'if') this.queueEval();
-    }
-
-    loadTemplate(el: Element, dataKeyName: string){
-        const tmpl = el.querySelector('template') as HTMLTemplateElement;
-        if(!tmpl){
-            setTimeout(() =>{
-                this.loadTemplate(el, dataKeyName);
-            }, 50);
-            return;
-        }
-
-        const insertedElements = insertAdjacentTemplate(tmpl, el, 'afterend', clone => {
-            const detail = {
-                clonedTemplate: clone
-            } as TemplateClonedDetail;
-            this.emit('template-cloned', detail);
-        });
-        insertedElements.forEach(child =>{
-            (<HTMLElement>child).dataset[dataKeyName] = '1';
-        })
-        el.remove();
-    }
-
-    do(el: Element, ds: any, val: boolean, dataKeyName: string){
-        if(ds[dataKeyName] === '0'){
-            if(val){
-                this.loadTemplate(el, dataKeyName);
-                (<any>el).dataset[dataKeyName] = "1";
-            }
-        }else{
-            (<any>el).dataset[dataKeyName] = val ? '1' : '-1';
-        }
-        if(this.enable){
-            const action  = (val ? 'remove' : 'set') + 'Attribute';
-            Array.from(el.querySelectorAll(this.enable)).concat(el).forEach(target => (<any>target)[action]('disabled', ''));
-
-        }
-
-    }
-   /**
-   * All events emitted pass through this method
-   * @param evt 
-   */
-    emit<K extends keyof IfDiffEventNameMap>(type: K,  detail: IfDiffEventNameMap[K]){
-        this[de](type, detail, true);
-    }
-
-    tagMatches(nd: NavDown){
-        const matches = nd.matches;
-        this.attr('mtch', matches.length.toString());
-        const val = this.value;
-        const dataKeyName = this.dataKeyName;
-        matches.forEach(el =>{
-            const ds = (<any>el).dataset;
-            this.do(el, ds, val, dataKeyName);
-        });
-    }
-    async evaluate(){
-        let val = this.if;
-        if(val){
-            if(this.equals || this.not_equals){
-                let eq = false;
-                if(typeof this.lhs === 'object' && typeof this.rhs === 'object'){
-                    const {compare} = await import('./compare.js');
-                    eq = compare(this.lhs, this.rhs);
-                }else{
-                    eq = this.lhs === this.rhs;
-                }
-                val = this.equals ? eq : !eq;
-            }else if(this.includes){
-                const {includes} = await import('./includes.js');
-                val = includes(this.lhs, this.rhs);
-            }
-        }
-        return val;       
-    }
-    async evaluateAndPassDown(){
-        if (this.disabled) {
-            return;
-        }
-        let val = await this.evaluate();
-        if(this.value === val) return;
-        this.value = val;
-        if(this.dataKeyName){
-            if(this._navDown === null){
-                const tag = this.dataKeyName;
-                const test = (el: Element | null) =>  (<any>el).dataset && !!(<HTMLElement>el).dataset[this.dataKeyName];
-                const max = this.m ? this.m : Infinity;
-                const bndTagMatches = this.tagMatches.bind(this);
-                this._navDown = new NavDown(this, test, undefined, (nd) => bndTagMatches(nd), max);
-                this._navDown.init();
-            }else{
-                this.tagMatches(this._navDown);
-            }
-        }
-
-    }
-
-
-    disconnect(){
-        if(this._navDown)  this._navDown.disconnect();
-    }
-
+    
 
 }
-define(IfDiff);
 
+const styleMap = new WeakSet<Node>();
+
+
+const linkValue = ({iff, lhs, equals, rhs, notEquals, includes, disabled, self}: IfDiff) => {
+    if(disabled) return;
+    evaluate(self);
+}
+
+async function evaluate(self: IfDiff){
+    let val = self.iff;
+    if(val){
+        if(self.equals || self.notEquals){
+            let eq = false;
+            if(typeof self.lhs === 'object' && typeof self.rhs === 'object'){
+                const {compare} = await import('./compare.js');
+                eq = compare(self.lhs, self.rhs);
+            }else{
+                eq = self.lhs === self.rhs;
+            }
+            val = self.equals ? eq : !eq;
+        }else if(self.includes){
+            const {includes} = await import('./includes.js');
+            val = includes(self.lhs, self.rhs);
+        }
+    }
+    if(val !== self.value){
+        (<any>self)[slicedPropDefs!.propLookup!.value!.alias!] = val;
+    }
+    findTemplate(self);
+}
+
+function findTemplate(self: IfDiff){
+    if(self.lhsLazyMt !== undefined) return;
+    const templ = self.querySelector('template');
+    if(templ === null){
+        setTimeout(() => findTemplate(self), 50);
+        return;
+    }
+    createLazyMts(self, templ);
+}
+
+function createLazyMts(self: IfDiff, templ: HTMLTemplateElement){
+    let rootNode = self.getRootNode();
+    if((<any>rootNode).host === undefined){
+        rootNode = document.head;
+    }
+    if(!styleMap.has(rootNode)){
+        styleMap.add(rootNode);
+        const style = document.createElement('style');
+        style.innerHTML = /* css */`
+            [data-if-diff-display="false"]{
+                display:none;
+            }
+        `;
+        rootNode.appendChild(style);      
+    }
+    const lhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
+    const eLHS = lhsLazyMt as Element;
+    lhsLazyMt.setAttribute('enter', '');
+    self.insertAdjacentElement('afterend', lhsLazyMt as Element);
+    eLHS.insertAdjacentElement('afterend', templ);
+    const rhsLazyMt = document.createElement('lazy-mt') as any;
+    rhsLazyMt.setAttribute('exit', '');
+    templ.insertAdjacentElement('afterend', rhsLazyMt);
+    self.lhsLazyMt = lhsLazyMt;
+    self.rhsLazyMt = rhsLazyMt;
+    addMutObj(self);
+}
+
+function addMutObj(self: IfDiff){
+    const parent = self.parentElement;
+    if(parent !== null){
+        if(!attachedParents.has(parent)){
+            attachedParents.add(parent);
+            const mutObs = document.createElement('mut-obs') as MutObs;
+            const s = mutObs.setAttribute.bind(mutObs);
+            s('bubbles', '');
+            s('dispatch', p_d_std);
+            s('child-list', '');
+            s('observe', 'parentElement');
+            s('on', '*');
+            parent.appendChild(mutObs);
+        }
+        parent.addEventListener(p_d_std, e => {
+            e.stopPropagation();
+            changeDisplay(self.lhsLazyMt!, self.rhsLazyMt!, !!self.value);
+        })
+    }    
+}
+
+const toggleMt = ({value, lhsLazyMt, rhsLazyMt}: IfDiff) => {
+    if(value){
+        lhsLazyMt!.setAttribute('mount', '');
+        rhsLazyMt!.setAttribute('mount', '');
+        changeDisplay(lhsLazyMt!, rhsLazyMt!, true);
+        
+    }else{
+        changeDisplay(lhsLazyMt!, rhsLazyMt!, false);
+    }
+}
+
+function changeDisplay(lhsLazyMt: Element, rhsLazyMt: Element, display: boolean){
+    let ns = lhsLazyMt as HTMLElement;
+    //TODO: mutation observer
+    while(ns !== null){
+        ns.dataset.ifDiffDisplay = display.toString();
+        if(ns === rhsLazyMt) return;
+        ns = ns.nextElementSibling as HTMLElement;
+    }
+}
+
+
+
+const propActions = [
+    linkValue, toggleMt
+] as PropAction[];
+
+const baseProp: PropDef = {
+    dry: true,
+    async: true,
+};
+
+const bool1: PropDef = {
+    ...baseProp,
+    type: Boolean,
+};
+// const bool2: PropDef = {
+//     ...bool1,
+//     stopReactionsIfFalsy: true,
+// }
+const str1: PropDef = {
+    ...baseProp,
+    type: String,
+};
+const obj1: PropDef = {
+    ...baseProp,
+    type: Object,
+    parse: true,
+};
+const obj2: PropDef = {
+    ...baseProp,
+    type: Object,
+    notify: true,
+    obfuscate: true
+}
+const obj3: PropDef = {
+    ...baseProp,
+    type: Object,
+    stopReactionsIfFalsy: true,
+}
+const propDefMap: PropDefMap<IfDiff> = {
+    iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
+    lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3
+};
+const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
+xc.letThereBeProps(IfDiff, slicedPropDefs, 'onPropChange');
+xc.define(IfDiff);
+
+declare global {
+    interface HTMLElementTagNameMap {
+        "if-diff": IfDiff,
+    }
+}
