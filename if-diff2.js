@@ -110,6 +110,7 @@ const toggleMt = ({ value, lhsLazyMt, rhsLazyMt }) => {
 };
 function changeDisplay(lhsLazyMt, rhsLazyMt, display) {
     let ns = lhsLazyMt;
+    //TODO: mutation observer
     while (ns !== null) {
         ns.dataset.ifDiffDisplay = display.toString();
         if (ns === rhsLazyMt)
