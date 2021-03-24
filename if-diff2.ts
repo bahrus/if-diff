@@ -217,6 +217,7 @@ const obj1: PropDef = {
 const obj2: PropDef = {
     ...baseProp,
     type: Object,
+    notify: true,
     obfuscate: true
 }
 const obj3: PropDef = {

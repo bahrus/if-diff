@@ -7,7 +7,7 @@
   "devDependencies": {
     "@mdjs/core": "^0.1.9",
     "es-dev-server": "1.57.4",
-    "pass-down": "0.0.15",
+    "pass-down": "0.0.18",
     "xtal-test": "0.0.50"
   },
   "name": "if-diff",

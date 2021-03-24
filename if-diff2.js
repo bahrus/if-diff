@@ -145,6 +145,7 @@ const obj1 = {
 const obj2 = {
     ...baseProp,
     type: Object,
+    notify: true,
     obfuscate: true
 };
 const obj3 = {
