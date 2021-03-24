@@ -18,18 +18,18 @@
       <p-d on=input to=[-lhs] val=target.value m=2 init-val=value></p-d>
       <label for=rhs>RHS:</label><input id=rhs>
       <p-d on=input to=[-rhs] val=target.value m=2 init-val=value></p-d>
-      <if-diff iff -lhs equals -rhs>
+      <!-- <if-diff iff -lhs equals -rhs>
           <template>
             <div>LHS == RHS</div>
           </template>
       </if-diff>
-      <p-d on=value-changed to=[data-lhs-not-equals-rhs] prop=textContent></p-d>
+      <p-d observe=if-diff on=value-changed to=[data-lhs-not-equals-rhs] prop=textContent></p-d> -->
       <if-diff iff -lhs not-equals -rhs>
           <template>
             <div>LHS != RHS</div>
           </template>
       </if-diff>
-      <p-d on=value-changed to=[data-lhs-not-equals-rhs] prop=textContent></p-d>
+      <p-d observe=if-diff on=value-changed to=[data-lhs-not-equals-rhs] prop=textContent></p-d>
 
       LHS Equals RHS: <span data-lhs-equals-rhs></span><br>
       LHS Doesn't equal RHS: <span data-lhs-not-equals-rhs></span>

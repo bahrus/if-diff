@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "lazy-mt": "0.0.2",
+    "lazy-mt": "0.0.4",
     "trans-render": "0.0.280",
-    "xtal-element": "0.0.367"
+    "xtal-element": "0.0.368"
   },
   "devDependencies": {
     "@mdjs/core": "^0.1.9",
