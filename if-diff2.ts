@@ -27,6 +27,8 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
             range.setStart(this.lhsLazyMt, 0);
             range.setEnd(this.rhsLazyMt, 0);
             range.deleteContents();
+            this.lhsLazyMt.remove();
+            this.rhsLazyMt.remove();
         }
     }
 

@@ -23,6 +23,8 @@ export class IfDiff extends HTMLElement {
             range.setStart(this.lhsLazyMt, 0);
             range.setEnd(this.rhsLazyMt, 0);
             range.deleteContents();
+            this.lhsLazyMt.remove();
+            this.rhsLazyMt.remove();
         }
     }
     onPropChange(n, propDef, newVal) {
