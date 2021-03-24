@@ -12,7 +12,6 @@ export class IfDiff extends HTMLElement {
         this.self = this;
         this.propActions = propActions;
         this.reactor = new xc.Rx(this);
-        this.styleMap = new WeakSet();
     }
     connectedCallback() {
         this.style.display = 'none';
@@ -31,6 +30,7 @@ export class IfDiff extends HTMLElement {
     }
 }
 IfDiff.is = 'if-diff';
+const styleMap = new WeakSet();
 const linkValue = ({ iff, lhs, equals, rhs, notEquals, includes, disabled, self }) => {
     if (disabled)
         return;
@@ -71,21 +71,19 @@ function findTemplate(self) {
     createLazyMts(self, templ);
 }
 function createLazyMts(self, templ) {
-    const rootNode = self.getRootNode();
-    if (!self.styleMap.has(rootNode)) {
-        self.styleMap.add(rootNode);
+    let rootNode = self.getRootNode();
+    if (rootNode.host === undefined) {
+        rootNode = document.head;
+    }
+    if (!styleMap.has(rootNode)) {
+        styleMap.add(rootNode);
         const style = document.createElement('style');
         style.innerHTML = /* css */ `
             [data-if-diff-display="false"]{
                 display:none;
             }
         `;
-        if (rootNode.host !== undefined) {
-            rootNode.appendChild(style);
-        }
-        else {
-            document.head.appendChild(style);
-        }
+        rootNode.appendChild(style);
     }
     const lhsLazyMt = document.createElement('lazy-mt');
     const eLHS = lhsLazyMt;

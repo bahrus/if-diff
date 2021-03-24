@@ -91,9 +91,11 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
      */
     iff: boolean | undefined;
 
-    styleMap = new WeakSet<Node>();
+    
 
 }
+
+const styleMap = new WeakSet<Node>();
 
 
 const linkValue = ({iff, lhs, equals, rhs, notEquals, includes, disabled, self}: IfDiff) => {
@@ -135,20 +137,19 @@ function findTemplate(self: IfDiff){
 }
 
 function createLazyMts(self: IfDiff, templ: HTMLTemplateElement){
-    const rootNode = self.getRootNode();
-    if(!self.styleMap.has(rootNode)){
-        self.styleMap.add(rootNode);
+    let rootNode = self.getRootNode();
+    if((<any>rootNode).host === undefined){
+        rootNode = document.head;
+    }
+    if(!styleMap.has(rootNode)){
+        styleMap.add(rootNode);
         const style = document.createElement('style');
         style.innerHTML = /* css */`
             [data-if-diff-display="false"]{
                 display:none;
             }
         `;
-        if((<any>rootNode).host !== undefined){
-            rootNode.appendChild(style);
-        }else{
-            document.head.appendChild(style);
-        }       
+        rootNode.appendChild(style);      
     }
     const lhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
     const eLHS = lhsLazyMt as Element;
