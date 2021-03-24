@@ -149,11 +149,19 @@ const toggleMt = ({value, lhsLazyMt, rhsLazyMt}: IfDiff) => {
     if(value){
         lhsLazyMt!.setAttribute('mount', '');
         rhsLazyMt!.setAttribute('mount', '');
-        lhsLazyMt!.removeAttribute('hidden');
-        rhsLazyMt!.removeAttribute('hidden');
+        changeDisplay(lhsLazyMt!, rhsLazyMt!, true);
+        
     }else{
-        lhsLazyMt!.setAttribute('hidden', '');
-        rhsLazyMt!.setAttribute('hidden', '');
+        changeDisplay(lhsLazyMt!, rhsLazyMt!, false);
+    }
+}
+
+function changeDisplay(lhsLazyMt: Element, rhsLazyMt: Element, display: boolean){
+    let ns = lhsLazyMt as HTMLElement;
+    while(ns !== null){
+        ns.style.display = display ? 'initial' : 'none';
+        if(ns === rhsLazyMt) return;
+        ns = ns.nextElementSibling as HTMLElement;
     }
 }
 
