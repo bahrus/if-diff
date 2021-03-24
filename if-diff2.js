@@ -12,6 +12,7 @@ export class IfDiff extends HTMLElement {
         this.self = this;
         this.propActions = propActions;
         this.reactor = new xc.Rx(this);
+        this.styleMap = new WeakSet();
     }
     connectedCallback() {
         this.style.display = 'none';
@@ -70,6 +71,22 @@ function findTemplate(self) {
     createLazyMts(self, templ);
 }
 function createLazyMts(self, templ) {
+    const rootNode = self.getRootNode();
+    if (!self.styleMap.has(rootNode)) {
+        self.styleMap.add(rootNode);
+        const style = document.createElement('style');
+        style.innerHTML = /* css */ `
+            [data-if-diff-display="false"]{
+                display:none;
+            }
+        `;
+        if (rootNode.host !== undefined) {
+            rootNode.appendChild(style);
+        }
+        else {
+            document.head.appendChild(style);
+        }
+    }
     const lhsLazyMt = document.createElement('lazy-mt');
     const eLHS = lhsLazyMt;
     lhsLazyMt.setAttribute('enter', '');
@@ -94,7 +111,7 @@ const toggleMt = ({ value, lhsLazyMt, rhsLazyMt }) => {
 function changeDisplay(lhsLazyMt, rhsLazyMt, display) {
     let ns = lhsLazyMt;
     while (ns !== null) {
-        ns.style.display = display ? 'initial' : 'none';
+        ns.dataset.ifDiffDisplay = display.toString();
         if (ns === rhsLazyMt)
             return;
         ns = ns.nextElementSibling;

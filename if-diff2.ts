@@ -91,6 +91,8 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
      */
     iff: boolean | undefined;
 
+    styleMap = new WeakSet<Node>();
+
 }
 
 
@@ -133,6 +135,21 @@ function findTemplate(self: IfDiff){
 }
 
 function createLazyMts(self: IfDiff, templ: HTMLTemplateElement){
+    const rootNode = self.getRootNode();
+    if(!self.styleMap.has(rootNode)){
+        self.styleMap.add(rootNode);
+        const style = document.createElement('style');
+        style.innerHTML = /* css */`
+            [data-if-diff-display="false"]{
+                display:none;
+            }
+        `;
+        if((<any>rootNode).host !== undefined){
+            rootNode.appendChild(style);
+        }else{
+            document.head.appendChild(style);
+        }       
+    }
     const lhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
     const eLHS = lhsLazyMt as Element;
     lhsLazyMt.setAttribute('enter', '');
@@ -159,7 +176,7 @@ const toggleMt = ({value, lhsLazyMt, rhsLazyMt}: IfDiff) => {
 function changeDisplay(lhsLazyMt: Element, rhsLazyMt: Element, display: boolean){
     let ns = lhsLazyMt as HTMLElement;
     while(ns !== null){
-        ns.style.display = display ? 'initial' : 'none';
+        ns.dataset.ifDiffDisplay = display.toString();
         if(ns === rhsLazyMt) return;
         ns = ns.nextElementSibling as HTMLElement;
     }
