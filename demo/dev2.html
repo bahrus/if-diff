@@ -23,7 +23,7 @@
             <div>LHS == RHS</div>
           </template>
       </if-diff>
-      <p-d observe=if-diff on=value-changed to=[data-lhs-not-equals-rhs] prop=textContent></p-d>
+      <p-d observe=if-diff on=value-changed to=[data-lhs-equals-rhs] prop=textContent></p-d>
       <if-diff iff -lhs not-equals -rhs>
           <template>
             <div>LHS != RHS</div>
