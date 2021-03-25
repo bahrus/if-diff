@@ -94,9 +94,18 @@ function findTemplate(self) {
     }
 }
 function wrapLazyMts(self, lhsElement, rhsElement) {
-    debugger;
+    addStyle(self);
+    const lhsLazyMt = document.createElement('lazy-mt');
+    lhsLazyMt.enter = true;
+    lhsElement.insertAdjacentElement('beforebegin', lhsLazyMt);
+    const rhsLazyMt = document.createElement('lazy-mt');
+    rhsLazyMt.enter = true;
+    rhsElement.insertAdjacentElement('afterend', rhsLazyMt);
+    self.lhsLazyMt = lhsLazyMt;
+    self.rhsLazyMt = rhsLazyMt;
+    addMutObj(self);
 }
-function createLazyMts(self, templ) {
+function addStyle(self) {
     let rootNode = self.getRootNode();
     if (rootNode.host === undefined) {
         rootNode = document.head;
@@ -111,6 +120,9 @@ function createLazyMts(self, templ) {
         `;
         rootNode.appendChild(style);
     }
+}
+function createLazyMts(self, templ) {
+    addStyle(self);
     const lhsLazyMt = document.createElement('lazy-mt');
     const eLHS = lhsLazyMt;
     lhsLazyMt.setAttribute('enter', '');
