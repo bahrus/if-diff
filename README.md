@@ -8,34 +8,30 @@
 
 # \<if-diff\>
 
-
-[TODO] mutation observer
-[TODO] progressive enhancement
 [TODO] stiff
 
-\<if-diff\> is an alternative to Polymer's [dom-if](https://polymer-library.polymer-project.org/3.0/docs/devguide/templates#dom-if) element that allows comparison between two operands, as well as progressive enhancement.  See [if-else](https://github.com/matthewp/if-else) for another data-centric alternative.
+\<if-diff\> is an alternative to Polymer's [dom-if](https://polymer-library.polymer-project.org/3.0/docs/devguide/templates#dom-if) element that allows comparison between two operands, as well as progressive enhancement.  See [if-else](https://github.com/matthewp/if-else) for another data-centric alternative. And [iff-diff](https://github.com/bahrus/iff-diff) for something extremely light and simple, both size-wise and feature-wise.
 
-if-diff allows the server to display content that should be initially displayed, then adjusts what is displayed as conditions in the browser change.
+if-diff adds an extra conditional on displaying the contents -- it only displays content when the content scrolls or is clicked into view.  if-diff also goes to some lengths to make the resulting DOM structure as flat as possible.  It does this by way of [lazy-mt](https://github.com/bahrus/lazy-mt).
 
-For example, suppose today is Monday.  The server could generate the syntax below:
+if-diff can optionally allow the server to display content that should be initially displayed, then adjusts what is displayed as conditions in the browser change[TODO].
+
+For example, suppose today is Monday.  The server could generate the syntax below if today is Monday:
 
 
 ```html
 <!-- Framework-neutral pseudo code:  Assume some framework / library sets property "lhs" based on lhs:=dayOfWeek attribute --> 
-<if-diff if lhs:=dayOfWeek equals rhs=Monday data-key-name=manicMonday m=1></if-diff>
-...
-<if-diff if lhs:=dayOfWeek equals rhs=Tuesday data-key-name=rubyTuesday></if-diff>
-...
-<div data-manic-monday="1">
+<if-diff iff lhs:=dayOfWeek equals rhs='"Monday"' init-count=1></if-diff>
+<div>
   I wish it was Sunday
 </div>
-<div data-ruby-tuesday="0">
-  <template>
-    <div>Who could hang a name on you</div>
-  </template>
-</div>
-...
+<if-diff iff lhs:=dayOfWeek equals rhs='"Tuesday"' init-count=1></if-diff>
+<template>
+  <div>Who could hang a name on you</div>
+</template>
 ```
+
+init-count indicates how many nextSiblingElements if-diff "owns".  This follows the same pattern used by [ib-id](https://github.com/bahrus/ib-id)
 
 Generally, as we will see, a data-* value of "1" should be interpreted as "matches", so assuming your css is consistent with that interpretation, the user will immediately see the desired text "I wish it was Sunday" before a single byte of JS is downloaded.  Since the text for Tuesday is not yet applicable, embedding the content inside a template tag will allow the browser to ignore whatever is inside until needed.  Only if the day changes would we need to display Tuesday.  At that point, the template needs to be cloned (and discarded).  So to fill in the details:
 

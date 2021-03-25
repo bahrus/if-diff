@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <if-diff if -lhs equals rhs='"Monday"' init-count=1></if-diff>
+    <div>
+        I wish it was Sunday
+    </div>
+    <if-diff if -lhs equals rhs='"Tuesday"' init-count=1></if-diff>
+    <template>
+    <div>Who could hang a name on you</div>
+    </template>
+    <script type=importmap>
+        {
+            "imports": {
+                "trans-render/": "../node_modules/trans-render/",
+                "xtal-element/": "../node_modules/xtal-element/",
+                "mut-obs/": "../node_modules/mut-obs/",
+                "lazy-mt/": "../node_modules/lazy-mt/"
+            }
+        }
+    </script>
+    <script type=module>
+        import '../if-diff.js';
+    </script>
+</body>
+</html>
