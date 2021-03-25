@@ -68,12 +68,33 @@ async function evaluate(self) {
 function findTemplate(self) {
     if (self.lhsLazyMt !== undefined)
         return;
-    const templ = self.querySelector('template');
-    if (templ === null) {
-        setTimeout(() => findTemplate(self), 50);
-        return;
+    if (self.initCount === undefined) {
+        const templ = self.querySelector('template');
+        if (templ === null) {
+            setTimeout(() => findTemplate(self), 50);
+            return;
+        }
+        createLazyMts(self, templ);
     }
-    createLazyMts(self, templ);
+    else {
+        let ns = self;
+        let count = 0;
+        let lhsElement;
+        while (ns !== null && count < self.initCount) {
+            ns = ns.nextElementSibling;
+            count++;
+            if (count === 1 && ns !== null)
+                lhsElement = ns;
+        }
+        if (ns === null || count < self.initCount) {
+            setTimeout(() => findTemplate(self), 50);
+            return;
+        }
+        wrapLazyMts(self, lhsElement, ns);
+    }
+}
+function wrapLazyMts(self, lhsElement, rhsElement) {
+    debugger;
 }
 function createLazyMts(self, templ) {
     let rootNode = self.getRootNode();
@@ -153,10 +174,6 @@ const bool1 = {
     ...baseProp,
     type: Boolean,
 };
-// const bool2: PropDef = {
-//     ...bool1,
-//     stopReactionsIfFalsy: true,
-// }
 const str1 = {
     ...baseProp,
     type: String,
@@ -177,9 +194,14 @@ const obj3 = {
     type: Object,
     stopReactionsIfFalsy: true,
 };
+const num1 = {
+    ...baseProp,
+    type: Number,
+};
 const propDefMap = {
     iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
-    lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3
+    lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
+    initCount: num1,
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 xc.letThereBeProps(IfDiff, slicedPropDefs, 'onPropChange');

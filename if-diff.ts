@@ -98,7 +98,7 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
      */
     iff: boolean | undefined;
 
-    
+    initCount: number | undefined;
 
 }
 
@@ -135,12 +135,33 @@ async function evaluate(self: IfDiff){
 
 function findTemplate(self: IfDiff){
     if(self.lhsLazyMt !== undefined) return;
-    const templ = self.querySelector('template');
-    if(templ === null){
-        setTimeout(() => findTemplate(self), 50);
-        return;
+    if(self.initCount === undefined){
+        const templ = self.querySelector('template');
+        if(templ === null){
+            setTimeout(() => findTemplate(self), 50);
+            return;
+        }
+        createLazyMts(self, templ);
+    }else{
+        let ns = self as Element | null;
+        let count = 0;
+        let lhsElement : Element | undefined;
+        while(ns!==null && count < self.initCount){
+            ns = ns.nextElementSibling;
+            count++;
+            if(count === 1 && ns!== null) lhsElement = ns;
+        }
+        if(ns === null || count < self.initCount){
+            setTimeout(() => findTemplate(self), 50);
+            return;
+        }
+        wrapLazyMts(self, lhsElement!, ns);
     }
-    createLazyMts(self, templ);
+
+}
+
+function wrapLazyMts(self: IfDiff, lhsElement: Element, rhsElement: Element){
+    debugger;
 }
 
 function createLazyMts(self: IfDiff, templ: HTMLTemplateElement){
@@ -228,10 +249,7 @@ const bool1: PropDef = {
     ...baseProp,
     type: Boolean,
 };
-// const bool2: PropDef = {
-//     ...bool1,
-//     stopReactionsIfFalsy: true,
-// }
+
 const str1: PropDef = {
     ...baseProp,
     type: String,
@@ -252,9 +270,14 @@ const obj3: PropDef = {
     type: Object,
     stopReactionsIfFalsy: true,
 }
+const num1: PropDef = {
+    ...baseProp,
+    type: Number,
+}
 const propDefMap: PropDefMap<IfDiff> = {
     iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
-    lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3
+    lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
+    initCount: num1,
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 xc.letThereBeProps(IfDiff, slicedPropDefs, 'onPropChange');
