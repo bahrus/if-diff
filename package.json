@@ -1,12 +1,11 @@
 {
   "dependencies": {
-    "lazy-mt": "0.0.5",
-    "trans-render": "0.0.280",
-    "xtal-element": "0.0.368"
+    "lazy-mt": "0.0.6",
+    "trans-render": "0.0.282",
+    "xtal-element": "0.0.370"
   },
   "devDependencies": {
-    "@mdjs/core": "^0.1.9",
-    "es-dev-server": "1.57.4",
+    "es-dev-server": "2.1.0",
     "pass-down": "0.0.20",
     "xtal-test": "0.0.50"
   },

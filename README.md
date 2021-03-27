@@ -33,9 +33,9 @@ For example, suppose today is Monday.  The server could generate the syntax belo
 
 init-count indicates how many nextSiblingElements if-diff "owns".  This follows the same pattern used by [ib-id](https://github.com/bahrus/ib-id)
 
-The user will immediately see the desired text "I wish it was Sunday" before a single byte of JS is downloaded.  Since the text for Tuesday is not yet applicable, embedding the content inside a template tag will allow the browser to ignore whatever is inside until needed.  Only if the day changes to Tuesday would we need to display Tuesday.  At that point, the template is cloned, and the clone and replaces the template.  
+The user will immediately see the desired text "I wish it was Sunday" before a single byte of JS is downloaded.  Since the text for Tuesday is not yet applicable, embedding the content inside a template tag will allow the browser to ignore whatever is inside until needed.  Only if the day changes to Tuesday would we need to display Tuesday.  At that point, the template is cloned, and the clone replaces the template.  
 
-The "iff" attribute / property is actually an active participant in the logical evaluation.  If that attribute / property is false, then the evaluation will be false no matter what.  And as the demo below indicates, not-equals is also supported, as is "includes."  Additional / alternative evaluation logic can be inserted by overriding method async evaluate();
+The "iff" attribute / property is actually an active participant in the logical evaluation.  If that attribute / property is absent / false, then the evaluation will be false no matter what.  And as the demo below indicates, not-equals is also supported, as is "includes."  Additional / alternative evaluation logic can be inserted by overriding method async evaluate();
 
 
 ## [Demo](https://jsfiddle.net/bahrus/w24t0ra1/)
