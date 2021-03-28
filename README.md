@@ -61,7 +61,7 @@ It is quite common to have a user interface with multiple tabs, each tab dependi
 
 What if you need to deal with removing lots of DOM elements from view on a low memory device? And suppose those DOM elements are instances of bitcoin mining operation custom elements, which provide no ability to go on "pause."
 
-So now, in order to free up memory / liberate the CPU, in order for new DOM elements which need to display, we need to ask out of scope DOM elements that have seen better days [to throw themselves off a cliff](https://www.youtube.com/watch?v=DwD7f5ZWhAk).
+So now, in order to free up memory / liberate the CPU, clearing the way for new DOM elements which need to display, we need to ask out of scope DOM elements that have seen better days [to throw themselves off a cliff](https://www.youtube.com/watch?v=DwD7f5ZWhAk).
 
 A different element supports this harsh environment -- if-diff-then-stiff, a riff on a [gif](http://maryroach.net/stiff.html)
 
