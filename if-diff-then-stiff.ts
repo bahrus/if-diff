@@ -1,7 +1,6 @@
 import {IfDiff} from './if-diff.js';
-import {insertAdjacentTemplate} from 'trans-render/insertAdjacentTemplate.js';
-import {define} from 'xtal-element/xtal-latx.js';
-const templKey = Symbol('cache');
+import {xc} from 'xtal-element/lib/XtalCore.js';
+import {LazyMTProps} from 'lazy-mt/types.d.js';
 
 /**
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
@@ -10,56 +9,12 @@ const templKey = Symbol('cache');
  */
 export class IfDiffThenStiff extends IfDiff{
     static is = 'if-diff-then-stiff';
-
-
-
-    loadTemplate(el: Element, dataKeyName: string){
-        let tmpl  = (<any>el)[templKey] as HTMLTemplateElement | undefined | null;
-        if(tmpl === undefined){
-            tmpl = el.querySelector('template') as HTMLTemplateElement;
-            if(tmpl === null){
-                setTimeout(() =>{
-                    this.loadTemplate(el, dataKeyName);
-                }, 50);
-                return;
-            }
-            (<any>el)[templKey] = tmpl;
-        }
-        if(tmpl !== undefined && tmpl !== null){
-            const insertedElements = insertAdjacentTemplate(tmpl, el, 'afterend');
-            insertedElements.forEach(child =>{
-                (<HTMLElement>child).dataset[dataKeyName] = '1';
-            });
-            (el as HTMLElement).style.display = 'none';
-            el.innerHTML = '';
-        }
-
-
+    addStyle(self: IfDiff){  
+        //no need for styles to hide things.
     }
-
-    do(el: Element, ds: any, val: boolean, dataKeyName: string){
-        let skipEnable = false;
-        if(ds[dataKeyName] === '0'){
-            if(val){
-                this.loadTemplate(el, dataKeyName);
-                (<any>el).dataset[dataKeyName] = "1";
-            }
-        }else{
-            if(!val){
-                if((<any>el)[templKey]!==undefined){
-                    (<any>el).dataset[dataKeyName] = "0";
-                }else{
-                    el.remove();
-                }
-                skipEnable = true;
-            }
-             
-        }
-        if(this.enable && !skipEnable){
-            const action  = (val ? 'remove' : 'set') + 'Attribute';
-            el.querySelectorAll(this.enable).forEach(child => (<any>child)[action]('disabled', ''));
-        }
+    configureLazyMt(lazyMT: LazyMTProps){
+        lazyMT.minMem = true;
     }
 }
 
-define(IfDiffThenStiff);
+xc.define(IfDiffThenStiff);

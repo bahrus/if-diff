@@ -8,7 +8,6 @@
 
 # \<if-diff\>
 
-[TODO] stiff
 
 \<if-diff\> is an alternative to Polymer's [dom-if](https://polymer-library.polymer-project.org/3.0/docs/devguide/templates#dom-if) element that allows comparison between two operands, as well as progressive enhancement.  See [if-else](https://github.com/matthewp/if-else) for another data-centric alternative. And [iff-diff](https://github.com/bahrus/iff-diff) for something extremely light and simple, both size-wise and feature-wise.
 
@@ -55,25 +54,14 @@ But if-diff agrees with dom-if's wisdom as far as the no-right-answer / difficul
 
 ### Go to sleep mode
 
-It is quite common to have a user interface with multiple tabs, each tab depending on some common filters / inputs.  if-diff can be used in this scenario, and to help improve performance, it can toggle the disabled attribute on the target elements.  If the elements themselves know how to "go to sleep" when disabled, and then sync up with the new filters / inputs when disabled is removed, that could provide the most optimal performance in a desktop / well-equipped tablet.
+It is quite common to have a user interface with multiple tabs, each tab depending on some common filters / inputs.  if-diff can be used in this scenario, and to help improve performance, it makes the critical assumption that elements with disabled attribute won't do anything -- if properties change (like the values of the common filters), the new property values are dutifully stored locally, but nothing is done about it, until the disabled attribute is removed.  If the elements themselves know how to "go to sleep" when disabled in this way, and then sync up with the new filters / inputs when disabled is removed, that could provide the most optimal performance in a desktop / well-equipped handheld device.
 
-You can specify which elements to disable/enable based on the evaluation:
-
-```html
-<if-diff if -lhs equals -rhs data-key-name=manicMonday m=1 enable="my-sleeping-element"></if-diff>
-```
-
-The enable attribute will cause if-diff to find all elements matching the enable value (via css querySelectorAll), and remove all disabled attributes from matching nodes, when the test is true, and add the disabled attribute when the test is false.
-
-### Prop Passing
-
-More info on this in a later version.
 
 ### Put to sleep mode
 
-What if you need to deal with removing lots of DOM elements from view on a low memory device? 
+What if you need to deal with removing lots of DOM elements from view on a low memory device? And suppose those DOM elements are instances of bitcoin mining operation custom elements, which provide no ability to go on "pause."
 
-So now, in order to free up memory for new DOM elements that need to display, we need to ask out of scope DOM elements that have seen better days [to throw themselves off a cliff](https://www.youtube.com/watch?v=DwD7f5ZWhAk).
+So now, in order to free up memory / liberate the CPU, in order for new DOM elements which need to display, we need to ask out of scope DOM elements that have seen better days [to throw themselves off a cliff](https://www.youtube.com/watch?v=DwD7f5ZWhAk).
 
 A different element supports this harsh environment -- if-diff-then-stiff, a riff on a [gif](http://maryroach.net/stiff.html)
 
@@ -86,7 +74,6 @@ Aha!  I can sense you glibly thinking via the Force.
 But if the purpose of this whole exercise is to reduce memory, isn't that almost defeating the purpose?  Granted, JavaScript objects often take up less memory than DOM elements, but now you have to hold on to both (more or less).
 
 if-diff-then-stiff argues "Why would you store state of these snuffed out DOM elements in the extremely limited RAM, leaving less room for keeping additional DOM in memory?  That seems incredibly cruel. Why not store the 'state' in out-of-RAM storage areas, such as history.state (at least past states), a remote store, IndexedDB, or SessionStorage?"  
-
 
 
 ## Viewing Your Element Locally

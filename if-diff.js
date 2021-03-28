@@ -33,6 +33,23 @@ export class IfDiff extends HTMLElement {
     onPropChange(n, propDef, newVal) {
         this.reactor.addToQueue(propDef, newVal);
     }
+    addStyle(self) {
+        let rootNode = self.getRootNode();
+        if (rootNode.host === undefined) {
+            rootNode = document.head;
+        }
+        if (!styleMap.has(rootNode)) {
+            styleMap.add(rootNode);
+            const style = document.createElement('style');
+            style.innerHTML = /* css */ `
+                [data-if-diff-display="false"]{
+                    display:none;
+                }
+            `;
+            rootNode.appendChild(style);
+        }
+    }
+    configureLazyMt(lazyMT) { }
 }
 IfDiff.is = 'if-diff';
 const styleMap = new WeakSet();
@@ -94,35 +111,21 @@ function findTemplate(self) {
     }
 }
 function wrapLazyMts(self, lhsElement, rhsElement) {
-    addStyle(self);
+    self.addStyle(self);
     const lhsLazyMt = document.createElement('lazy-mt');
     lhsLazyMt.enter = true;
+    self.configureLazyMt(lhsLazyMt);
     lhsElement.insertAdjacentElement('beforebegin', lhsLazyMt);
     const rhsLazyMt = document.createElement('lazy-mt');
-    rhsLazyMt.enter = true;
+    rhsLazyMt.exit = true;
+    self.configureLazyMt(rhsLazyMt);
     rhsElement.insertAdjacentElement('afterend', rhsLazyMt);
     self.lhsLazyMt = lhsLazyMt;
     self.rhsLazyMt = rhsLazyMt;
     addMutObj(self);
 }
-function addStyle(self) {
-    let rootNode = self.getRootNode();
-    if (rootNode.host === undefined) {
-        rootNode = document.head;
-    }
-    if (!styleMap.has(rootNode)) {
-        styleMap.add(rootNode);
-        const style = document.createElement('style');
-        style.innerHTML = /* css */ `
-            [data-if-diff-display="false"]{
-                display:none;
-            }
-        `;
-        rootNode.appendChild(style);
-    }
-}
 function createLazyMts(self, templ) {
-    addStyle(self);
+    self.addStyle(self);
     const lhsLazyMt = document.createElement('lazy-mt');
     const eLHS = lhsLazyMt;
     lhsLazyMt.setAttribute('enter', '');

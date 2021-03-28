@@ -100,6 +100,25 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
 
     initCount: number | undefined;
 
+    addStyle(self: IfDiff){
+        let rootNode = self.getRootNode();
+        if((<any>rootNode).host === undefined){
+            rootNode = document.head;
+        }
+        if(!styleMap.has(rootNode)){
+            styleMap.add(rootNode);
+            const style = document.createElement('style');
+            style.innerHTML = /* css */`
+                [data-if-diff-display="false"]{
+                    display:none;
+                }
+            `;
+            rootNode.appendChild(style);      
+        }
+    }
+
+    configureLazyMt(lazyMT: LazyMTProps){}
+
 }
 
 const styleMap = new WeakSet<Node>();
@@ -161,37 +180,23 @@ function findTemplate(self: IfDiff){
 }
 
 function wrapLazyMts(self: IfDiff, lhsElement: Element, rhsElement: Element){
-    addStyle(self);
+    self.addStyle(self);
     const lhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
     lhsLazyMt.enter = true;
+    self.configureLazyMt(lhsLazyMt);
     lhsElement.insertAdjacentElement('beforebegin', lhsLazyMt);
     const rhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
-    rhsLazyMt.enter = true;
+    rhsLazyMt.exit = true;
+    self.configureLazyMt(rhsLazyMt);
     rhsElement.insertAdjacentElement('afterend', rhsLazyMt);
     self.lhsLazyMt = lhsLazyMt;
     self.rhsLazyMt = rhsLazyMt;
     addMutObj(self);
 }
 
-function addStyle(self: IfDiff){
-    let rootNode = self.getRootNode();
-    if((<any>rootNode).host === undefined){
-        rootNode = document.head;
-    }
-    if(!styleMap.has(rootNode)){
-        styleMap.add(rootNode);
-        const style = document.createElement('style');
-        style.innerHTML = /* css */`
-            [data-if-diff-display="false"]{
-                display:none;
-            }
-        `;
-        rootNode.appendChild(style);      
-    }
-}
 
 function createLazyMts(self: IfDiff, templ: HTMLTemplateElement){
-    addStyle(self);
+    self.addStyle(self);
     const lhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
     const eLHS = lhsLazyMt as Element;
     lhsLazyMt.setAttribute('enter', '');
