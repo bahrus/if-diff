@@ -103,7 +103,7 @@ What if you need to deal with removing lots of DOM elements from view on a low m
 
 So now, in order to free up memory / liberate the CPU, clearing the way for new DOM elements which need to display, we need to ask out of scope DOM elements that have seen better days [to throw themselves off a cliff](https://www.youtube.com/watch?v=DwD7f5ZWhAk).
 
-A different element supports this harsh environment -- if-diff-then-stiff, a riff on a [gif](http://maryroach.net/stiff.html)
+A different element supports this harsh environment -- if-diff-then-stiff, a riff on a [gif](http://maryroach.net/stiff.html).
 
 The problem is, how can we restore / reincarnate the content from the dead, including its current state of properties / attributes, when time once again fails to freeze at Sunday midnight? There are no "serializeThis", "deserializeThat" functions available in the DOM API, like there are for JS Objects <=> JSON.
 
