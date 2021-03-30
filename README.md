@@ -99,7 +99,7 @@ It is quite common to have a user interface with multiple tabs or menu items, ea
 
 ### Put to sleep mode
 
-What if you need to deal with removing lots of DOM elements from view on a low memory device? And suppose those DOM elements are instances of custom elements, which specialize in main thread bitcoin mining operations.  And suppose they provide no ability to pause their operations?
+What if you need to deal with removing lots of DOM elements from view on a low memory device? And suppose those DOM elements are instances of custom elements, which specialize in main thread bitcoin mining operations?  And suppose they provide no ability to pause their operations?
 
 So now, in order to free up memory / liberate the CPU, clearing the way for new DOM elements which need to display, we need to ask out of scope DOM elements that have seen better days [to throw themselves off a cliff](https://www.youtube.com/watch?v=DwD7f5ZWhAk).
 
