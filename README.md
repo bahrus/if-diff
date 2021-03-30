@@ -90,8 +90,6 @@ But as we will see, we do provide an extension of if-diff that supports the more
 
 It is quite common to have a user interface with multiple tabs or menu items, each tab or menu item depending on some common filters / inputs.  if-diff can be used in this scenario, and to help improve performance, it makes the critical assumption that elements with disabled attribute won't do anything -- if properties change (like the values of the common filters), the new property values are dutifully stored locally, but nothing is done about it, until the disabled attribute is removed.  If the elements themselves know how to "go to sleep" when disabled in this way, and then sync up with the new filters / inputs when disabled is removed, that could provide the most optimal performance in a desktop / well-equipped handheld device.
 
-Attribute "inert" is also set.[TODO]
-
 <details>
   <summary>Customizing how content is hidden</summary>
   By default, hidden content is hidden via display:none.  This may not be the right way in all cases.  Property "hiddenStyle" can adjust this (first instance per ShadowDOMRoot).
