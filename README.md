@@ -13,6 +13,40 @@
 
 if-diff adds an extra conditional on displaying the contents -- it only displays content when the content scrolls or is clicked into view.  if-diff also goes to some lengths to make the resulting DOM structure as flat as possible.  It does this by way of [lazy-mt](https://github.com/bahrus/lazy-mt).
 
+## Syntax
+
+The simplest, client-centric approach to using if-diff is demonstrated below:
+
+```html
+<div> 
+  Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
+</div>
+<label for=lhs>LHS:</label><input id=lhs>
+<!-- p-d = "pass down" --> 
+<p-d on=input to=[-lhs] val=target.value m=2 init-val=value></p-d>
+<label for=rhs>RHS:</label><input id=rhs>
+<p-d on=input to=[-rhs] val=target.value m=2 init-val=value></p-d>
+<if-diff iff -lhs equals -rhs>
+    <template>
+      <div>LHS == RHS</div>
+    </template>
+</if-diff>
+<p-d observe=if-diff on=value-changed to=[data-lhs-equals-rhs] prop=textContent></p-d>
+<if-diff iff -lhs not-equals -rhs>
+    <template>
+      <div>LHS != RHS</div>
+    </template>
+</if-diff>
+<p-d observe=if-diff on=value-changed to=[data-lhs-not-equals-rhs] prop=textContent></p-d>
+
+LHS Equals RHS: 
+<div data-lhs-equals-rhs></div>
+LHS Doesn't equal RHS:
+<div data-lhs-not-equals-rhs></div>
+```
+
+"p-d", a kind of dom-bind alternative, is discussed [here](https://github.com/bahrus/pass-down).
+
 if-diff can optionally allow the server to display content that should be initially displayed, then adjusts what is displayed as conditions in the browser change[TODO].
 
 For example, suppose today is Monday.  The server could generate the syntax below if today is Monday:
@@ -50,7 +84,7 @@ if-diff's bias is towards hiding rather than deleting.
 
 But if-diff agrees with dom-if's wisdom as far as the no-right-answer / difficult trade-offs, and envies how dom-if empowers developers to be able to choose [if ending DOM support is the more humane thing to do](https://polymer-library.polymer-project.org/2.0/docs/devguide/templates#dom-if).
 
-<!--But as we will see, we do provide an extension of if-diff that supports the more austere approach.-->
+But as we will see, we do provide an extension of if-diff that supports the more austere approach.
 
 ### Go to sleep mode
 
@@ -60,18 +94,18 @@ It is quite common to have a user interface with multiple tabs, each tab dependi
   <summary>Customizing how content is hidden</summary>
   By default, hidden content is hidden via display:none.  This may not be the right way in all cases.  Property "hiddenStyle" can adjust this (first instance per ShadowDOMRoot).
 
-  In addition, properties/attributes setAttr/set-attr, setClass/set-class, setPart/set-part can be used to set the specified attribute, class, or part, respectively if the value is true, remove the attribute / class / part when false.
+  In addition, properties/attributes setAttr/set-attr, setClass/set-class, setPart/set-part can be used to set the specified attribute, class, or part, respectively. If the value is true add the attribute/class/part.  If the value is false, remove the attribute / class / part.
 </details>
 
 ### Put to sleep mode
 
-What if you need to deal with removing lots of DOM elements from view on a low memory device? And suppose those DOM elements are instances of bitcoin mining operation custom elements, which provide no ability to go on "pause."
+What if you need to deal with removing lots of DOM elements from view on a low memory device? And suppose those DOM elements are instances of main thread, bitcoin mining operation custom elements, which provide no ability to go on "pause."
 
 So now, in order to free up memory / liberate the CPU, clearing the way for new DOM elements which need to display, we need to ask out of scope DOM elements that have seen better days [to throw themselves off a cliff](https://www.youtube.com/watch?v=DwD7f5ZWhAk).
 
 A different element supports this harsh environment -- if-diff-then-stiff, a riff on a [gif](http://maryroach.net/stiff.html)
 
-The problem is, how can we restore / reincarnate the content from the dead, including its current state of properties / attributes, when time once again fails to freeze at Sunday midnight? There are no "serializeThis", "deserializeThat" functions available in the DOM API, like there is for JS Objects <=> JSON.
+The problem is, how can we restore / reincarnate the content from the dead, including its current state of properties / attributes, when time once again fails to freeze at Sunday midnight? There are no "serializeThis", "deserializeThat" functions available in the DOM API, like there are for JS Objects <=> JSON.
 
 Aha!  I can sense you glibly thinking via the Force.  
 
@@ -82,18 +116,18 @@ But if the purpose of this whole exercise is to reduce memory, isn't that almost
 if-diff-then-stiff argues "Why would you store state of these snuffed out DOM elements in the extremely limited RAM, leaving less room for keeping additional DOM in memory?  That seems incredibly cruel. Why not store the 'state' in out-of-RAM storage areas, such as history.state (at least past states), a remote store, IndexedDB, or SessionStorage?"
 
 
-
-
 ## Viewing Your Element Locally
 
-```
-$ npm install
-$ npm run serve
-Open http://localhost:3030/demo/dev
-```
+1.  Install git.
+2.  Fork/clone this repo.
+3.  Install node.
+4.  Open command window to folder where you cloned this repo.
+5.  > npm install
+6.  > npm run serve
+7.  Open http://localhost:3030/demo/dev in a modern browser.
 
 ## Running Tests
 
 ```
-$ npm test
+> npm test
 ```
