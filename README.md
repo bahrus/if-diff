@@ -47,7 +47,7 @@ LHS Doesn't equal RHS:
 
 "p-d", a kind of dom-bind alternative, is discussed [here](https://github.com/bahrus/pass-down).
 
-if-diff can optionally allow the server to display content that should be initially displayed, then adjusts what is displayed as conditions in the browser change[TODO].
+if-diff can optionally allow the server to display content that should be initially displayed, then adjusts what is displayed as conditions in the browser change.
 
 For example, suppose today is Monday.  The server could generate the syntax below if today is Monday:
 
