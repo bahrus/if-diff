@@ -18,7 +18,9 @@ export class IfDiff extends HTMLElement {
     }
     connectedCallback() {
         this.style.display = 'none';
-        xc.hydrate(this, slicedPropDefs);
+        xc.hydrate(this, slicedPropDefs, {
+            hiddenStyle: 'display:none'
+        });
     }
     disconnectedCallback() {
         if (this.lhsLazyMt && this.rhsLazyMt) {
@@ -43,7 +45,7 @@ export class IfDiff extends HTMLElement {
             const style = document.createElement('style');
             style.innerHTML = /* css */ `
                 [data-if-diff-display="false"]{
-                    display:none;
+                    ${self.hiddenStyle}
                 }
             `;
             rootNode.appendChild(style);
@@ -154,25 +156,43 @@ function addMutObj(self) {
         }
         parent.addEventListener(p_d_std, e => {
             e.stopPropagation();
-            changeDisplay(self.lhsLazyMt, self.rhsLazyMt, !!self.value);
+            changeDisplay(self, self.lhsLazyMt, self.rhsLazyMt, !!self.value);
         });
     }
 }
-const toggleMt = ({ value, lhsLazyMt, rhsLazyMt }) => {
+const toggleMt = ({ value, lhsLazyMt, rhsLazyMt, self }) => {
     if (value) {
         lhsLazyMt.setAttribute('mount', '');
         rhsLazyMt.setAttribute('mount', '');
-        changeDisplay(lhsLazyMt, rhsLazyMt, true);
+        changeDisplay(self, lhsLazyMt, rhsLazyMt, true);
     }
     else {
-        changeDisplay(lhsLazyMt, rhsLazyMt, false);
+        changeDisplay(self, lhsLazyMt, rhsLazyMt, false);
     }
 };
-function changeDisplay(lhsLazyMt, rhsLazyMt, display) {
+function changeDisplay(self, lhsLazyMt, rhsLazyMt, display) {
     let ns = lhsLazyMt;
     //TODO: mutation observer
     while (ns !== null) {
         ns.dataset.ifDiffDisplay = display.toString();
+        const attr = self.setAttr;
+        if (attr !== undefined) {
+            if (display) {
+                ns.setAttribute(attr, '');
+            }
+            else {
+                ns.removeAttribute(attr);
+            }
+        }
+        const verb = display ? 'add' : 'remove';
+        const part = self.setPart;
+        if (part !== undefined) {
+            ns[verb](part);
+        }
+        const className = self.setClass;
+        if (className !== undefined) {
+            ns.classList[verb](className);
+        }
         if (ns === rhsLazyMt)
             return;
         ns = ns.nextElementSibling;
@@ -216,7 +236,7 @@ const num1 = {
 const propDefMap = {
     iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
     lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
-    initCount: num1,
+    initCount: num1, setAttr: str1, setClass: str1, setPart: str1,
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 xc.letThereBeProps(IfDiff, slicedPropDefs, 'onPropChange');

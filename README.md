@@ -56,6 +56,12 @@ But if-diff agrees with dom-if's wisdom as far as the no-right-answer / difficul
 
 It is quite common to have a user interface with multiple tabs, each tab depending on some common filters / inputs.  if-diff can be used in this scenario, and to help improve performance, it makes the critical assumption that elements with disabled attribute won't do anything -- if properties change (like the values of the common filters), the new property values are dutifully stored locally, but nothing is done about it, until the disabled attribute is removed.  If the elements themselves know how to "go to sleep" when disabled in this way, and then sync up with the new filters / inputs when disabled is removed, that could provide the most optimal performance in a desktop / well-equipped handheld device.
 
+<details>
+  <summary>Customizing how content is hidden</summary>
+  By default, hidden content is hidden via display:none.  This may not be the right way in all cases.  Property "hiddenStyle" can adjust this (first instance per ShadowDOMRoot).
+
+  In addition, properties/attributes setAttr/set-attr, setClass/set-class, setPart/set-part can be used to set the specified attribute, class, or part, respectively if the value is true, remove the attribute / class / part when false.
+</details>
 
 ### Put to sleep mode
 
@@ -73,7 +79,9 @@ Aha!  I can sense you glibly thinking via the Force.
 
 But if the purpose of this whole exercise is to reduce memory, isn't that almost defeating the purpose?  Granted, JavaScript objects often take up less memory than DOM elements, but now you have to hold on to both (more or less).
 
-if-diff-then-stiff argues "Why would you store state of these snuffed out DOM elements in the extremely limited RAM, leaving less room for keeping additional DOM in memory?  That seems incredibly cruel. Why not store the 'state' in out-of-RAM storage areas, such as history.state (at least past states), a remote store, IndexedDB, or SessionStorage?"  
+if-diff-then-stiff argues "Why would you store state of these snuffed out DOM elements in the extremely limited RAM, leaving less room for keeping additional DOM in memory?  That seems incredibly cruel. Why not store the 'state' in out-of-RAM storage areas, such as history.state (at least past states), a remote store, IndexedDB, or SessionStorage?"
+
+
 
 
 ## Viewing Your Element Locally
