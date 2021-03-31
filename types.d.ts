@@ -6,6 +6,7 @@ export interface IfDiffProps extends Partial<HTMLElement>{
     notEquals?: boolean,
     includes?: boolean,
     disabled?: boolean | number, 
+    value?: boolean | undefined,
 }
 
 export interface IfDiffEventNameMap {

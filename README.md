@@ -47,6 +47,8 @@ LHS Doesn't equal RHS:
 
 "p-d", a kind of dom-bind alternative, is discussed [here](https://github.com/bahrus/pass-down).
 
+## Progressive Enhancement / Server-side rendering (SSR)
+
 if-diff can optionally allow the server to display content that should be initially displayed, then adjusts what is displayed as conditions in the browser change.
 
 For example, suppose today is Monday.  The server could generate the syntax below if today is Monday:
@@ -66,7 +68,22 @@ For example, suppose today is Monday.  The server could generate the syntax belo
 
 init-count indicates how many nextSiblingElements if-diff "owns".  This follows the same pattern used by [ib-id](https://github.com/bahrus/ib-id)
 
-The user will immediately see the desired text "I wish it was Sunday" before a single byte of JS is downloaded.  Since the text for Tuesday is not yet applicable, embedding the content inside a template tag will allow the browser to ignore whatever is inside until needed.  Only if the day changes to Tuesday would we need to display Tuesday.  At that point, the template is cloned, and the clone replaces the template.  
+The user will immediately see the desired text "I wish it was Sunday" before a single byte of JS is downloaded.  Since the text for Tuesday is not yet applicable, embedding the content inside a template tag will allow the browser to ignore whatever is inside until needed.  Only if the day changes to Tuesday would we need to display Tuesday.  At that point, the template is cloned, and the clone replaces the template. 
+
+One other thing:  When the server renders the content for Monday, this still leaves some slightly unnecessary processing -- we need to pass down the values of lhs, rhs, etc, in order for changes to the properties to evaluate consistently.  That causes if-diff to calculate the value of the logical expression, and then make sure the visibility of the owned content is compatible with the values.
+
+But if the server made sure that the original HTML matches the correct initial value, there's a way the server can set the properties without foricing the component to do any of it's client-side work:
+
+```html
+<if-diff sync-props-from-server='{"iff": true, "lhs": "Monday", "equals": true, "rhs": "Monday", "initCount": 1}'></if-diff>
+<div>
+  I wish it was Sunday
+</div>
+```
+
+The server is saying:  "Don't worry about doing anything with the initial property values I'm providing, trust me, it's Monday, and the content is appropriate for Monday.  But these values I'm giving you will prove useful if something changes on the client."
+
+## Purpose of "iff" property/attribute
 
 The "iff" attribute / property is actually an active participant in the logical evaluation.  If that attribute / property is absent / false, then the evaluation will be false no matter what.  And as the demo below indicates, not-equals is also supported, as is "includes."  Additional / alternative evaluation logic can be inserted by overriding method async evaluate();
 
