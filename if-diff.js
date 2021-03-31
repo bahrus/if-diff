@@ -237,6 +237,7 @@ const propDefMap = {
     iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
     lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
     initCount: num1, setAttr: str1, setClass: str1, setPart: str1,
+    hiddenStyle: str1,
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 xc.letThereBeProps(IfDiff, slicedPropDefs, 'onPropChange');
