@@ -2,8 +2,7 @@ import {xc, PropAction, PropDef, PropDefMap, ReactiveSurface} from 'xtal-element
 import {IfDiffProps} from './types.d.js';
 import('lazy-mt/lazy-mt.js');
 import {LazyMTProps} from 'lazy-mt/types.d.js';
-import  'mut-obs/mut-obs.js';
-import {MutObs} from 'mut-obs/mut-obs.js';
+import ('mut-obs/mut-obs.js');
 
 const p_d_std = 'p_d_std';
 const attachedParents = new WeakSet<Element>();
@@ -227,7 +226,7 @@ function addMutObj(self: IfDiff){
     if(parent !== null){
         if(!attachedParents.has(parent)){
             attachedParents.add(parent);
-            const mutObs = document.createElement('mut-obs') as MutObs;
+            const mutObs = document.createElement('mut-obs');
             const s = mutObs.setAttribute.bind(mutObs);
             s('bubbles', '');
             s('dispatch', p_d_std);

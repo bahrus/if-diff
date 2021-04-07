@@ -1,6 +1,6 @@
 import { xc } from 'xtal-element/lib/XtalCore.js';
 import('lazy-mt/lazy-mt.js');
-import 'mut-obs/mut-obs.js';
+import('mut-obs/mut-obs.js');
 const p_d_std = 'p_d_std';
 const attachedParents = new WeakSet();
 /**

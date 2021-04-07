@@ -72,7 +72,7 @@ The user will immediately see the desired text "I wish it was Sunday" before a s
 
 One other thing:  When the server renders the content for Monday, this still leaves some slightly unnecessary processing -- we need to pass down the values of lhs, rhs, etc, in order for changes to the properties to evaluate consistently.  That causes if-diff to calculate the value of the logical expression, and then make sure the visibility of the owned content is compatible with the values.
 
-But if the server made sure that the original HTML matches the correct initial value, there's a way the server can set the properties without foricing the component to do any of it's client-side work:
+But if the server made sure that the original HTML matches the correct initial value, there's a way the server can set the properties without forcing the component to do any of it's client-side work:
 
 ```html
 <if-diff sync-props-from-server='{"iff": true, "lhs": "Monday", "equals": true, "rhs": "Monday", "initCount": 1}'></if-diff>
