@@ -51,7 +51,7 @@ LHS Doesn't equal RHS:
 
 if-diff can optionally allow the server to display content that should be initially displayed, then adjusts what is displayed as conditions in the browser change.
 
-For example, suppose today is Monday.  The server could generate the syntax below if today is Monday:
+For example, suppose today is Monday.  The server could generate the syntax below based on that fact:
 
 
 ```html
