@@ -23,11 +23,14 @@ export class IfDiff extends HTMLElement {
         });
     }
     disconnectedCallback() {
+        this.range?.deleteContents();
+    }
+    get range() {
         if (this.lhsLazyMt && this.rhsLazyMt) {
             const range = document.createRange();
             range.setStartBefore(this.lhsLazyMt);
             range.setEndAfter(this.rhsLazyMt);
-            range.deleteContents();
+            return range;
         }
     }
     get nextUnownedSibling() {
