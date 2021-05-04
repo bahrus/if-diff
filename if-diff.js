@@ -87,7 +87,7 @@ async function evaluate(self) {
 function findTemplate(self) {
     if (self.lhsLazyMt !== undefined)
         return;
-    if (self.initCount === undefined) {
+    if (self.ownedSiblingCount === undefined) {
         const templ = self.querySelector('template');
         if (templ === null) {
             setTimeout(() => findTemplate(self), 50);
@@ -99,13 +99,13 @@ function findTemplate(self) {
         let ns = self;
         let count = 0;
         let lhsElement;
-        while (ns !== null && count < self.initCount) {
+        while (ns !== null && count < self.ownedSiblingCount) {
             ns = ns.nextElementSibling;
             count++;
             if (count === 1 && ns !== null)
                 lhsElement = ns;
         }
-        if (ns === null || count < self.initCount) {
+        if (ns === null || count < self.ownedSiblingCount) {
             setTimeout(() => findTemplate(self), 50);
             return;
         }
@@ -241,7 +241,7 @@ const sync = {
 const propDefMap = {
     iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
     lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
-    initCount: num1, setAttr: str1, setClass: str1, setPart: str1,
+    ownedSiblingCount: num1, setAttr: str1, setClass: str1, setPart: str1,
     hiddenStyle: str1,
     syncPropsFromServer: sync,
 };

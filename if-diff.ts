@@ -1,4 +1,4 @@
-import {xc, PropAction, PropDef, PropDefMap, ReactiveSurface} from 'xtal-element/lib/XtalCore.js';
+import {xc, PropAction, PropDef, PropDefMap, ReactiveSurface, IReactor} from 'xtal-element/lib/XtalCore.js';
 import {IfDiffProps} from './types.d.js';
 import('lazy-mt/lazy-mt.js');
 import {LazyMTProps} from 'lazy-mt/types.d.js';
@@ -18,7 +18,7 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
 
     self = this;
     propActions = propActions;
-    reactor = new xc.Rx(this);
+    reactor: IReactor = new xc.Rx(this);
 
     connectedCallback(){
         this.style.display = 'none';
@@ -99,7 +99,7 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
      */
     iff: boolean | undefined;
 
-    initCount: number | undefined;
+    ownedSiblingCount: number | undefined;
 
     hiddenStyle: string | undefined;
 
@@ -165,7 +165,7 @@ async function evaluate(self: IfDiff){
 
 function findTemplate(self: IfDiff){
     if(self.lhsLazyMt !== undefined) return;
-    if(self.initCount === undefined){
+    if(self.ownedSiblingCount === undefined){
         const templ = self.querySelector('template');
         if(templ === null){
             setTimeout(() => findTemplate(self), 50);
@@ -176,12 +176,12 @@ function findTemplate(self: IfDiff){
         let ns = self as Element | null;
         let count = 0;
         let lhsElement : Element | undefined;
-        while(ns!==null && count < self.initCount){
+        while(ns!==null && count < self.ownedSiblingCount){
             ns = ns.nextElementSibling;
             count++;
             if(count === 1 && ns!== null) lhsElement = ns;
         }
-        if(ns === null || count < self.initCount){
+        if(ns === null || count < self.ownedSiblingCount){
             setTimeout(() => findTemplate(self), 50);
             return;
         }
@@ -328,7 +328,7 @@ const sync: PropDef = {
 const propDefMap: PropDefMap<IfDiff> = {
     iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
     lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
-    initCount: num1, setAttr: str1, setClass: str1, setPart: str1,
+    ownedSiblingCount: num1, setAttr: str1, setClass: str1, setPart: str1,
     hiddenStyle: str1,
     syncPropsFromServer: sync,
 };

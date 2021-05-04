@@ -56,23 +56,23 @@ For example, suppose today is Monday.  The server could generate the syntax belo
 
 ```html
 <!-- Framework-neutral pseudo code:  Assume some framework / library sets property "lhs" based on lhs:=dayOfWeek attribute --> 
-<if-diff iff lhs='"Monday"' equals rhs='"Monday"' init-count=1></if-diff>
+<if-diff iff lhs='"Monday"' equals rhs='"Monday"' owned-sibling-count=1></if-diff>
 <div>
   I wish it was Sunday
 </div>
-<if-diff iff lhs:=dayOfWeek equals rhs='"Tuesday"' init-count=1></if-diff>
+<if-diff iff lhs:=dayOfWeek equals rhs='"Tuesday"' owned-sibling-count=1></if-diff>
 <template>
   <div>Who could hang a name on you</div>
 </template>
 ```
 
-init-count indicates how many nextSiblingElements if-diff "owns".  This follows the same pattern used by [ib-id](https://github.com/bahrus/ib-id)
+"owned-sibling-count" indicates how many nextSiblingElements if-diff "owns".  This follows the same pattern used by [ib-id](https://github.com/bahrus/ib-id).
 
 The user will immediately see the desired text "I wish it was Sunday" before a single byte of JS is downloaded.  Since the text for Tuesday is not yet applicable, embedding the content inside a template tag will allow the browser to ignore whatever is inside until needed.  Only if the day changes to Tuesday would we need to display Tuesday.  At that point, the template is cloned, and the clone replaces the template. 
 
 One other thing:  When the server renders the content for Monday, this still leaves some slightly unnecessary processing -- we need to pass down the values of lhs, rhs, etc, in order for changes to the properties to evaluate consistently.  That causes if-diff to calculate the value of the logical expression, and then make sure the visibility of the owned content is compatible with the values.
 
-But if the server made sure that the original HTML matches the correct initial value, there's a way the server can set the properties without forcing the component to do any of it's client-side work:
+But if the server made sure that the original HTML matches the correct initial value, there's a way the server can set the properties without forcing the component to do any of its client-side work:
 
 ```html
 <if-diff sync-props-from-server='{"iff": true, "lhs": "Monday", "equals": true, "rhs": "Monday", "initCount": 1}'></if-diff>
