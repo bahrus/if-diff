@@ -25,11 +25,9 @@ export class IfDiff extends HTMLElement {
     disconnectedCallback() {
         if (this.lhsLazyMt && this.rhsLazyMt) {
             const range = document.createRange();
-            range.setStart(this.lhsLazyMt, 0);
-            range.setEnd(this.rhsLazyMt, 0);
+            range.setStartBefore(this.lhsLazyMt);
+            range.setEndAfter(this.rhsLazyMt);
             range.deleteContents();
-            this.lhsLazyMt.remove();
-            this.rhsLazyMt.remove();
         }
     }
     get nextUnownedSibling() {
