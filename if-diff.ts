@@ -40,6 +40,17 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
         }
     }
 
+    get extractedContents(){
+        if(this.rhsLazyMt !== undefined){
+            const range = document.createRange();
+            range.setStartBefore(this);
+            range.setEndAfter(this.rhsLazyMt);
+            return range.extractContents();
+        }else{
+            return this;
+        }
+    }
+
     get nextUnownedSibling(){
         if(this.rhsLazyMt !== undefined){
             return this.rhsLazyMt.nextElementSibling;
