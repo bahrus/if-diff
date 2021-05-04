@@ -83,6 +83,12 @@ But if the server made sure that the original HTML matches the correct initial v
 
 The server is saying:  "Don't worry about doing anything with the initial property values I'm providing, trust me, it's Monday, and the content is appropriate for Monday.  But these values I'm giving you will prove useful if something changes on the client."
 
+## NextUnownedSibling
+
+Since if-diff generates sibling elements on the fly, this could cause issues for other web components which generate content dynamically.
+
+To help simplify some subtle issues related to this dilemma, a convenience read-only property is available:  $0.NextUnownedSibling.
+
 ## Purpose of "iff" property/attribute
 
 The "iff" attribute / property is actually an active participant in the logical evaluation.  If that attribute / property is absent / false, then the evaluation will be false no matter what.  And as the demo below indicates, not-equals is also supported, as is "includes."  Additional / alternative evaluation logic can be inserted by overriding method async evaluate();

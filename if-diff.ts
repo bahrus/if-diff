@@ -38,6 +38,13 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
         }
     }
 
+    get nextUnownedSibling(){
+        if(this.rhsLazyMt !== undefined){
+            return this.rhsLazyMt.nextElementSibling;
+        }
+        return this.nextElementSibling;
+    }
+
     onPropChange(n: string, propDef: PropDef, newVal: any){
         this.reactor.addToQueue(propDef, newVal);
     }

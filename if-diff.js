@@ -32,6 +32,12 @@ export class IfDiff extends HTMLElement {
             this.rhsLazyMt.remove();
         }
     }
+    get nextUnownedSibling() {
+        if (this.rhsLazyMt !== undefined) {
+            return this.rhsLazyMt.nextElementSibling;
+        }
+        return this.nextElementSibling;
+    }
     onPropChange(n, propDef, newVal) {
         this.reactor.addToQueue(propDef, newVal);
     }
