@@ -28,10 +28,10 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
     }
 
     disconnectedCallback(){
-        this.range?.deleteContents();
+        this.ownedRange?.deleteContents();
     }
 
-    get range(){
+    get ownedRange(){
         if(this.lhsLazyMt && this.rhsLazyMt){
             const range = document.createRange();
             range.setStartBefore(this.lhsLazyMt);
