@@ -28,7 +28,7 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
     }
 
     disconnectedCallback(){
-        this.ownedRange?.deleteContents();
+        if(!this._doNotCleanUp) this.ownedRange?.deleteContents();
     }
 
     get ownedRange(){
@@ -39,16 +39,13 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
             return range;
         }
     }
-
+    _doNotCleanUp = false;
     get extractedContents(){
-        if(this.rhsLazyMt !== undefined){
-            const range = document.createRange();
-            range.setStartBefore(this);
-            range.setEndAfter(this.rhsLazyMt);
-            return range.extractContents();
-        }else{
-            return this;
-        }
+        this._doNotCleanUp = true;
+        const range = document.createRange();
+        range.setStartBefore(this);
+        range.setEndAfter(this.rhsLazyMt ?? this);
+        return range.extractContents();
     }
 
     get nextUnownedSibling(){

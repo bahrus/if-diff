@@ -15,6 +15,7 @@ export class IfDiff extends HTMLElement {
         this.self = this;
         this.propActions = propActions;
         this.reactor = new xc.Rx(this);
+        this._doNotCleanUp = false;
     }
     connectedCallback() {
         this.style.display = 'none';
@@ -23,7 +24,8 @@ export class IfDiff extends HTMLElement {
         });
     }
     disconnectedCallback() {
-        this.ownedRange?.deleteContents();
+        if (!this._doNotCleanUp)
+            this.ownedRange?.deleteContents();
     }
     get ownedRange() {
         if (this.lhsLazyMt && this.rhsLazyMt) {
@@ -34,15 +36,11 @@ export class IfDiff extends HTMLElement {
         }
     }
     get extractedContents() {
-        if (this.rhsLazyMt !== undefined) {
-            const range = document.createRange();
-            range.setStartBefore(this);
-            range.setEndAfter(this.rhsLazyMt);
-            return range.extractContents();
-        }
-        else {
-            return this;
-        }
+        this._doNotCleanUp = true;
+        const range = document.createRange();
+        range.setStartBefore(this);
+        range.setEndAfter(this.rhsLazyMt ?? this);
+        return range.extractContents();
     }
     get nextUnownedSibling() {
         if (this.rhsLazyMt !== undefined) {

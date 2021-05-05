@@ -38,7 +38,10 @@
 
       <script>
           function MoveNotEquals(){
-            target.appendChild(notEquals.extractedContents);
+            const extractedContents = notEquals.extractedContents;
+            console.log(extractedContents);
+            debugger;
+            target.appendChild(extractedContents);
           }
       </script>
 
