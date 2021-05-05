@@ -35,7 +35,7 @@ export class IfDiff extends HTMLElement {
             return range;
         }
     }
-    get extractedContents() {
+    extractContents() {
         this._doNotCleanUp = true;
         const range = document.createRange();
         range.setStartBefore(this);

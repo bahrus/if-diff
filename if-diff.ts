@@ -40,7 +40,8 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
         }
     }
     _doNotCleanUp = false;
-    get extractedContents(){
+
+    extractContents(){
         this._doNotCleanUp = true;
         const range = document.createRange();
         range.setStartBefore(this);
