@@ -138,6 +138,18 @@ But if the purpose of this whole exercise is to reduce memory, isn't that almost
 
 if-diff-then-stiff argues "Why would you store state of these snuffed out DOM elements in the extremely limited RAM, leaving less room for keeping additional DOM in memory?  That seems incredibly cruel. Why not store the 'state' in out-of-RAM storage areas, such as history.state (at least past states), a remote store, IndexedDB, or SessionStorage?"
 
+##  Alternative "Go To Sleep" Approach [TODO]
+
+if-diff can also proxy property changes, and will only allow those proxy values to pass through to the element when the if condition is satisfied
+
+Syntax:
+
+```html
+<if-diff iff -lhs equals -rhs -my-grid-element-proxy -my-chart-element-proxy><template>
+  <my-grid></my-grid>
+  <my-chart></my-chart>
+</template></if-diff>
+```
 
 ## Viewing Your Element Locally
 
