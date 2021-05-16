@@ -19,7 +19,7 @@ export class IfDiff extends HTMLElement {
     }
     connectedCallback() {
         this.style.display = 'none';
-        xc.hydrate(this, slicedPropDefs, {
+        xc.mergeProps(this, slicedPropDefs, {
             hiddenStyle: 'display:none'
         });
     }

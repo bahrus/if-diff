@@ -22,7 +22,7 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
 
     connectedCallback(){
         this.style.display = 'none';
-        xc.hydrate<Partial<IfDiff>>(this, slicedPropDefs, {
+        xc.mergeProps<Partial<IfDiff>>(this, slicedPropDefs, {
             hiddenStyle:'display:none'
         });
     }
