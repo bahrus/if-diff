@@ -1,12 +1,11 @@
 {
   "dependencies": {
-    "lazy-mt": "0.0.7",
+    "lazy-mt": "0.0.8",
     "mut-obs": "0.0.7",
-    "trans-render": "0.0.286",
-    "xtal-element": "0.0.389"
+    "trans-render": "0.0.289",
+    "xtal-element": "0.0.394"
   },
   "devDependencies": {
-    "es-dev-server": "2.1.0",
     "pass-down": "0.0.31",
     "xtal-test": "0.0.50"
   },
