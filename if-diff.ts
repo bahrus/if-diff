@@ -11,7 +11,6 @@ const attachedParents = new WeakSet<Element>();
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
  * No DOM deletion takes place on non matching elements.
  * [More Info](https://github.com/bahrus/if-diff)
- * @element if-diff
  */
 export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface {
     static is = 'if-diff';
