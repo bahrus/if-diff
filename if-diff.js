@@ -90,9 +90,14 @@ export class IfDiff extends HTMLElement {
     rhsLazyMt;
     /**
      * Boolean property / attribute -- must be true to pass test(s)
+     * Can also be an object.  Condition is based on the property being truty.
      * @attr
      */
     iff;
+    /**
+     * Iff property has to be a non empty array.
+     */
+    isNonEmptyArray;
     ownedSiblingCount;
     hiddenStyle;
     setAttr;
@@ -126,20 +131,27 @@ const linkValue = ({ iff, lhs, equals, rhs, notEquals, includes, disabled, self 
 async function evaluate(self) {
     let val = self.iff;
     if (val) {
-        if (self.equals || self.notEquals) {
-            let eq = false;
-            if (typeof self.lhs === 'object' && typeof self.rhs === 'object') {
-                const { compare } = await import('./compare.js');
-                eq = compare(self.lhs, self.rhs);
+        if (self.isNonEmptyArray) {
+            if (!Array.isArray(val) || val.length === 0) {
+                val = false;
             }
-            else {
-                eq = self.lhs === self.rhs;
-            }
-            val = self.equals ? eq : !eq;
         }
-        else if (self.includes) {
-            const { includes } = await import('./includes.js');
-            val = includes(self.lhs, self.rhs);
+        if (val) {
+            if (self.equals || self.notEquals) {
+                let eq = false;
+                if (typeof self.lhs === 'object' && typeof self.rhs === 'object') {
+                    const { compare } = await import('./compare.js');
+                    eq = compare(self.lhs, self.rhs);
+                }
+                else {
+                    eq = self.lhs === self.rhs;
+                }
+                val = self.equals ? eq : !eq;
+            }
+            else if (self.includes) {
+                const { includes } = await import('./includes.js');
+                val = includes(self.lhs, self.rhs);
+            }
         }
     }
     if (val !== self.value) {
@@ -303,6 +315,7 @@ const sync = {
 };
 const propDefMap = {
     iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
+    isNonEmptyArray: bool1,
     lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
     ownedSiblingCount: num1, setAttr: str1, setClass: str1, setPart: str1,
     hiddenStyle: str1,

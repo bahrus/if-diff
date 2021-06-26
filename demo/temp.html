@@ -7,9 +7,41 @@
     <title>Document</title>
 </head>
 <body>
-    <some-tag -lhs:=myTest></some-tag>
+    <my-custom-element id=myCustomElement></my-custom-element>
     <script>
-        document.querySelector('[-lhs\\:]')
+    myCustomElement.prop1 = 'hello';
+    class MyCustomElement extends HTMLElement{
+      connectedCallback(){
+        this._upgradeProperty('prop1');
+      }
+
+      _upgradeProperty(prop) {
+        if (this.hasOwnProperty(prop)) {
+          let value = this[prop];
+          delete this[prop];
+          this[prop] = value;
+        }
+      }
+    }
+    Object.defineProperty(MyCustomElement.prototype, 'prop1', {
+        get(){
+            console.log('get');
+            return this['_prop1'];
+        },
+        set(nv){
+            this['_prop1'] = nv;
+        },
+        enumerable: true,
+        configurable: true,
+    });
+    console.log(myCustomElement.prop1);
+    
+    customElements.define('my-custom-element', MyCustomElement);
+    setTimeout(() => {
+        console.log(Object.getOwnPropertyNames(myCustomElement));
+        console.log(myCustomElement.prop1);
+    }, 1000);
+    
     </script>
 </body>
 </html>

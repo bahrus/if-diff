@@ -113,9 +113,15 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
 
     /**
      * Boolean property / attribute -- must be true to pass test(s)
+     * Can also be an object.  Condition is based on the property being truty.
      * @attr
      */
     iff: boolean | undefined;
+
+    /**
+     * Iff property has to be a non empty array.
+     */
+    isNonEmptyArray: boolean | undefined;
 
     ownedSiblingCount: number | undefined;
 
@@ -161,19 +167,27 @@ const linkValue = ({iff, lhs, equals, rhs, notEquals, includes, disabled, self}:
 async function evaluate(self: IfDiff){
     let val = self.iff;
     if(val){
-        if(self.equals || self.notEquals){
-            let eq = false;
-            if(typeof self.lhs === 'object' && typeof self.rhs === 'object'){
-                const {compare} = await import('./compare.js');
-                eq = compare(self.lhs, self.rhs);
-            }else{
-                eq = self.lhs === self.rhs;
+        if(self.isNonEmptyArray){
+            if(!Array.isArray(val) || val.length === 0){
+                val = false;
             }
-            val = self.equals ? eq : !eq;
-        }else if(self.includes){
-            const {includes} = await import('./includes.js');
-            val = includes(self.lhs, self.rhs);
         }
+        if(val){
+            if(self.equals || self.notEquals){
+                let eq = false;
+                if(typeof self.lhs === 'object' && typeof self.rhs === 'object'){
+                    const {compare} = await import('./compare.js');
+                    eq = compare(self.lhs, self.rhs);
+                }else{
+                    eq = self.lhs === self.rhs;
+                }
+                val = self.equals ? eq : !eq;
+            }else if(self.includes){
+                const {includes} = await import('./includes.js');
+                val = includes(self.lhs, self.rhs);
+            }
+        }
+
     }
     if(val !== self.value){
         (<any>self)[slicedPropDefs!.propLookup!.value!.alias!] = val;
@@ -345,6 +359,7 @@ const sync: PropDef = {
 };
 const propDefMap: PropDefMap<IfDiff> = {
     iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
+    isNonEmptyArray: bool1,
     lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
     ownedSiblingCount: num1, setAttr: str1, setClass: str1, setPart: str1,
     hiddenStyle: str1,
