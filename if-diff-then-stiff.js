@@ -6,6 +6,7 @@ import { xc } from 'xtal-element/lib/XtalCore.js';
  * @element if-diff-then-stiff
  */
 export class IfDiffThenStiff extends IfDiff {
+    static is = 'if-diff-then-stiff';
     addStyle(self) {
         //no need for styles to hide things.
     }
@@ -13,5 +14,4 @@ export class IfDiffThenStiff extends IfDiff {
         lazyMT.minMem = true;
     }
 }
-IfDiffThenStiff.is = 'if-diff-then-stiff';
 xc.define(IfDiffThenStiff);

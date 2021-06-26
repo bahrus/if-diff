@@ -1,14 +1,38 @@
 {
   "dependencies": {
-    "lazy-mt": "0.0.8",
-    "mut-obs": "0.0.7",
-    "trans-render": "0.0.289",
-    "xtal-element": "0.0.394"
+    "lazy-mt": "0.0.10",
+    "mut-obs": "0.0.8",
+    "trans-render": "0.0.291",
+    "xtal-element": "0.0.402"
   },
   "devDependencies": {
-    "pass-down": "0.0.31",
-    "xtal-test": "0.0.50"
+    "@skypack/package-check": "0.2.2",
+    "pass-down": "0.0.37",
+    "xtal-test": "0.0.51",
+    "@custom-elements-manifest/analyzer": "0.3.5"
   },
+  "keywords": [
+    "webcomponents",
+    "webcomponent",
+    "customelements",
+    "customelement",
+    "bind",
+    "dom-bind",
+    "conditional-display"
+  ],
+  "types": "./types.d.ts",
+  "exports": {
+    ".": "./if-diff.js",
+    "./if-diff.js": "./if-diff.js",
+    "customElements": "./custom-elements.json"
+  },
+  "files": [
+    "if-*.*",
+    "includes.*",
+    "compare.*",
+    "custom-elements.json",
+    "types.d.ts"
+  ],
   "name": "if-diff",
   "version": "0.0.69",
   "description": "Alternative to Polymer's dom-if that allows comparing two properties rather than just binding to a single boolean property",
@@ -19,8 +43,9 @@
   "license": "MIT",
   "scripts": {
     "test": "node test/test-all.js",
+    "package-check": "package-check",
     "serve": "node node_modules/xtal-test/serve.js",
     "start": "es-dev-server",
-    "doc": "wca analyze if-*.js --outFile custom-elements.json"
+    "doc": "custom-elements-manifest analyze"
   }
 }

@@ -10,13 +10,10 @@ const attachedParents = new WeakSet();
  * @element if-diff
  */
 export class IfDiff extends HTMLElement {
-    constructor() {
-        super(...arguments);
-        this.self = this;
-        this.propActions = propActions;
-        this.reactor = new xc.Rx(this);
-        this._doNotCleanUp = false;
-    }
+    static is = 'if-diff';
+    self = this;
+    propActions = propActions;
+    reactor = new xc.Rx(this);
     connectedCallback() {
         this.style.display = 'none';
         xc.mergeProps(this, slicedPropDefs, {
@@ -35,6 +32,7 @@ export class IfDiff extends HTMLElement {
             return range;
         }
     }
+    _doNotCleanUp = false;
     extractContents() {
         this._doNotCleanUp = true;
         const range = document.createRange();
@@ -51,6 +49,56 @@ export class IfDiff extends HTMLElement {
     onPropChange(n, propDef, newVal) {
         this.reactor.addToQueue(propDef, newVal);
     }
+    disabled;
+    /**
+     * LHS Operand.
+     * @attr
+     */
+    lhs;
+    /**
+     * RHS Operand.
+     * @attr
+     */
+    rhs;
+    /**
+     * lhs must equal rhs to pass tests.
+     * @attr
+     */
+    equals;
+    /**
+     * lhs must not equal rhs to pass tests.
+     * @attr not-equals
+     */
+    notEquals;
+    /**
+     * For strings, this means lhs.indexOf(rhs) > -1
+     * For arrays, this means lhs intersect rhs = rhs
+     * For numbers, this means lhs >= rhs
+     * For objects, this means all the properties of rhs match the same properties of lhs
+     * @attr includes
+     */
+    includes;
+    /**
+     * Maximum number of elements that are effected by condition.
+     */
+    m;
+    /**
+     * Computed based on values of  if / equals / not_equals / includes
+     */
+    value;
+    lhsLazyMt;
+    rhsLazyMt;
+    /**
+     * Boolean property / attribute -- must be true to pass test(s)
+     * @attr
+     */
+    iff;
+    ownedSiblingCount;
+    hiddenStyle;
+    setAttr;
+    setClass;
+    setPart;
+    syncPropsFromServer;
     addStyle(self) {
         let rootNode = self.getRootNode();
         if (rootNode.host === undefined) {
@@ -69,7 +117,6 @@ export class IfDiff extends HTMLElement {
     }
     configureLazyMt(lazyMT) { }
 }
-IfDiff.is = 'if-diff';
 const styleMap = new WeakSet();
 const linkValue = ({ iff, lhs, equals, rhs, notEquals, includes, disabled, self }) => {
     if (disabled)
