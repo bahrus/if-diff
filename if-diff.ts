@@ -22,7 +22,7 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
 
     connectedCallback(){
         this.style.display = 'none';
-        xc.mergeProps<Partial<IfDiff>>(this, slicedPropDefs, {
+        xc.mergeProps<Partial<IfDiffProps>>(this, slicedPropDefs, {
             hiddenStyle:'display:none'
         });
     }
@@ -32,26 +32,29 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
     }
 
     get ownedRange(){
-        if(this.lhsLazyMt && this.rhsLazyMt){
+        const typedThis = this as IfDiffProps;
+        if(typedThis.lhsLazyMt && typedThis.rhsLazyMt){
             const range = document.createRange();
-            range.setStartBefore(this.lhsLazyMt);
-            range.setEndAfter(this.rhsLazyMt);
+            range.setStartBefore(typedThis.lhsLazyMt);
+            range.setEndAfter(typedThis.rhsLazyMt);
             return range;
         }
     }
     _doNotCleanUp = false;
 
     extractContents(){
+        const typedThis = this as unknown as IfDiffProps;
         this._doNotCleanUp = true;
         const range = document.createRange();
         range.setStartBefore(this);
-        range.setEndAfter(this.rhsLazyMt ?? this);
+        range.setEndAfter(typedThis.rhsLazyMt ?? this);
         return range.extractContents();
     }
 
     get nextUnownedSibling(){
-        if(this.rhsLazyMt !== undefined){
-            return this.rhsLazyMt.nextElementSibling;
+        const typedThis = this as unknown as IfDiffProps;
+        if(typedThis.rhsLazyMt !== undefined){
+            return typedThis.rhsLazyMt.nextElementSibling;
         }
         return this.nextElementSibling;
     }
@@ -60,82 +63,12 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
         this.reactor.addToQueue(propDef, newVal);
     }
 
-    disabled: boolean | undefined;
 
 
 
-    /**
-     * LHS Operand.
-     * @attr
-     */
-    lhs: boolean | string | number | object | undefined;
 
-    /**
-     * RHS Operand.
-     * @attr
-     */
-    rhs: boolean | string | number | object | undefined;
 
-    /**
-     * lhs must equal rhs to pass tests.
-     * @attr
-     */
-    equals: boolean | undefined;
-
-    /**
-     * lhs must not equal rhs to pass tests.
-     * @attr not-equals
-     */
-    notEquals: boolean | undefined;
-
-    /**
-     * For strings, this means lhs.indexOf(rhs) > -1
-     * For arrays, this means lhs intersect rhs = rhs
-     * For numbers, this means lhs >= rhs
-     * For objects, this means all the properties of rhs match the same properties of lhs
-     * @attr includes
-     */
-    includes: boolean | undefined; 
-
-    /**
-     * Maximum number of elements that are effected by condition.
-     */
-    m: number | undefined;
-
-    /**
-     * Computed based on values of  if / equals / not_equals / includes 
-     */
-    value: boolean | undefined;
-
-    lhsLazyMt: LazyMTProps | undefined;
-
-    rhsLazyMt: LazyMTProps | undefined;
-
-    /**
-     * Boolean property / attribute -- must be true to pass test(s)
-     * Can also be an object.  Condition is based on the property being truty.
-     * @attr
-     */
-    iff: boolean | undefined;
-
-    /**
-     * Iff property has to be a non empty array.
-     */
-    isNonEmptyArray: boolean | undefined;
-
-    ownedSiblingCount: number | undefined;
-
-    hiddenStyle: string | undefined;
-
-    setAttr: string | undefined;
-
-    setClass: string | undefined;
-
-    setPart: string | undefined;
-
-    syncPropsFromServer: IfDiffProps | undefined;
-
-    addStyle(self: IfDiff){
+    addStyle(self: IfDiffProps){
         let rootNode = self.getRootNode();
         if((<any>rootNode).host === undefined){
             rootNode = document.head;
@@ -159,12 +92,12 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
 const styleMap = new WeakSet<Node>();
 
 
-const linkValue = ({iff, lhs, equals, rhs, notEquals, includes, disabled, self}: IfDiff) => {
+const linkValue = ({iff, lhs, equals, rhs, notEquals, includes, disabled, self}: IfDiffProps) => {
     if(disabled) return;
     evaluate(self);
 }
 
-async function evaluate(self: IfDiff){
+async function evaluate(self: IfDiffProps){
     let val = self.iff;
     if(val){
         if(self.isNonEmptyArray){
@@ -195,7 +128,7 @@ async function evaluate(self: IfDiff){
     findTemplate(self);
 }
 
-function findTemplate(self: IfDiff){
+function findTemplate(self: IfDiffProps){
     if(self.lhsLazyMt !== undefined) return;
     if(self.ownedSiblingCount === undefined){
         const templ = self.querySelector('template');
@@ -222,7 +155,7 @@ function findTemplate(self: IfDiff){
 
 }
 
-function wrapLazyMts(self: IfDiff, lhsElement: Element, rhsElement: Element){
+function wrapLazyMts(self: IfDiffProps, lhsElement: Element, rhsElement: Element){
     self.addStyle(self);
     const lhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
     lhsLazyMt.enter = true;
@@ -238,7 +171,7 @@ function wrapLazyMts(self: IfDiff, lhsElement: Element, rhsElement: Element){
 }
 
 
-function createLazyMts(self: IfDiff, templ: HTMLTemplateElement){
+function createLazyMts(self: IfDiffProps, templ: HTMLTemplateElement){
     self.addStyle(self);
     const lhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
     const eLHS = lhsLazyMt as Element;
@@ -253,7 +186,7 @@ function createLazyMts(self: IfDiff, templ: HTMLTemplateElement){
     addMutObj(self);
 }
 
-function addMutObj(self: IfDiff){
+function addMutObj(self: IfDiffProps){
     const parent = self.parentElement;
     if(parent !== null){
         if(!attachedParents.has(parent)){
@@ -274,7 +207,7 @@ function addMutObj(self: IfDiff){
     }    
 }
 
-const toggleMt = ({value, lhsLazyMt, rhsLazyMt, self}: IfDiff) => {
+const toggleMt = ({value, lhsLazyMt, rhsLazyMt, self}: IfDiffProps) => {
     if(value){
         lhsLazyMt!.setAttribute('mount', '');
         rhsLazyMt!.setAttribute('mount', '');
@@ -285,7 +218,7 @@ const toggleMt = ({value, lhsLazyMt, rhsLazyMt, self}: IfDiff) => {
     }
 }
 
-function changeDisplay(self: IfDiff, lhsLazyMt: Element, rhsLazyMt: Element, display: boolean){
+function changeDisplay(self: IfDiffProps, lhsLazyMt: Element, rhsLazyMt: Element, display: boolean){
     let ns = lhsLazyMt as HTMLElement;
     //TODO: mutation observer
     while(ns !== null){
@@ -357,7 +290,7 @@ const sync: PropDef = {
     type: Object,
     syncProps: true,
 };
-const propDefMap: PropDefMap<IfDiff> = {
+const propDefMap: PropDefMap<IfDiffProps> = {
     iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
     isNonEmptyArray: bool1,
     lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,

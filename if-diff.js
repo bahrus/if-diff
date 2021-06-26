@@ -10,13 +10,10 @@ const attachedParents = new WeakSet();
  * @element if-diff
  */
 export class IfDiff extends HTMLElement {
-    constructor() {
-        super(...arguments);
-        this.self = this;
-        this.propActions = propActions;
-        this.reactor = new xc.Rx(this);
-        this._doNotCleanUp = false;
-    }
+    static is = 'if-diff';
+    self = this;
+    propActions = propActions;
+    reactor = new xc.Rx(this);
     connectedCallback() {
         this.style.display = 'none';
         xc.mergeProps(this, slicedPropDefs, {
@@ -28,23 +25,27 @@ export class IfDiff extends HTMLElement {
             this.ownedRange?.deleteContents();
     }
     get ownedRange() {
-        if (this.lhsLazyMt && this.rhsLazyMt) {
+        const typedThis = this;
+        if (typedThis.lhsLazyMt && typedThis.rhsLazyMt) {
             const range = document.createRange();
-            range.setStartBefore(this.lhsLazyMt);
-            range.setEndAfter(this.rhsLazyMt);
+            range.setStartBefore(typedThis.lhsLazyMt);
+            range.setEndAfter(typedThis.rhsLazyMt);
             return range;
         }
     }
+    _doNotCleanUp = false;
     extractContents() {
+        const typedThis = this;
         this._doNotCleanUp = true;
         const range = document.createRange();
         range.setStartBefore(this);
-        range.setEndAfter(this.rhsLazyMt ?? this);
+        range.setEndAfter(typedThis.rhsLazyMt ?? this);
         return range.extractContents();
     }
     get nextUnownedSibling() {
-        if (this.rhsLazyMt !== undefined) {
-            return this.rhsLazyMt.nextElementSibling;
+        const typedThis = this;
+        if (typedThis.rhsLazyMt !== undefined) {
+            return typedThis.rhsLazyMt.nextElementSibling;
         }
         return this.nextElementSibling;
     }
@@ -69,7 +70,6 @@ export class IfDiff extends HTMLElement {
     }
     configureLazyMt(lazyMT) { }
 }
-IfDiff.is = 'if-diff';
 const styleMap = new WeakSet();
 const linkValue = ({ iff, lhs, equals, rhs, notEquals, includes, disabled, self }) => {
     if (disabled)
