@@ -1,175 +1,1519 @@
 {
-  "version": "experimental",
-  "tags": [
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
     {
-      "name": "if-diff-then-stiff",
-      "path": "./if-diff-then-stiff.js",
-      "description": "Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.\nDOM deletion takes place on non matching elements.",
-      "attributes": [
+      "kind": "javascript-module",
+      "path": "compare.js",
+      "declarations": [
         {
-          "name": "if",
-          "description": "Boolean property / attribute -- must be true to pass test(s)",
-          "type": "boolean"
-        },
-        {
-          "name": "lhs",
-          "description": "LHS Operand.",
-          "type": "string | number | boolean | object"
-        },
-        {
-          "name": "rhs",
-          "description": "RHS Operand.",
-          "type": "string | number | boolean | object"
-        },
-        {
-          "name": "equals",
-          "description": "lhs must equal rhs to pass tests.",
-          "type": "boolean"
-        },
-        {
-          "name": "not-equals",
-          "description": "lhs must not equal rhs to pass tests.",
-          "type": "boolean"
-        },
-        {
-          "name": "includes",
-          "description": "For strings, this means lhs.indexOf(rhs) > -1\r\nFor arrays, this means lhs intersect rhs = rhs\r\nFor numbers, this means lhs >= rhs\r\nFor objects, this means all the properties of rhs match the same properties of lhs",
-          "type": "boolean"
-        },
-        {
-          "name": "data-key-name",
-          "description": "Name of dataset key to set to 1 if true and -1 if false, if dataset key is present",
-          "type": "string"
-        },
-        {
-          "name": "disabled",
-          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
-          "type": "boolean"
+          "kind": "function",
+          "name": "compare",
+          "parameters": [
+            {
+              "name": "obj1"
+            },
+            {
+              "name": "obj2"
+            }
+          ]
         }
       ],
-      "properties": [
+      "exports": [
         {
-          "name": "byos",
-          "description": "Bring your own style.  If false (default), the if-diff adds a style to set target element's display to none when test fails.",
-          "type": "boolean"
-        },
-        {
-          "name": "if",
-          "attribute": "if",
-          "description": "Boolean property / attribute -- must be true to pass test(s)",
-          "type": "boolean"
-        },
-        {
-          "name": "lhs",
-          "attribute": "lhs",
-          "description": "LHS Operand.",
-          "type": "string | number | boolean | object"
-        },
-        {
-          "name": "rhs",
-          "attribute": "rhs",
-          "description": "RHS Operand.",
-          "type": "string | number | boolean | object"
-        },
-        {
-          "name": "equals",
-          "attribute": "equals",
-          "description": "lhs must equal rhs to pass tests.",
-          "type": "boolean"
-        },
-        {
-          "name": "not_equals",
-          "attribute": "not-equals",
-          "description": "lhs must not equal rhs to pass tests.",
-          "type": "boolean"
-        },
-        {
-          "name": "includes",
-          "attribute": "includes",
-          "description": "For strings, this means lhs.indexOf(rhs) > -1\r\nFor arrays, this means lhs intersect rhs = rhs\r\nFor numbers, this means lhs >= rhs\r\nFor objects, this means all the properties of rhs match the same properties of lhs",
-          "type": "boolean"
-        },
-        {
-          "name": "enable",
-          "description": "css selector of children of matching element  to remove disabled attribute",
-          "type": "string"
-        },
-        {
-          "name": "dataKeyName",
-          "attribute": "data-key-name",
-          "description": "Name of dataset key to set to 1 if true and -1 if false, if dataset key is present",
-          "type": "string"
-        },
-        {
-          "name": "m",
-          "description": "Maximum number of elements that are effected by condition.",
-          "type": "number"
-        },
-        {
-          "name": "value",
-          "description": "Computed based on values of  if / equals / not_equals / includes",
-          "type": "boolean",
-          "default": "false"
-        },
-        {
-          "name": "evCount",
-          "description": "Tracks how many times each event type was called.",
-          "type": "{ [key: string]: number; }",
-          "default": "{}"
-        },
-        {
-          "name": "self",
-          "type": "this",
-          "default": "\"this\""
-        },
-        {
-          "name": "propActions",
-          "type": "PropAction<HTMLElement>[]",
-          "default": "[null]"
-        },
-        {
-          "name": "disabled",
-          "attribute": "disabled",
-          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
-          "type": "boolean"
+          "kind": "js",
+          "name": "compare",
+          "declaration": {
+            "name": "compare",
+            "module": "compare.js"
+          }
         }
       ]
     },
     {
-      "name": "if-diff",
-      "path": "./if-diff.js",
-      "description": "Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.\nNo DOM deletion takes place on non matching elements.\n[More Info](https://github.com/bahrus/if-diff)",
-      "attributes": [
+      "kind": "javascript-module",
+      "path": "compare.ts",
+      "declarations": [
         {
-          "name": "disabled",
-          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
-          "type": "boolean"
+          "kind": "function",
+          "name": "compare",
+          "parameters": [
+            {
+              "name": "obj1",
+              "type": {
+                "text": "any"
+              }
+            },
+            {
+              "name": "obj2",
+              "type": {
+                "text": "any"
+              }
+            }
+          ]
         }
       ],
-      "properties": [
+      "exports": [
         {
-          "name": "value"
+          "kind": "js",
+          "name": "compare",
+          "declaration": {
+            "name": "compare",
+            "module": "compare.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "if-diff-then-stiff.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.\nDOM deletion takes place on non matching elements.",
+          "name": "IfDiffThenStiff",
+          "members": [
+            {
+              "kind": "field",
+              "name": "is",
+              "static": true,
+              "default": "if-diff-then-stiff"
+            },
+            {
+              "kind": "method",
+              "name": "addStyle",
+              "parameters": [
+                {
+                  "name": "self"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "configureLazyMt",
+              "parameters": [
+                {
+                  "name": "lazyMT"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "self",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "propActions",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "reactor",
+              "type": {
+                "text": "IReactor"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "ownedRange",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_doNotCleanUp",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "extractContents",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "nextUnownedSibling",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "onPropChange",
+              "parameters": [
+                {
+                  "name": "n",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "propDef",
+                  "type": {
+                    "text": "PropDef"
+                  }
+                },
+                {
+                  "name": "newVal",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "lhs",
+              "type": {
+                "text": "boolean | string | number | object | undefined"
+              },
+              "description": "LHS Operand.",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "rhs",
+              "type": {
+                "text": "boolean | string | number | object | undefined"
+              },
+              "description": "RHS Operand.",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "equals",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "lhs must equal rhs to pass tests.",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "notEquals",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "lhs must not equal rhs to pass tests.",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "includes",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "For strings, this means lhs.indexOf(rhs) > -1\r\nFor arrays, this means lhs intersect rhs = rhs\r\nFor numbers, this means lhs >= rhs\r\nFor objects, this means all the properties of rhs match the same properties of lhs",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "m",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Maximum number of elements that are effected by condition.",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "Computed based on values of  if / equals / not_equals / includes",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "lhsLazyMt",
+              "type": {
+                "text": "LazyMTProps | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "rhsLazyMt",
+              "type": {
+                "text": "LazyMTProps | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "iff",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "Boolean property / attribute -- must be true to pass test(s)",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "ownedSiblingCount",
+              "type": {
+                "text": "number | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "hiddenStyle",
+              "type": {
+                "text": "string | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "setAttr",
+              "type": {
+                "text": "string | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "setClass",
+              "type": {
+                "text": "string | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "setPart",
+              "type": {
+                "text": "string | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "syncPropsFromServer",
+              "type": {
+                "text": "IfDiffProps | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "IfDiff"
+          },
+          "tagName": "if-diff-then-stiff",
+          "customElement": true,
+          "attributes": [
+            {
+              "name": "lhs",
+              "type": {
+                "text": "boolean | string | number | object | undefined"
+              },
+              "description": "LHS Operand.",
+              "fieldName": "lhs",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "name": "rhs",
+              "type": {
+                "text": "boolean | string | number | object | undefined"
+              },
+              "description": "RHS Operand.",
+              "fieldName": "rhs",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "name": "equals",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "lhs must equal rhs to pass tests.",
+              "fieldName": "equals",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "name": "not-equals",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "lhs must not equal rhs to pass tests.",
+              "fieldName": "notEquals",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "name": "includes",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "For strings, this means lhs.indexOf(rhs) > -1\r\nFor arrays, this means lhs intersect rhs = rhs\r\nFor numbers, this means lhs >= rhs\r\nFor objects, this means all the properties of rhs match the same properties of lhs",
+              "fieldName": "includes",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "name": "iff",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "Boolean property / attribute -- must be true to pass test(s)",
+              "fieldName": "iff",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "IfDiffThenStiff",
+          "declaration": {
+            "name": "IfDiffThenStiff",
+            "module": "if-diff-then-stiff.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "if-diff-then-stiff.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.\r\nDOM deletion takes place on non matching elements.",
+          "name": "IfDiffThenStiff",
+          "members": [
+            {
+              "kind": "field",
+              "name": "is",
+              "static": true,
+              "default": "if-diff-then-stiff"
+            },
+            {
+              "kind": "method",
+              "name": "addStyle",
+              "parameters": [
+                {
+                  "name": "self",
+                  "type": {
+                    "text": "IfDiff"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "configureLazyMt",
+              "parameters": [
+                {
+                  "name": "lazyMT",
+                  "type": {
+                    "text": "LazyMTProps"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "self",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "propActions",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "reactor",
+              "type": {
+                "text": "IReactor"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "ownedRange",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_doNotCleanUp",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "extractContents",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "nextUnownedSibling",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "onPropChange",
+              "parameters": [
+                {
+                  "name": "n",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "propDef",
+                  "type": {
+                    "text": "PropDef"
+                  }
+                },
+                {
+                  "name": "newVal",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "lhs",
+              "type": {
+                "text": "boolean | string | number | object | undefined"
+              },
+              "description": "LHS Operand.",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "rhs",
+              "type": {
+                "text": "boolean | string | number | object | undefined"
+              },
+              "description": "RHS Operand.",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "equals",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "lhs must equal rhs to pass tests.",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "notEquals",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "lhs must not equal rhs to pass tests.",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "includes",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "For strings, this means lhs.indexOf(rhs) > -1\r\nFor arrays, this means lhs intersect rhs = rhs\r\nFor numbers, this means lhs >= rhs\r\nFor objects, this means all the properties of rhs match the same properties of lhs",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "m",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Maximum number of elements that are effected by condition.",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "Computed based on values of  if / equals / not_equals / includes",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "lhsLazyMt",
+              "type": {
+                "text": "LazyMTProps | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "rhsLazyMt",
+              "type": {
+                "text": "LazyMTProps | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "iff",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "Boolean property / attribute -- must be true to pass test(s)",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "ownedSiblingCount",
+              "type": {
+                "text": "number | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "hiddenStyle",
+              "type": {
+                "text": "string | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "setAttr",
+              "type": {
+                "text": "string | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "setClass",
+              "type": {
+                "text": "string | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "setPart",
+              "type": {
+                "text": "string | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "syncPropsFromServer",
+              "type": {
+                "text": "IfDiffProps | undefined"
+              },
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "IfDiff"
+          },
+          "tagName": "if-diff-then-stiff",
+          "customElement": true,
+          "attributes": [
+            {
+              "name": "lhs",
+              "type": {
+                "text": "boolean | string | number | object | undefined"
+              },
+              "description": "LHS Operand.",
+              "fieldName": "lhs",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "name": "rhs",
+              "type": {
+                "text": "boolean | string | number | object | undefined"
+              },
+              "description": "RHS Operand.",
+              "fieldName": "rhs",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "name": "equals",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "lhs must equal rhs to pass tests.",
+              "fieldName": "equals",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "name": "not-equals",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "lhs must not equal rhs to pass tests.",
+              "fieldName": "notEquals",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "name": "includes",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "For strings, this means lhs.indexOf(rhs) > -1\r\nFor arrays, this means lhs intersect rhs = rhs\r\nFor numbers, this means lhs >= rhs\r\nFor objects, this means all the properties of rhs match the same properties of lhs",
+              "fieldName": "includes",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "name": "iff",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "Boolean property / attribute -- must be true to pass test(s)",
+              "fieldName": "iff",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "IfDiffThenStiff",
+          "declaration": {
+            "name": "IfDiffThenStiff",
+            "module": "if-diff-then-stiff.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "if-diff.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.\nNo DOM deletion takes place on non matching elements.\n[More Info](https://github.com/bahrus/if-diff)",
+          "name": "IfDiff",
+          "members": [
+            {
+              "kind": "field",
+              "name": "is",
+              "static": true,
+              "default": "if-diff"
+            },
+            {
+              "kind": "field",
+              "name": "self"
+            },
+            {
+              "kind": "field",
+              "name": "propActions"
+            },
+            {
+              "kind": "field",
+              "name": "reactor"
+            },
+            {
+              "kind": "field",
+              "name": "ownedRange"
+            },
+            {
+              "kind": "field",
+              "name": "_doNotCleanUp"
+            },
+            {
+              "kind": "method",
+              "name": "extractContents"
+            },
+            {
+              "kind": "field",
+              "name": "nextUnownedSibling"
+            },
+            {
+              "kind": "method",
+              "name": "onPropChange",
+              "parameters": [
+                {
+                  "name": "n"
+                },
+                {
+                  "name": "propDef"
+                },
+                {
+                  "name": "newVal"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "lhs",
+              "description": "LHS Operand."
+            },
+            {
+              "kind": "field",
+              "name": "rhs",
+              "description": "RHS Operand."
+            },
+            {
+              "kind": "field",
+              "name": "equals",
+              "description": "lhs must equal rhs to pass tests."
+            },
+            {
+              "kind": "field",
+              "name": "notEquals",
+              "description": "lhs must not equal rhs to pass tests."
+            },
+            {
+              "kind": "field",
+              "name": "includes",
+              "description": "For strings, this means lhs.indexOf(rhs) > -1\nFor arrays, this means lhs intersect rhs = rhs\nFor numbers, this means lhs >= rhs\nFor objects, this means all the properties of rhs match the same properties of lhs"
+            },
+            {
+              "kind": "field",
+              "name": "m",
+              "description": "Maximum number of elements that are effected by condition."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "description": "Computed based on values of  if / equals / not_equals / includes"
+            },
+            {
+              "kind": "field",
+              "name": "lhsLazyMt"
+            },
+            {
+              "kind": "field",
+              "name": "rhsLazyMt"
+            },
+            {
+              "kind": "field",
+              "name": "iff",
+              "description": "Boolean property / attribute -- must be true to pass test(s)"
+            },
+            {
+              "kind": "field",
+              "name": "ownedSiblingCount"
+            },
+            {
+              "kind": "field",
+              "name": "hiddenStyle"
+            },
+            {
+              "kind": "field",
+              "name": "setAttr"
+            },
+            {
+              "kind": "field",
+              "name": "setClass"
+            },
+            {
+              "kind": "field",
+              "name": "setPart"
+            },
+            {
+              "kind": "field",
+              "name": "syncPropsFromServer"
+            },
+            {
+              "kind": "method",
+              "name": "addStyle",
+              "parameters": [
+                {
+                  "name": "self"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "configureLazyMt",
+              "parameters": [
+                {
+                  "name": "lazyMT"
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "lhs",
+              "description": "LHS Operand.",
+              "fieldName": "lhs"
+            },
+            {
+              "name": "rhs",
+              "description": "RHS Operand.",
+              "fieldName": "rhs"
+            },
+            {
+              "name": "equals",
+              "description": "lhs must equal rhs to pass tests.",
+              "fieldName": "equals"
+            },
+            {
+              "name": "not-equals",
+              "description": "lhs must not equal rhs to pass tests.",
+              "fieldName": "notEquals"
+            },
+            {
+              "name": "includes",
+              "description": "For strings, this means lhs.indexOf(rhs) > -1\nFor arrays, this means lhs intersect rhs = rhs\nFor numbers, this means lhs >= rhs\nFor objects, this means all the properties of rhs match the same properties of lhs",
+              "fieldName": "includes"
+            },
+            {
+              "name": "iff",
+              "description": "Boolean property / attribute -- must be true to pass test(s)",
+              "fieldName": "iff"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "if-diff",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "IfDiff",
+          "declaration": {
+            "name": "IfDiff",
+            "module": "if-diff.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "if-diff.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.\r\nNo DOM deletion takes place on non matching elements.\r\n[More Info](https://github.com/bahrus/if-diff)",
+          "name": "IfDiff",
+          "members": [
+            {
+              "kind": "field",
+              "name": "is",
+              "static": true,
+              "default": "if-diff"
+            },
+            {
+              "kind": "field",
+              "name": "self"
+            },
+            {
+              "kind": "field",
+              "name": "propActions"
+            },
+            {
+              "kind": "field",
+              "name": "reactor",
+              "type": {
+                "text": "IReactor"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "ownedRange"
+            },
+            {
+              "kind": "field",
+              "name": "_doNotCleanUp"
+            },
+            {
+              "kind": "method",
+              "name": "extractContents"
+            },
+            {
+              "kind": "field",
+              "name": "nextUnownedSibling"
+            },
+            {
+              "kind": "method",
+              "name": "onPropChange",
+              "parameters": [
+                {
+                  "name": "n",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "propDef",
+                  "type": {
+                    "text": "PropDef"
+                  }
+                },
+                {
+                  "name": "newVal",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean | undefined"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "lhs",
+              "type": {
+                "text": "boolean | string | number | object | undefined"
+              },
+              "description": "LHS Operand."
+            },
+            {
+              "kind": "field",
+              "name": "rhs",
+              "type": {
+                "text": "boolean | string | number | object | undefined"
+              },
+              "description": "RHS Operand."
+            },
+            {
+              "kind": "field",
+              "name": "equals",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "lhs must equal rhs to pass tests."
+            },
+            {
+              "kind": "field",
+              "name": "notEquals",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "lhs must not equal rhs to pass tests."
+            },
+            {
+              "kind": "field",
+              "name": "includes",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "For strings, this means lhs.indexOf(rhs) > -1\r\nFor arrays, this means lhs intersect rhs = rhs\r\nFor numbers, this means lhs >= rhs\r\nFor objects, this means all the properties of rhs match the same properties of lhs"
+            },
+            {
+              "kind": "field",
+              "name": "m",
+              "type": {
+                "text": "number | undefined"
+              },
+              "description": "Maximum number of elements that are effected by condition."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "Computed based on values of  if / equals / not_equals / includes"
+            },
+            {
+              "kind": "field",
+              "name": "lhsLazyMt",
+              "type": {
+                "text": "LazyMTProps | undefined"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "rhsLazyMt",
+              "type": {
+                "text": "LazyMTProps | undefined"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "iff",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "Boolean property / attribute -- must be true to pass test(s)"
+            },
+            {
+              "kind": "field",
+              "name": "ownedSiblingCount",
+              "type": {
+                "text": "number | undefined"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "hiddenStyle",
+              "type": {
+                "text": "string | undefined"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "setAttr",
+              "type": {
+                "text": "string | undefined"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "setClass",
+              "type": {
+                "text": "string | undefined"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "setPart",
+              "type": {
+                "text": "string | undefined"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "syncPropsFromServer",
+              "type": {
+                "text": "IfDiffProps | undefined"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "addStyle",
+              "parameters": [
+                {
+                  "name": "self",
+                  "type": {
+                    "text": "IfDiff"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "configureLazyMt",
+              "parameters": [
+                {
+                  "name": "lazyMT",
+                  "type": {
+                    "text": "LazyMTProps"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "lhs",
+              "type": {
+                "text": "boolean | string | number | object | undefined"
+              },
+              "description": "LHS Operand.",
+              "fieldName": "lhs"
+            },
+            {
+              "name": "rhs",
+              "type": {
+                "text": "boolean | string | number | object | undefined"
+              },
+              "description": "RHS Operand.",
+              "fieldName": "rhs"
+            },
+            {
+              "name": "equals",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "lhs must equal rhs to pass tests.",
+              "fieldName": "equals"
+            },
+            {
+              "name": "not-equals",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "lhs must not equal rhs to pass tests.",
+              "fieldName": "notEquals"
+            },
+            {
+              "name": "includes",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "For strings, this means lhs.indexOf(rhs) > -1\r\nFor arrays, this means lhs intersect rhs = rhs\r\nFor numbers, this means lhs >= rhs\r\nFor objects, this means all the properties of rhs match the same properties of lhs",
+              "fieldName": "includes"
+            },
+            {
+              "name": "iff",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "description": "Boolean property / attribute -- must be true to pass test(s)",
+              "fieldName": "iff"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "if-diff",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "IfDiff",
+          "declaration": {
+            "name": "IfDiff",
+            "module": "if-diff.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "includes.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "includes",
+          "parameters": [
+            {
+              "name": "lhs"
+            },
+            {
+              "name": "rhs"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "includes",
+          "declaration": {
+            "name": "includes",
+            "module": "includes.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "includes.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "includes",
+          "parameters": [
+            {
+              "name": "lhs",
+              "type": {
+                "text": "any"
+              }
+            },
+            {
+              "name": "rhs",
+              "type": {
+                "text": "any"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "includes",
+          "declaration": {
+            "name": "includes",
+            "module": "includes.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "types.d.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "test/test-all.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "build/ES5/if-diff.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "IfDiff"
         },
         {
-          "name": "evCount",
-          "description": "Tracks how many times each event type was called.",
-          "type": "{ [key: string]: number; }",
-          "default": "{}"
-        },
+          "kind": "function",
+          "name": "IfDiff"
+        }
+      ],
+      "exports": [
         {
-          "name": "self",
-          "type": "this",
-          "default": "\"this\""
-        },
+          "kind": "js",
+          "name": "IfDiff",
+          "declaration": {
+            "name": "IfDiff",
+            "module": "build/ES5/if-diff.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "build/ES5/dist/combo.iife.js",
+      "declarations": [
         {
-          "name": "propActions",
-          "type": "PropAction<HTMLElement>[] | undefined"
-        },
+          "kind": "variable",
+          "name": "tagName"
+        }
+      ],
+      "exports": [
         {
-          "name": "disabled",
-          "attribute": "disabled",
-          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
-          "type": "boolean"
+          "kind": "custom-element-definition",
+          "name": "tagName",
+          "declaration": {
+            "name": "custEl",
+            "module": "build/ES5/dist/combo.iife.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "build/ES5/dist/if-diff.iife.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "tagName"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "tagName",
+          "declaration": {
+            "name": "custEl",
+            "module": "build/ES5/dist/if-diff.iife.js"
+          }
         }
       ]
     }

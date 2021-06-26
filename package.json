@@ -47,5 +47,6 @@
     "serve": "node node_modules/xtal-test/serve.js",
     "start": "es-dev-server",
     "doc": "custom-elements-manifest analyze"
-  }
+  },
+  "customElements": "custom-elements.json"
 }
