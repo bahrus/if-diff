@@ -76,12 +76,14 @@
             {
               "kind": "field",
               "name": "iff",
-              "description": "Boolean property / attribute -- must be true to pass test(s)\nCan also be an object.  Condition is based on the property being truty."
+              "description": "Boolean property / attribute -- must be true to pass test(s)\nCan also be an object.  Condition is based on the property being truty.",
+              "attribute": "iff"
             },
             {
               "kind": "field",
               "name": "lhs",
-              "description": "LHS Operand."
+              "description": "LHS Operand.",
+              "attribute": "lhs"
             },
             {
               "kind": "field",
@@ -91,12 +93,14 @@
             {
               "kind": "field",
               "name": "rhs",
-              "description": "RHS Operand."
+              "description": "RHS Operand.",
+              "attribute": "rhs"
             },
             {
               "kind": "field",
               "name": "equals",
-              "description": "lhs must equal rhs to pass tests."
+              "description": "lhs must equal rhs to pass tests.",
+              "attribute": "equals"
             },
             {
               "kind": "field",
@@ -133,7 +137,8 @@
             {
               "kind": "field",
               "name": "notEquals",
-              "description": "lhs must not equal rhs to pass tests."
+              "description": "lhs must not equal rhs to pass tests.",
+              "attribute": "not-equals"
             },
             {
               "kind": "field",
@@ -142,7 +147,8 @@
             {
               "kind": "field",
               "name": "includes",
-              "description": "For strings, this means lhs.indexOf(rhs) > -1\nFor arrays, this means lhs intersect rhs = rhs\nFor numbers, this means lhs >= rhs\nFor objects, this means all the properties of rhs match the same properties of lhs"
+              "description": "For strings, this means lhs.indexOf(rhs) > -1\nFor arrays, this means lhs intersect rhs = rhs\nFor numbers, this means lhs >= rhs\nFor objects, this means all the properties of rhs match the same properties of lhs",
+              "attribute": "includes"
             },
             {
               "kind": "field",
@@ -157,8 +163,11 @@
             {
               "kind": "field",
               "name": "is",
+              "type": {
+                "text": "string"
+              },
               "static": true,
-              "default": "if-diff",
+              "default": "'if-diff'",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -167,6 +176,7 @@
             {
               "kind": "field",
               "name": "self",
+              "default": "this",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -175,6 +185,7 @@
             {
               "kind": "field",
               "name": "propActions",
+              "default": "[\r\n    linkValue, toggleMt\r\n]",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -186,6 +197,7 @@
               "type": {
                 "text": "IReactor"
               },
+              "default": "new xc.Rx(this)",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -202,6 +214,10 @@
             {
               "kind": "field",
               "name": "_doNotCleanUp",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -317,7 +333,8 @@
             }
           ],
           "superclass": {
-            "name": "IfDiff"
+            "name": "IfDiff",
+            "module": "/if-diff.js"
           },
           "tagName": "if-diff",
           "customElement": true
@@ -349,7 +366,8 @@
               "type": {
                 "text": "boolean | undefined"
               },
-              "description": "Boolean property / attribute -- must be true to pass test(s)\r\nCan also be an object.  Condition is based on the property being truty."
+              "description": "Boolean property / attribute -- must be true to pass test(s)\r\nCan also be an object.  Condition is based on the property being truty.",
+              "attribute": "iff"
             },
             {
               "kind": "field",
@@ -357,7 +375,8 @@
               "type": {
                 "text": "boolean | string | number | object"
               },
-              "description": "LHS Operand."
+              "description": "LHS Operand.",
+              "attribute": "lhs"
             },
             {
               "kind": "field",
@@ -373,7 +392,8 @@
               "type": {
                 "text": "boolean | string | number | object"
               },
-              "description": "RHS Operand."
+              "description": "RHS Operand.",
+              "attribute": "rhs"
             },
             {
               "kind": "field",
@@ -381,7 +401,8 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "lhs must equal rhs to pass tests."
+              "description": "lhs must equal rhs to pass tests.",
+              "attribute": "equals"
             },
             {
               "kind": "field",
@@ -445,7 +466,8 @@
               "type": {
                 "text": "boolean | undefined"
               },
-              "description": "lhs must not equal rhs to pass tests."
+              "description": "lhs must not equal rhs to pass tests.",
+              "attribute": "not-equals"
             },
             {
               "kind": "field",
@@ -460,7 +482,8 @@
               "type": {
                 "text": "boolean | undefined"
               },
-              "description": "For strings, this means lhs.indexOf(rhs) > -1\r\nFor arrays, this means lhs intersect rhs = rhs\r\nFor numbers, this means lhs >= rhs\r\nFor objects, this means all the properties of rhs match the same properties of lhs"
+              "description": "For strings, this means lhs.indexOf(rhs) > -1\r\nFor arrays, this means lhs intersect rhs = rhs\r\nFor numbers, this means lhs >= rhs\r\nFor objects, this means all the properties of rhs match the same properties of lhs",
+              "attribute": "includes"
             },
             {
               "kind": "field",
@@ -481,8 +504,11 @@
             {
               "kind": "field",
               "name": "is",
+              "type": {
+                "text": "string"
+              },
               "static": true,
-              "default": "if-diff",
+              "default": "'if-diff'",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -491,6 +517,7 @@
             {
               "kind": "field",
               "name": "self",
+              "default": "this",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -499,6 +526,7 @@
             {
               "kind": "field",
               "name": "propActions",
+              "default": "[\r\n    linkValue, toggleMt\r\n]",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -510,6 +538,7 @@
               "type": {
                 "text": "IReactor"
               },
+              "default": "new xc.Rx(this)",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -526,6 +555,10 @@
             {
               "kind": "field",
               "name": "_doNotCleanUp",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -659,7 +692,8 @@
             }
           ],
           "superclass": {
-            "name": "IfDiff"
+            "name": "IfDiff",
+            "module": "/if-diff.js"
           },
           "tagName": "if-diff",
           "customElement": true
@@ -688,8 +722,15 @@
             {
               "kind": "field",
               "name": "is",
+              "type": {
+                "text": "string"
+              },
               "static": true,
-              "default": "if-diff-then-stiff"
+              "default": "'if-diff-then-stiff'",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
             },
             {
               "kind": "method",
@@ -698,7 +739,11 @@
                 {
                   "name": "self"
                 }
-              ]
+              ],
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
             },
             {
               "kind": "method",
@@ -707,11 +752,16 @@
                 {
                   "name": "lazyMT"
                 }
-              ]
+              ],
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
             },
             {
               "kind": "field",
               "name": "self",
+              "default": "this",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -720,6 +770,7 @@
             {
               "kind": "field",
               "name": "propActions",
+              "default": "[\r\n    linkValue, toggleMt\r\n]",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -731,6 +782,7 @@
               "type": {
                 "text": "IReactor"
               },
+              "default": "new xc.Rx(this)",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -747,6 +799,10 @@
             {
               "kind": "field",
               "name": "_doNotCleanUp",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -798,7 +854,8 @@
             }
           ],
           "superclass": {
-            "name": "IfDiff"
+            "name": "IfDiff",
+            "module": "/if-diff.js"
           },
           "tagName": "if-diff-then-stiff",
           "customElement": true
@@ -827,8 +884,15 @@
             {
               "kind": "field",
               "name": "is",
+              "type": {
+                "text": "string"
+              },
               "static": true,
-              "default": "if-diff-then-stiff"
+              "default": "'if-diff-then-stiff'",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
             },
             {
               "kind": "method",
@@ -840,7 +904,11 @@
                     "text": "IfDiff"
                   }
                 }
-              ]
+              ],
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
             },
             {
               "kind": "method",
@@ -852,11 +920,16 @@
                     "text": "LazyMTProps"
                   }
                 }
-              ]
+              ],
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
             },
             {
               "kind": "field",
               "name": "self",
+              "default": "this",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -865,6 +938,7 @@
             {
               "kind": "field",
               "name": "propActions",
+              "default": "[\r\n    linkValue, toggleMt\r\n]",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -876,6 +950,7 @@
               "type": {
                 "text": "IReactor"
               },
+              "default": "new xc.Rx(this)",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -892,6 +967,10 @@
             {
               "kind": "field",
               "name": "_doNotCleanUp",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -943,7 +1022,8 @@
             }
           ],
           "superclass": {
-            "name": "IfDiff"
+            "name": "IfDiff",
+            "module": "/if-diff.js"
           },
           "tagName": "if-diff-then-stiff",
           "customElement": true
@@ -972,20 +1052,29 @@
             {
               "kind": "field",
               "name": "is",
+              "type": {
+                "text": "string"
+              },
               "static": true,
-              "default": "if-diff"
+              "default": "'if-diff'"
             },
             {
               "kind": "field",
-              "name": "self"
+              "name": "self",
+              "default": "this"
             },
             {
               "kind": "field",
-              "name": "propActions"
+              "name": "propActions",
+              "default": "[\n    linkValue, toggleMt\n]",
+              "type": {
+                "text": "array"
+              }
             },
             {
               "kind": "field",
-              "name": "reactor"
+              "name": "reactor",
+              "default": "new xc.Rx(this)"
             },
             {
               "kind": "field",
@@ -993,7 +1082,11 @@
             },
             {
               "kind": "field",
-              "name": "_doNotCleanUp"
+              "name": "_doNotCleanUp",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
             },
             {
               "kind": "method",
@@ -1066,23 +1159,29 @@
             {
               "kind": "field",
               "name": "is",
+              "type": {
+                "text": "string"
+              },
               "static": true,
-              "default": "if-diff"
+              "default": "'if-diff'"
             },
             {
               "kind": "field",
-              "name": "self"
+              "name": "self",
+              "default": "this"
             },
             {
               "kind": "field",
-              "name": "propActions"
+              "name": "propActions",
+              "default": "[\r\n    linkValue, toggleMt\r\n]"
             },
             {
               "kind": "field",
               "name": "reactor",
               "type": {
                 "text": "IReactor"
-              }
+              },
+              "default": "new xc.Rx(this)"
             },
             {
               "kind": "field",
@@ -1090,7 +1189,11 @@
             },
             {
               "kind": "field",
-              "name": "_doNotCleanUp"
+              "name": "_doNotCleanUp",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
             },
             {
               "kind": "method",
