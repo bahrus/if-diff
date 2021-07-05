@@ -20,8 +20,16 @@ export class IfDiff extends HTMLElement {
         });
     }
     disconnectedCallback() {
-        if (!this._doNotCleanUp)
+        if (!this._doNotCleanUp) {
+            setTimeout(() => {
+                this.cleanupIfNoParentElement();
+            }, 1000);
+        }
+    }
+    cleanupIfNoParentElement() {
+        if (this.parentElement === null) {
             this.ownedRange?.deleteContents();
+        }
     }
     get ownedRange() {
         const typedThis = this;
