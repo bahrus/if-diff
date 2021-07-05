@@ -73,10 +73,14 @@ const styleMap = new WeakSet();
 const linkValue = ({ iff, lhs, equals, rhs, notEquals, includes, disabled, self }) => {
     if (disabled)
         return;
+    if (typeof iff !== 'boolean') {
+        self.iff = !!iff;
+        return;
+    }
     evaluate(self);
 };
 async function evaluate(self) {
-    let val = !!self.iff;
+    let val = self.iff;
     if (val) {
         if (self.isNonEmptyArray) {
             if (!Array.isArray(val) || val.length === 0) {

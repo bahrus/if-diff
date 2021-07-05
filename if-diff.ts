@@ -12,7 +12,7 @@ const attachedParents = new WeakSet<Element>();
  * No DOM deletion takes place on non matching elements.
  * [More Info](https://github.com/bahrus/if-diff)
  */
-export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface {
+export class IfDiff extends HTMLElement implements ReactiveSurface {
     static is = 'if-diff';
 
     self = this;
@@ -88,16 +88,22 @@ export class IfDiff extends HTMLElement implements IfDiffProps, ReactiveSurface 
 
 }
 
+export interface IfDiff extends IfDiffProps{}
+
 const styleMap = new WeakSet<Node>();
 
 
-const linkValue = ({iff, lhs, equals, rhs, notEquals, includes, disabled, self}: IfDiffProps) => {
+const linkValue = ({iff, lhs, equals, rhs, notEquals, includes, disabled, self}: IfDiff) => {
     if(disabled) return;
+    if(typeof iff !== 'boolean'){
+        self.iff = !!iff;
+        return;
+    }
     evaluate(self);
 }
 
-async function evaluate(self: IfDiffProps){
-    let val = !!self.iff;
+async function evaluate(self: IfDiff){
+    let val = self.iff;
     if(val){
         if(self.isNonEmptyArray){
             if(!Array.isArray(val) || val.length === 0){
@@ -127,7 +133,7 @@ async function evaluate(self: IfDiffProps){
     findTemplate(self);
 }
 
-function findTemplate(self: IfDiffProps){
+function findTemplate(self: IfDiff){
     if(self.lhsLazyMt !== undefined) return;
     if(self.ownedSiblingCount === undefined){
         const templ = self.querySelector('template');
@@ -206,7 +212,7 @@ function addMutObj(self: IfDiffProps){
     }    
 }
 
-const toggleMt = ({value, lhsLazyMt, rhsLazyMt, self}: IfDiffProps) => {
+const toggleMt = ({value, lhsLazyMt, rhsLazyMt, self}: IfDiff) => {
     if(value){
         lhsLazyMt!.setAttribute('mount', '');
         rhsLazyMt!.setAttribute('mount', '');

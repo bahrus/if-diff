@@ -3,17 +3,15 @@ import {IfDiff} from './if-diff.js';
 
 export interface IfDiffProps extends HTMLElement{
     
-    self: IfDiff,
     /**
-     * Boolean property / attribute -- must be true to pass test(s)
-     * Can also be an object.  Condition is based on the property being truty.
-     * @attr
+     * @prop {boolean} iff Must be true to pass test(s). Can also be an object.  Condition is based on the property being truthy.
+     * @attr {boolean} iff Must be true (exists) to pass test(s)
      */
     iff?: boolean | undefined;
 
     /**
-     * LHS Operand.
-     * @attr
+     * @prop {any} lhs LHS Operand.
+     * @attr {string} lhs LHS Operand.
      */
     lhs?: boolean | string | number | object, 
 
@@ -33,7 +31,7 @@ export interface IfDiffProps extends HTMLElement{
      * @attr
      */ 
     equals?: boolean, 
-    disabled?: boolean | number, 
+    disabled?: boolean | undefined, 
 
     lhsLazyMt?: LazyMTProps | undefined;
 
