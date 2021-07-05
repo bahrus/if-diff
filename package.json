@@ -3,13 +3,13 @@
     "lazy-mt": "0.0.10",
     "mut-obs": "0.0.8",
     "trans-render": "0.0.291",
-    "xtal-element": "0.0.402"
+    "xtal-element": "0.0.411"
   },
   "devDependencies": {
     "@skypack/package-check": "0.2.2",
-    "pass-down": "0.0.37",
+    "pass-down": "0.0.45",
     "xtal-test": "0.0.51",
-    "@custom-elements-manifest/analyzer": "0.3.5"
+    "@custom-elements-manifest/analyzer": "0.4.10"
   },
   "keywords": [
     "webcomponents",
@@ -23,8 +23,7 @@
   "types": "./types.d.ts",
   "exports": {
     ".": "./if-diff.js",
-    "./if-diff.js": "./if-diff.js",
-    "customElements": "./custom-elements.json"
+    "./if-diff.js": "./if-diff.js"
   },
   "files": [
     "if-*.*",

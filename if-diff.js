@@ -76,7 +76,7 @@ const linkValue = ({ iff, lhs, equals, rhs, notEquals, includes, disabled, self 
     evaluate(self);
 };
 async function evaluate(self) {
-    let val = self.iff;
+    let val = !!self.iff;
     if (val) {
         if (self.isNonEmptyArray) {
             if (!Array.isArray(val) || val.length === 0) {

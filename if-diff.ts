@@ -97,7 +97,7 @@ const linkValue = ({iff, lhs, equals, rhs, notEquals, includes, disabled, self}:
 }
 
 async function evaluate(self: IfDiffProps){
-    let val = self.iff;
+    let val = !!self.iff;
     if(val){
         if(self.isNonEmptyArray){
             if(!Array.isArray(val) || val.length === 0){
