@@ -13,10 +13,11 @@ export interface IfDiffProps extends HTMLElement{
      * @prop {any} lhs LHS Operand.
      * @attr {string} lhs LHS Operand.
      */
-    lhs?: boolean | string | number | object, 
+    lhs?: boolean | string | number | object; 
 
     /**
-     * Iff property has to be a non empty array.
+     * @prop {boolean} isNonEmptyArray Iff property has to be a non empty array.
+     * @attr {boolean} is-non-empty-array Iff property has to be a non empty array.
      */
     isNonEmptyArray?: boolean | undefined;
 
@@ -24,7 +25,7 @@ export interface IfDiffProps extends HTMLElement{
      * RHS Operand.
      * @attr
      */
-    rhs?: boolean | string | number | object,
+    rhs?: boolean | string | number | object;
 
     /**
      * lhs must equal rhs to pass tests.

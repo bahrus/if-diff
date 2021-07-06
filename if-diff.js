@@ -22,6 +22,7 @@ export class IfDiff extends HTMLElement {
     disconnectedCallback() {
         if (!this._doNotCleanUp) {
             setTimeout(() => {
+                //TODO:  Make connectedCallback cancel the setTimeout.
                 this.cleanupIfNoParentElement();
             }, 1000);
         }

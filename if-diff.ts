@@ -29,6 +29,7 @@ export class IfDiff extends HTMLElement implements ReactiveSurface {
     disconnectedCallback(){
         if(!this._doNotCleanUp) {
             setTimeout(() => {
+                //TODO:  Make connectedCallback cancel the setTimeout.
                 this.cleanupIfNoParentElement();
             }, 1000);
         }
