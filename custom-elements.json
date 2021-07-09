@@ -205,6 +205,27 @@
             },
             {
               "kind": "field",
+              "name": "isLocked",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "false",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "cleanupIfNoParentElement",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
               "name": "ownedRange",
               "inheritedFrom": {
                 "name": "IfDiff",
@@ -546,6 +567,27 @@
             },
             {
               "kind": "field",
+              "name": "isLocked",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "false",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "cleanupIfNoParentElement",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
               "name": "ownedRange",
               "inheritedFrom": {
                 "name": "IfDiff",
@@ -790,6 +832,27 @@
             },
             {
               "kind": "field",
+              "name": "isLocked",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "false",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "cleanupIfNoParentElement",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
               "name": "ownedRange",
               "inheritedFrom": {
                 "name": "IfDiff",
@@ -958,6 +1021,27 @@
             },
             {
               "kind": "field",
+              "name": "isLocked",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "false",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "cleanupIfNoParentElement",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "kind": "field",
               "name": "ownedRange",
               "inheritedFrom": {
                 "name": "IfDiff",
@@ -1078,6 +1162,19 @@
             },
             {
               "kind": "field",
+              "name": "isLocked",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "false"
+            },
+            {
+              "kind": "method",
+              "name": "cleanupIfNoParentElement"
+            },
+            {
+              "kind": "field",
               "name": "ownedRange"
             },
             {
@@ -1182,6 +1279,19 @@
                 "text": "IReactor"
               },
               "default": "new xc.Rx(this)"
+            },
+            {
+              "kind": "field",
+              "name": "isLocked",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "false"
+            },
+            {
+              "kind": "method",
+              "name": "cleanupIfNoParentElement"
             },
             {
               "kind": "field",
