@@ -1,16 +1,32 @@
-import {xc, PropAction, PropDef, PropDefMap, ReactiveSurface, IReactor} from 'xtal-element/lib/XtalCore.js';
-import {IfDiffProps} from './types.d.js';
+import { xc, PropAction, PropDef, PropDefMap, ReactiveSurface, IReactor } from 'xtal-element/lib/XtalCore.js';
+import { IfDiffProps } from './types.d.js';
 import('lazy-mt/lazy-mt.js');
-import {LazyMTProps} from 'lazy-mt/types.d.js';
-import ('mut-obs/mut-obs.js');
+import { LazyMTProps } from 'lazy-mt/types.d.js';
+import('mut-obs/mut-obs.js');
 
 const p_d_std = 'p_d_std';
 const attachedParents = new WeakSet<Element>();
 
 /**
+ * @element if-diff
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
  * No DOM deletion takes place on non matching elements.
  * [More Info](https://github.com/bahrus/if-diff)
+ * 
+ * @prop {boolean} iff - Must be true to pass test(s). Can also be an object.  Condition is based on the property being truthy.
+ * @attr {boolean} iff - Must be true (exists) to pass test(s)     
+ * @prop {boolean | string | number | object} [lhs] - LHS Operand.
+ * @attr {boolean | string | number | object} [lhs] - LHS Operand.  Is JSON parsed.
+ * @prop {boolean} [isNonEmptyArray] - Iff property has to be a non empty array.
+ * @attr {boolean} is-non-empty-array Iff property has to be a non empty array.
+ * @prop {boolean | string | number | object} [rhs] - RHS Operand.
+ * @attr {boolean | string | number | object} [rhs] - RHS Operand.  Is JSON parsed.
+ * @prop {boolean} [equals] - lhs must equal rhs to pass tests.
+ * @attr {boolean} [equals] - lhs must equal rhs to pass tests.
+ * @prop {boolean} [disabled] - Do not evaluate expression until disabled setting is removed.
+ * @attr {boolean} [disabled] - Do not evaluate expression until disabled setting is removed.
+ * @prop {number} [ownedSiblingCount] - If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.
+ * @prop {string} [hiddenStyle = display:none] - Specify exact manner in which non visible content should be hidden.
  */
 export class IfDiff extends HTMLElement implements ReactiveSurface {
     static is = 'if-diff';
@@ -18,35 +34,46 @@ export class IfDiff extends HTMLElement implements ReactiveSurface {
     self = this;
     propActions = propActions;
     reactor: IReactor = new xc.Rx(this);
+    _mql: MediaQueryList | undefined;
 
     static isLocked = false;
 
-    connectedCallback(){
+    connectedCallback() {
         this.style.display = 'none';
         xc.mergeProps<Partial<IfDiffProps>>(this, slicedPropDefs, {
-            hiddenStyle:'display:none',
+            hiddenStyle: 'display:none',
             lazyDelay: -1,
         });
+        if (this._mql) this._mql.addEventListener('change', this.mediaQueryHandler);
     }
 
-    disconnectedCallback(){
-        if(!this._doNotCleanUp) {
+    disconnectedCallback() {
+        if (!this._doNotCleanUp) {
             setTimeout(() => {
                 //TODO:  Make connectedCallback cancel the setTimeout.
                 this.cleanupIfNoParentElement();
             }, 1000);
         }
+        this.disconnect();
     }
 
-    cleanupIfNoParentElement(){
-        if(this.parentElement === null){
+    mediaQueryHandler = (e: MediaQueryListEvent) => {
+        (<any>this)[slicedPropDefs.propLookup.matchesMediaQuery!.alias!] = e.matches;
+    }
+
+    disconnect() {
+        if (this._mql) this._mql.removeEventListener('change', this.mediaQueryHandler);
+    }
+
+    cleanupIfNoParentElement() {
+        if (this.parentElement === null) {
             this.ownedRange?.deleteContents();
         }
     }
 
-    get ownedRange(){
+    get ownedRange() {
         const typedThis = this as IfDiffProps;
-        if(typedThis.lhsLazyMt && typedThis.rhsLazyMt){
+        if (typedThis.lhsLazyMt && typedThis.rhsLazyMt) {
             const range = document.createRange();
             range.setStartBefore(typedThis.lhsLazyMt);
             range.setEndAfter(typedThis.rhsLazyMt);
@@ -55,7 +82,7 @@ export class IfDiff extends HTMLElement implements ReactiveSurface {
     }
     _doNotCleanUp = false;
 
-    extractContents(){
+    extractContents() {
         const typedThis = this as unknown as IfDiffProps;
         this._doNotCleanUp = true;
         const range = document.createRange();
@@ -64,15 +91,15 @@ export class IfDiff extends HTMLElement implements ReactiveSurface {
         return range.extractContents();
     }
 
-    get nextUnownedSibling(){
+    get nextUnownedSibling() {
         const typedThis = this as unknown as IfDiffProps;
-        if(typedThis.rhsLazyMt !== undefined){
+        if (typedThis.rhsLazyMt !== undefined) {
             return typedThis.rhsLazyMt.nextElementSibling;
         }
         return this.nextElementSibling;
     }
 
-    onPropChange(n: string, propDef: PropDef, newVal: any){
+    onPropChange(n: string, propDef: PropDef, newVal: any) {
         this.reactor.addToQueue(propDef, newVal);
     }
 
@@ -81,12 +108,12 @@ export class IfDiff extends HTMLElement implements ReactiveSurface {
 
 
 
-    addStyle(self: IfDiffProps){
+    addStyle(self: IfDiffProps) {
         let rootNode = self.getRootNode();
-        if((<any>rootNode).host === undefined){
+        if ((<any>rootNode).host === undefined) {
             rootNode = document.head;
         }
-        if(!styleMap.has(rootNode)){
+        if (!styleMap.has(rootNode)) {
             styleMap.add(rootNode);
             const style = document.createElement('style');
             style.innerHTML = /* css */`
@@ -94,70 +121,71 @@ export class IfDiff extends HTMLElement implements ReactiveSurface {
                     ${self.hiddenStyle}
                 }
             `;
-            rootNode.appendChild(style);      
+            rootNode.appendChild(style);
         }
     }
 
-    configureLazyMt(lazyMT: LazyMTProps){}
+    configureLazyMt(lazyMT: LazyMTProps) { }
 
 }
 
-export interface IfDiff extends IfDiffProps{}
+export interface IfDiff extends IfDiffProps { }
 
 const styleMap = new WeakSet<Node>();
 
 
-const linkValue = ({iff, lhs, equals, rhs, notEquals, includes, disabled, self}: IfDiff) => {
-    if(disabled) return;
-    if(typeof iff !== 'boolean'){
-        if(self.isNonEmptyArray){
+const linkValue = ({ iff, lhs, equals, rhs, notEquals, includes, disabled, matchesMediaQuery, self }: IfDiff) => {
+    if (disabled) return;
+    if (typeof iff !== 'boolean') {
+        if (self.isNonEmptyArray) {
             self.iff = (iff !== undefined && Array.isArray(iff) && (iff as any).length > 0)
-        }else{
+        } else {
             self.iff = !!iff;
         }
-        
+
         return;
     }
     evaluate(self);
 }
 
-async function evaluate(self: IfDiff){
-    let val = self.iff;
-    if(val){
-        if(val){
-            if(self.equals || self.notEquals){
+async function evaluate(self: IfDiff) {
+    let val = self.iff && !(self.matchesMediaQuery === false);
+    if (val) {
+        if (val) {
+            if (self.equals || self.notEquals) {
                 let eq = false;
-                if(typeof self.lhs === 'object' && typeof self.rhs === 'object'){
-                    const {compare} = await import('./compare.js');
+                if (typeof self.lhs === 'object' && typeof self.rhs === 'object') {
+                    const { compare } = await import('./compare.js');
                     eq = compare(self.lhs, self.rhs);
-                }else{
+                } else {
                     eq = self.lhs === self.rhs;
                 }
                 val = self.equals ? eq : !eq;
-            }else if(self.includes){
-                const {includes} = await import('./includes.js');
+            } else if (self.includes) {
+                const { includes } = await import('./includes.js');
                 val = includes(self.lhs, self.rhs);
             }
+
         }
 
     }
-    if(val !== self.value){
+    if (val !== self.value) {
         (<any>self)[slicedPropDefs!.propLookup!.value!.alias!] = val;
     }
     findTemplate(self);
 }
 
-function findTemplate(self: IfDiff){
-    if(self.lhsLazyMt !== undefined) return;
+function findTemplate(self: IfDiff) {
+    if (self.lhsLazyMt !== undefined) return;
 
-    if(self.ownedSiblingCount === undefined){
+    if (self.ownedSiblingCount === undefined) {
         const templ = self.querySelector('template');
-        if(templ === null){
+        if (templ === null) {
             setTimeout(() => findTemplate(self), 50);
             return;
         }
-        if(self.lazyDelay! > 0){
-            if(IfDiff.isLocked){
+        if (self.lazyDelay! > 0) {
+            if (IfDiff.isLocked) {
                 setTimeout(() => {
                     findTemplate(self);
                 }, self.lazyDelay);
@@ -166,21 +194,21 @@ function findTemplate(self: IfDiff){
             IfDiff.isLocked = true;
         }
         createLazyMts(self, templ);
-        if(self.lazyDelay! > 0){
+        if (self.lazyDelay! > 0) {
             setTimeout(() => {
                 IfDiff.isLocked = false;
             }, self.lazyDelay);
         }
-    }else{
+    } else {
         let ns = self as Element | null;
         let count = 0;
-        let lhsElement : Element | undefined;
-        while(ns!==null && count < self.ownedSiblingCount){
+        let lhsElement: Element | undefined;
+        while (ns !== null && count < self.ownedSiblingCount) {
             ns = ns.nextElementSibling;
             count++;
-            if(count === 1 && ns!== null) lhsElement = ns;
+            if (count === 1 && ns !== null) lhsElement = ns;
         }
-        if(ns === null || count < self.ownedSiblingCount){
+        if (ns === null || count < self.ownedSiblingCount) {
             setTimeout(() => findTemplate(self), 50);
             return;
         }
@@ -189,7 +217,7 @@ function findTemplate(self: IfDiff){
 
 }
 
-function wrapLazyMts(self: IfDiffProps, lhsElement: Element, rhsElement: Element){
+function wrapLazyMts(self: IfDiff, lhsElement: Element, rhsElement: Element) {
     self.addStyle(self);
     const lhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
     lhsLazyMt.enter = true;
@@ -205,7 +233,7 @@ function wrapLazyMts(self: IfDiffProps, lhsElement: Element, rhsElement: Element
 }
 
 
-function createLazyMts(self: IfDiffProps, templ: HTMLTemplateElement){
+function createLazyMts(self: IfDiff, templ: HTMLTemplateElement) {
     self.addStyle(self);
     const lhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
     const eLHS = lhsLazyMt as Element;
@@ -220,10 +248,10 @@ function createLazyMts(self: IfDiffProps, templ: HTMLTemplateElement){
     addMutObj(self);
 }
 
-function addMutObj(self: IfDiffProps){
+function addMutObj(self: IfDiffProps) {
     const parent = self.parentElement;
-    if(parent !== null){
-        if(!attachedParents.has(parent)){
+    if (parent !== null) {
+        if (!attachedParents.has(parent)) {
             attachedParents.add(parent);
             const mutObs = document.createElement('mut-obs');
             const s = mutObs.setAttribute.bind(mutObs);
@@ -238,51 +266,54 @@ function addMutObj(self: IfDiffProps){
             e.stopPropagation();
             changeDisplay(self, self.lhsLazyMt!, self.rhsLazyMt!, !!self.value);
         })
-    }    
+    }
 }
 
-const toggleMt = ({value, lhsLazyMt, rhsLazyMt, self}: IfDiff) => {
-    if(value){
+const toggleMt = ({ value, lhsLazyMt, rhsLazyMt, self }: IfDiff) => {
+    if (value) {
         lhsLazyMt!.setAttribute('mount', '');
         rhsLazyMt!.setAttribute('mount', '');
         changeDisplay(self, lhsLazyMt!, rhsLazyMt!, true);
-        
-    }else{
+
+    } else {
         changeDisplay(self, lhsLazyMt!, rhsLazyMt!, false);
     }
 }
 
-function changeDisplay(self: IfDiffProps, lhsLazyMt: Element, rhsLazyMt: Element, display: boolean){
+function changeDisplay(self: IfDiffProps, lhsLazyMt: Element, rhsLazyMt: Element, display: boolean) {
     let ns = lhsLazyMt as HTMLElement;
     //TODO: mutation observer
-    while(ns !== null){
+    while (ns !== null) {
         ns.dataset.ifDiffDisplay = display.toString();
         const attr = self.setAttr;
-        if(attr !== undefined){
-            if(display) {
+        if (attr !== undefined) {
+            if (display) {
                 ns.setAttribute(attr, '');
-            }else{
+            } else {
                 ns.removeAttribute(attr);
             }
         }
         const verb = display ? 'add' : 'remove';
         const part = self.setPart;
-        if(part !== undefined){
+        if (part !== undefined) {
             (<any>ns)[verb](part);
         }
         const className = self.setClass;
-        if(className !== undefined){
+        if (className !== undefined) {
             ns.classList[verb](className);
         }
-        if(ns === rhsLazyMt) return;
+        if (ns === rhsLazyMt) return;
         ns = ns.nextElementSibling as HTMLElement;
     }
 }
 
-
+const onAndMediaMatches = ({ andMediaMatches, self }: IfDiff) => {
+    self._mql = window.matchMedia(andMediaMatches!);
+    self.matchesMediaQuery = self._mql.matches;
+}
 
 const propActions = [
-    linkValue, toggleMt
+    linkValue, toggleMt, onAndMediaMatches
 ] as PropAction[];
 
 const baseProp: PropDef = {
@@ -295,10 +326,20 @@ const bool1: PropDef = {
     type: Boolean,
 };
 
+const bool2: PropDef = {
+    ...bool1,
+    notify: true,
+    obfuscate: true,
+}
+
 const str1: PropDef = {
     ...baseProp,
     type: String,
 };
+const str2: PropDef = {
+    ...str1,
+    stopReactionsIfFalsy: true,
+}
 const obj1: PropDef = {
     ...baseProp,
     type: Object,
@@ -325,8 +366,8 @@ const sync: PropDef = {
     syncProps: true,
 };
 const propDefMap: PropDefMap<IfDiffProps> = {
-    iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
-    isNonEmptyArray: bool1,
+    iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1, matchesMediaQuery: bool2,
+    isNonEmptyArray: bool1, andMediaMatches: str2,
     lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
     ownedSiblingCount: num1, setAttr: str1, setClass: str1, setPart: str1,
     hiddenStyle: str1,

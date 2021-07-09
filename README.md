@@ -75,7 +75,7 @@ One other thing:  When the server renders the content for Monday, this still lea
 But if the server made sure that the original HTML matches the correct initial value, there's a way the server can set the properties without forcing the component to do any of its client-side work:
 
 ```html
-<if-diff sync-props-from-server='{"iff": true, "lhs": "Monday", "equals": true, "rhs": "Monday", "initCount": 1}'></if-diff>
+<if-diff sync-props-from-server='{"iff": true, "lhs": "Monday", "equals": true, "rhs": "Monday", "ownedSiblingCount": 1}'></if-diff>
 <div>
   I wish it was Sunday
 </div>

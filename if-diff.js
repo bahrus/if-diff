@@ -4,15 +4,32 @@ import('mut-obs/mut-obs.js');
 const p_d_std = 'p_d_std';
 const attachedParents = new WeakSet();
 /**
+ * @element if-diff
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
  * No DOM deletion takes place on non matching elements.
  * [More Info](https://github.com/bahrus/if-diff)
+ *
+ * @prop {boolean} iff - Must be true to pass test(s). Can also be an object.  Condition is based on the property being truthy.
+ * @attr {boolean} iff - Must be true (exists) to pass test(s)
+ * @prop {boolean | string | number | object} [lhs] - LHS Operand.
+ * @attr {boolean | string | number | object} [lhs] - LHS Operand.  Is JSON parsed.
+ * @prop {boolean} [isNonEmptyArray] - Iff property has to be a non empty array.
+ * @attr {boolean} is-non-empty-array Iff property has to be a non empty array.
+ * @prop {boolean | string | number | object} [rhs] - RHS Operand.
+ * @attr {boolean | string | number | object} [rhs] - RHS Operand.  Is JSON parsed.
+ * @prop {boolean} [equals] - lhs must equal rhs to pass tests.
+ * @attr {boolean} [equals] - lhs must equal rhs to pass tests.
+ * @prop {boolean} [disabled] - Do not evaluate expression until disabled setting is removed.
+ * @attr {boolean} [disabled] - Do not evaluate expression until disabled setting is removed.
+ * @prop {number} [ownedSiblingCount] - If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.
+ * @prop {string} [hiddenStyle = display:none] - Specify exact manner in which non visible content should be hidden.
  */
 export class IfDiff extends HTMLElement {
     static is = 'if-diff';
     self = this;
     propActions = propActions;
     reactor = new xc.Rx(this);
+    _mql;
     static isLocked = false;
     connectedCallback() {
         this.style.display = 'none';
@@ -20,6 +37,8 @@ export class IfDiff extends HTMLElement {
             hiddenStyle: 'display:none',
             lazyDelay: -1,
         });
+        if (this._mql)
+            this._mql.addEventListener('change', this.mediaQueryHandler);
     }
     disconnectedCallback() {
         if (!this._doNotCleanUp) {
@@ -28,6 +47,14 @@ export class IfDiff extends HTMLElement {
                 this.cleanupIfNoParentElement();
             }, 1000);
         }
+        this.disconnect();
+    }
+    mediaQueryHandler = (e) => {
+        this[slicedPropDefs.propLookup.matchesMediaQuery.alias] = e.matches;
+    };
+    disconnect() {
+        if (this._mql)
+            this._mql.removeEventListener('change', this.mediaQueryHandler);
     }
     cleanupIfNoParentElement() {
         if (this.parentElement === null) {
@@ -81,7 +108,7 @@ export class IfDiff extends HTMLElement {
     configureLazyMt(lazyMT) { }
 }
 const styleMap = new WeakSet();
-const linkValue = ({ iff, lhs, equals, rhs, notEquals, includes, disabled, self }) => {
+const linkValue = ({ iff, lhs, equals, rhs, notEquals, includes, disabled, matchesMediaQuery, self }) => {
     if (disabled)
         return;
     if (typeof iff !== 'boolean') {
@@ -96,7 +123,7 @@ const linkValue = ({ iff, lhs, equals, rhs, notEquals, includes, disabled, self 
     evaluate(self);
 };
 async function evaluate(self) {
-    let val = self.iff;
+    let val = self.iff && !(self.matchesMediaQuery === false);
     if (val) {
         if (val) {
             if (self.equals || self.notEquals) {
@@ -249,8 +276,12 @@ function changeDisplay(self, lhsLazyMt, rhsLazyMt, display) {
         ns = ns.nextElementSibling;
     }
 }
+const onAndMediaMatches = ({ andMediaMatches, self }) => {
+    self._mql = window.matchMedia(andMediaMatches);
+    self.matchesMediaQuery = self._mql.matches;
+};
 const propActions = [
-    linkValue, toggleMt
+    linkValue, toggleMt, onAndMediaMatches
 ];
 const baseProp = {
     dry: true,
@@ -260,9 +291,18 @@ const bool1 = {
     ...baseProp,
     type: Boolean,
 };
+const bool2 = {
+    ...bool1,
+    notify: true,
+    obfuscate: true,
+};
 const str1 = {
     ...baseProp,
     type: String,
+};
+const str2 = {
+    ...str1,
+    stopReactionsIfFalsy: true,
 };
 const obj1 = {
     ...baseProp,
@@ -290,8 +330,8 @@ const sync = {
     syncProps: true,
 };
 const propDefMap = {
-    iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1,
-    isNonEmptyArray: bool1,
+    iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1, matchesMediaQuery: bool2,
+    isNonEmptyArray: bool1, andMediaMatches: str2,
     lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
     ownedSiblingCount: num1, setAttr: str1, setClass: str1, setPart: str1,
     hiddenStyle: str1,

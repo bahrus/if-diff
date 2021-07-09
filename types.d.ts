@@ -4,45 +4,61 @@ import {IfDiff} from './if-diff.js';
 export interface IfDiffProps extends HTMLElement{
     
     /**
-     * @prop {boolean} iff Must be true to pass test(s). Can also be an object.  Condition is based on the property being truthy.
-     * @attr {boolean} iff Must be true (exists) to pass test(s)
+     * @prop {boolean} iff - Must be true to pass test(s). Can also be an object.  Condition is based on the property being truthy.
+     * @attr {boolean} iff - Must be true (exists) to pass test(s)
      */
     iff?: boolean | undefined;
 
     /**
-     * @prop {any} lhs LHS Operand.
-     * @attr {string} lhs LHS Operand.
+     * @prop {boolean | string | number | object} [lhs] - LHS Operand.
+     * @attr {boolean | string | number | object} [lhs] - LHS Operand.  Is JSON parsed.
      */
     lhs?: boolean | string | number | object; 
 
     /**
-     * @prop {boolean} isNonEmptyArray Iff property has to be a non empty array.
+     * @prop {boolean} [isNonEmptyArray] - Iff property has to be a non empty array.
      * @attr {boolean} is-non-empty-array Iff property has to be a non empty array.
      */
     isNonEmptyArray?: boolean | undefined;
 
     /**
-     * RHS Operand.
-     * @attr
+     * @prop {boolean | string | number | object} [rhs] - RHS Operand.
+     * @attr {boolean | string | number | object} [rhs] - RHS Operand.  Is JSON parsed.
      */
     rhs?: boolean | string | number | object;
 
     /**
-     * lhs must equal rhs to pass tests.
-     * @attr
+     * @prop {boolean} [equals] - lhs must equal rhs to pass tests.
+     * @attr {boolean} [equals] - lhs must equal rhs to pass tests.
      */ 
     equals?: boolean, 
+
+    /**
+     * @prop {boolean} [disabled] - Do not evaluate expression until disabled setting is removed.
+     * @attr {boolean} [disabled] - Do not evaluate expression until disabled setting is removed.
+     */
     disabled?: boolean | undefined, 
 
+    /**
+     * @private
+     */
     lhsLazyMt?: LazyMTProps | undefined;
 
+    /**
+     * @private
+     */
     rhsLazyMt?: LazyMTProps | undefined;
 
+    /**
+     * @prop {number} [ownedSiblingCount] - If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.
+     */
     ownedSiblingCount?: number | undefined;
 
+    /**
+     * @prop {string} [hiddenStyle = display:none] - Specify exact manner in which non visible content should be hidden.
+     */
     hiddenStyle?: string | undefined;
 
-    addStyle(self: IfDiffProps): void;
 
     
     setAttr?: string | undefined;
@@ -82,6 +98,13 @@ export interface IfDiffProps extends HTMLElement{
     m?: number | undefined;
 
     lazyDelay?: number | undefined;
+
+    andMediaMatches: string | undefined;
+
+    /**
+     * @private
+     */
+    matchesMediaQuery: boolean | undefined;
 
 }
 
