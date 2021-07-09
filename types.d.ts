@@ -81,6 +81,8 @@ export interface IfDiffProps extends HTMLElement{
      */
     m?: number | undefined;
 
+    lazyDelay?: number | undefined;
+
 }
 
 export interface IfDiffEventNameMap {

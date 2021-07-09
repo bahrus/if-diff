@@ -13,10 +13,12 @@ export class IfDiff extends HTMLElement {
     self = this;
     propActions = propActions;
     reactor = new xc.Rx(this);
+    static isLocked = false;
     connectedCallback() {
         this.style.display = 'none';
         xc.mergeProps(this, slicedPropDefs, {
-            hiddenStyle: 'display:none'
+            hiddenStyle: 'display:none',
+            lazyDelay: -1,
         });
     }
     disconnectedCallback() {
@@ -128,7 +130,19 @@ function findTemplate(self) {
             setTimeout(() => findTemplate(self), 50);
             return;
         }
+        if (self.lazyDelay > 0) {
+            if (IfDiff.isLocked) {
+                setTimeout(() => {
+                    findTemplate(self);
+                }, self.lazyDelay);
+                return;
+            }
+            IfDiff.isLocked = true;
+        }
         createLazyMts(self, templ);
+        if (self.lazyDelay > 0) {
+            IfDiff.isLocked = false;
+        }
     }
     else {
         let ns = self;
@@ -280,6 +294,7 @@ const propDefMap = {
     ownedSiblingCount: num1, setAttr: str1, setClass: str1, setPart: str1,
     hiddenStyle: str1,
     syncPropsFromServer: sync,
+    lazyDelay: num1,
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 xc.letThereBeProps(IfDiff, slicedPropDefs, 'onPropChange');

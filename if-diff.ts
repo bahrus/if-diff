@@ -19,10 +19,13 @@ export class IfDiff extends HTMLElement implements ReactiveSurface {
     propActions = propActions;
     reactor: IReactor = new xc.Rx(this);
 
+    static isLocked = false;
+
     connectedCallback(){
         this.style.display = 'none';
         xc.mergeProps<Partial<IfDiffProps>>(this, slicedPropDefs, {
-            hiddenStyle:'display:none'
+            hiddenStyle:'display:none',
+            lazyDelay: -1,
         });
     }
 
@@ -146,13 +149,27 @@ async function evaluate(self: IfDiff){
 
 function findTemplate(self: IfDiff){
     if(self.lhsLazyMt !== undefined) return;
+
     if(self.ownedSiblingCount === undefined){
         const templ = self.querySelector('template');
         if(templ === null){
             setTimeout(() => findTemplate(self), 50);
             return;
         }
+        if(self.lazyDelay! > 0){
+            if(IfDiff.isLocked){
+                setTimeout(() => {
+                    findTemplate(self);
+                }, self.lazyDelay);
+                return;
+            }
+            IfDiff.isLocked = true;
+        }
+
         createLazyMts(self, templ);
+        if(self.lazyDelay! > 0){
+            IfDiff.isLocked = false;
+        }
     }else{
         let ns = self as Element | null;
         let count = 0;
@@ -313,6 +330,7 @@ const propDefMap: PropDefMap<IfDiffProps> = {
     ownedSiblingCount: num1, setAttr: str1, setClass: str1, setPart: str1,
     hiddenStyle: str1,
     syncPropsFromServer: sync,
+    lazyDelay: num1,
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 xc.letThereBeProps(IfDiff, slicedPropDefs, 'onPropChange');
