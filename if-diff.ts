@@ -165,10 +165,11 @@ function findTemplate(self: IfDiff){
             }
             IfDiff.isLocked = true;
         }
-
         createLazyMts(self, templ);
         if(self.lazyDelay! > 0){
-            IfDiff.isLocked = false;
+            setTimeout(() => {
+                IfDiff.isLocked = false;
+            }, self.lazyDelay);
         }
     }else{
         let ns = self as Element | null;
