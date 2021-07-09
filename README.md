@@ -47,6 +47,8 @@ LHS Doesn't equal RHS:
 
 "p-d", a kind of dom-bind alternative, is discussed [here](https://github.com/bahrus/pass-down).
 
+## [API Reference](https://bahrus.github.io/wc-info/cdn-base.html?npmPackage=if-diff)
+
 ## Progressive Enhancement / Server-side rendering (SSR)
 
 if-diff can optionally allow the server to display content that should be initially displayed, then adjusts what is displayed as conditions in the browser change.

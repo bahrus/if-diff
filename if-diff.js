@@ -4,11 +4,7 @@ import('mut-obs/mut-obs.js');
 const p_d_std = 'p_d_std';
 const attachedParents = new WeakSet();
 /**
- * @element if-diff
- * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
- * No DOM deletion takes place on non matching elements.
- * [More Info](https://github.com/bahrus/if-diff)
- *
+ * @element if-diff - Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.  No DOM deletion takes place on non matching elements.[More Info](https://github.com/bahrus/if-diff)
  * @prop {boolean} iff - Must be true to pass test(s). Can also be an object.  Condition is based on the property being truthy.
  * @attr {boolean} iff - Must be true (exists) to pass test(s)
  * @prop {boolean | string | number | object} [lhs] - LHS Operand.
