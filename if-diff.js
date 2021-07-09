@@ -22,9 +22,21 @@ const attachedParents = new WeakSet();
  */
 export class IfDiff extends HTMLElement {
     static is = 'if-diff';
+    /**
+     * @private
+     */
     self = this;
+    /**
+     * @private
+     */
     propActions = propActions;
+    /**
+     * @private
+     */
     reactor = new xc.Rx(this);
+    /**
+     * @private
+     */
     _mql;
     static isLocked = false;
     connectedCallback() {
@@ -45,6 +57,9 @@ export class IfDiff extends HTMLElement {
         }
         this.disconnect();
     }
+    /**
+     * @private
+     */
     mediaQueryHandler = (e) => {
         this[slicedPropDefs.propLookup.matchesMediaQuery.alias] = e.matches;
     };
@@ -66,6 +81,9 @@ export class IfDiff extends HTMLElement {
             return range;
         }
     }
+    /**
+     * @private
+     */
     _doNotCleanUp = false;
     extractContents() {
         const typedThis = this;
@@ -274,7 +292,7 @@ function changeDisplay(self, lhsLazyMt, rhsLazyMt, display) {
 }
 const onAndMediaMatches = ({ andMediaMatches, self }) => {
     self._mql = window.matchMedia(andMediaMatches);
-    self.matchesMediaQuery = self._mql.matches;
+    self[slicedPropDefs.propLookup.matchesMediaQuery.alias] = self._mql.matches;
 };
 const propActions = [
     linkValue, toggleMt, onAndMediaMatches

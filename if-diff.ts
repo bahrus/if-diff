@@ -27,9 +27,21 @@ const attachedParents = new WeakSet<Element>();
 export class IfDiff extends HTMLElement implements ReactiveSurface {
     static is = 'if-diff';
 
+    /**
+     * @private
+     */
     self = this;
+    /**
+     * @private
+     */
     propActions = propActions;
+    /**
+     * @private
+     */
     reactor: IReactor = new xc.Rx(this);
+    /**
+     * @private
+     */
     _mql: MediaQueryList | undefined;
 
     static isLocked = false;
@@ -53,6 +65,9 @@ export class IfDiff extends HTMLElement implements ReactiveSurface {
         this.disconnect();
     }
 
+    /**
+     * @private
+     */
     mediaQueryHandler = (e: MediaQueryListEvent) => {
         (<any>this)[slicedPropDefs.propLookup.matchesMediaQuery!.alias!] = e.matches;
     }
@@ -76,6 +91,9 @@ export class IfDiff extends HTMLElement implements ReactiveSurface {
             return range;
         }
     }
+    /**
+     * @private
+     */
     _doNotCleanUp = false;
 
     extractContents() {
@@ -305,7 +323,7 @@ function changeDisplay(self: IfDiffProps, lhsLazyMt: Element, rhsLazyMt: Element
 
 const onAndMediaMatches = ({ andMediaMatches, self }: IfDiff) => {
     self._mql = window.matchMedia(andMediaMatches!);
-    self.matchesMediaQuery = self._mql.matches;
+    (<any>self)[slicedPropDefs.propLookup.matchesMediaQuery!.alias!] = self._mql.matches;
 }
 
 const propActions = [
