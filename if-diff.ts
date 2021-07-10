@@ -52,7 +52,8 @@ export class IfDiff extends HTMLElement implements ReactiveSurface {
             hiddenStyle: 'display:none',
             lazyDelay: -1,
         });
-        if (this._mql) this._mql.addEventListener('change', this.mediaQueryHandler);
+        //causing issues -- maybe isn't necessary, since this._mql will be garbage collected?
+        //if (this._mql) this._mql.addEventListener('change', this.mediaQueryHandler);
     }
 
     disconnectedCallback() {
@@ -73,7 +74,8 @@ export class IfDiff extends HTMLElement implements ReactiveSurface {
     }
 
     disconnect() {
-        if (this._mql) this._mql.removeEventListener('change', this.mediaQueryHandler);
+        //causing issues -- maybe isn't necessary, since this._mql will be garbage collected?
+        //if (this._mql) this._mql.removeEventListener('change', this.mediaQueryHandler);
     }
 
     cleanupIfNoParentElement() {

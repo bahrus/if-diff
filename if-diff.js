@@ -45,8 +45,8 @@ export class IfDiff extends HTMLElement {
             hiddenStyle: 'display:none',
             lazyDelay: -1,
         });
-        if (this._mql)
-            this._mql.addEventListener('change', this.mediaQueryHandler);
+        //causing issues -- maybe isn't necessary, since this._mql will be garbage collected?
+        //if (this._mql) this._mql.addEventListener('change', this.mediaQueryHandler);
     }
     disconnectedCallback() {
         if (!this._doNotCleanUp) {
@@ -64,8 +64,8 @@ export class IfDiff extends HTMLElement {
         this[slicedPropDefs.propLookup.matchesMediaQuery.alias] = e.matches;
     };
     disconnect() {
-        if (this._mql)
-            this._mql.removeEventListener('change', this.mediaQueryHandler);
+        //causing issues -- maybe isn't necessary, since this._mql will be garbage collected?
+        //if (this._mql) this._mql.removeEventListener('change', this.mediaQueryHandler);
     }
     cleanupIfNoParentElement() {
         if (this.parentElement === null) {
