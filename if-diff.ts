@@ -278,10 +278,12 @@ function createLazyMts(self: IfDiff, templ: HTMLTemplateElement) {
     const lhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
     const eLHS = lhsLazyMt as Element;
     lhsLazyMt.setAttribute('enter', '');
+    lhsLazyMt.setAttribute('treat-as-visible', '');
     self.insertAdjacentElement('afterend', lhsLazyMt as Element);
     eLHS.insertAdjacentElement('afterend', templ);
     const rhsLazyMt = document.createElement('lazy-mt') as any;
     rhsLazyMt.setAttribute('exit', '');
+    rhsLazyMt.setAttribute('treat-as-visible', '');
     templ.insertAdjacentElement('afterend', rhsLazyMt);
     self.lhsLazyMt = lhsLazyMt;
     self.rhsLazyMt = rhsLazyMt;

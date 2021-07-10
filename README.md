@@ -11,7 +11,7 @@
 
 \<if-diff\> is an alternative to Polymer's [dom-if](https://polymer-library.polymer-project.org/3.0/docs/devguide/templates#dom-if) element that allows comparison between two operands, as well as progressive enhancement.  See [if-else](https://github.com/matthewp/if-else) for another data-centric alternative. And [iff-diff](https://github.com/bahrus/iff-diff) for something extremely light and simple, both size-wise and feature-wise.
 
-if-diff adds an extra conditional on displaying the contents -- it only displays content when the content scrolls or is clicked into view.  if-diff also goes to some lengths to make the resulting DOM structure as flat as possible.  It does this by way of [lazy-mt](https://github.com/bahrus/lazy-mt).
+[TODO] if-diff adds an extra conditional on displaying the contents -- it only displays content when the content scrolls or is clicked into view.  if-diff also goes to some lengths to make the resulting DOM structure as flat as possible.  It does this by way of [lazy-mt](https://github.com/bahrus/lazy-mt).
 
 if-diff also allows media queries to serve as an additional criteria.
 

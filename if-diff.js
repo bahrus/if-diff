@@ -247,10 +247,12 @@ function createLazyMts(self, templ) {
     const lhsLazyMt = document.createElement('lazy-mt');
     const eLHS = lhsLazyMt;
     lhsLazyMt.setAttribute('enter', '');
+    lhsLazyMt.setAttribute('treat-as-visible', '');
     self.insertAdjacentElement('afterend', lhsLazyMt);
     eLHS.insertAdjacentElement('afterend', templ);
     const rhsLazyMt = document.createElement('lazy-mt');
     rhsLazyMt.setAttribute('exit', '');
+    rhsLazyMt.setAttribute('treat-as-visible', '');
     templ.insertAdjacentElement('afterend', rhsLazyMt);
     self.lhsLazyMt = lhsLazyMt;
     self.rhsLazyMt = rhsLazyMt;
