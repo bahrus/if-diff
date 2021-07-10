@@ -840,7 +840,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "",
+          "description": "Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.\nNo DOM deletion takes place on non matching elements.[More Info](https://github.com/bahrus/if-diff)",
           "name": "IfDiff",
           "members": [
             {
@@ -1089,7 +1089,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "",
+          "description": "Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.  \r\nNo DOM deletion takes place on non matching elements.[More Info](https://github.com/bahrus/if-diff)",
           "name": "IfDiff",
           "members": [
             {
