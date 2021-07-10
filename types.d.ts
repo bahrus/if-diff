@@ -51,27 +51,39 @@ export interface IfDiffProps extends HTMLElement{
 
     /**
      * @prop {number} [ownedSiblingCount] - If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.
+     * @attr {number} [owned-sibling-count] - If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.
      */
     ownedSiblingCount?: number | undefined;
 
     /**
-     * @prop {string} [hiddenStyle = display:none] - Specify exact manner in which non visible content should be hidden.
+     * @prop {string} [hiddenStyle = display:none] - Specify exact manner in which non-visible content should be hidden.
+     * @attr {string} [hidden-style = display:none] - Specify exact manner in which non-visible content should be hidden.
      */
     hiddenStyle?: string | undefined;
 
 
-    
+    /**
+     * @prop {string} [setAttr] - Specify name of attribute to add when conditions are satisfied / removed when not satisfied
+     * @attr {string} [set-attr] - Specify name of attribute to add when conditions are satisfied / removed when not satisfied
+     */
     setAttr?: string | undefined;
-
+    /**
+     * @prop {string} [setClass] - Specify name of class to add when conditions are satisfied / removed when not satisfied
+     * @attr {string} [set-class] - Specify name of class to add when conditions are satisfied / removed when not satisfied
+     */
     setClass?: string | undefined;
 
+    /**
+     * @prop {string} [setPart] - Specify name of part to add when conditions are satisfied / removed when not satisfied
+     * @attr {string} [set-part] - Specify name of part to add when conditions are satisfied / removed when not satisfied
+     */
     setPart?: string | undefined;
 
 
     /**
-     * lhs must not equal rhs to pass tests.
-     * @attr not-equals
-     */
+     * @prop {boolean} [notEquals] - lhs must not equal rhs to pass tests.
+     * @attr {boolean} [not-equals] - lhs must not equal rhs to pass tests.
+     */ 
     notEquals?: boolean | undefined;
 
     syncPropsFromServer?: IfDiffProps | undefined;
@@ -79,26 +91,29 @@ export interface IfDiffProps extends HTMLElement{
     configureLazyMt(lazyMT: LazyMTProps): void;
 
     /**
-     * For strings, this means lhs.indexOf(rhs) > -1
-     * For arrays, this means lhs intersect rhs = rhs
-     * For numbers, this means lhs >= rhs
-     * For objects, this means all the properties of rhs match the same properties of lhs
-     * @attr includes
+     * @prop {boolean} [includes] - For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs
+     * @attr {boolean} [includes] - For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs
      */
     includes?: boolean | undefined; 
 
     /**
-     * Computed based on values of  if / equals / not_equals / includes 
+     * @readonly
+     * @prop {boolean} [value] - Computed based on values of  if / equals / not_equals / includes and other property values
      */
     value?: boolean | undefined;
 
     /**
-     * Maximum number of elements that are effected by condition.
+     * @prop {number} [m] - Maximum number of elements that are effected by condition.
+     * @attr {number} [m] - Maximum number of elements that are effected by condition.
      */
     m?: number | undefined;
 
     lazyDelay?: number | undefined;
 
+    /**
+     * @prop {string} [andMediaMatches] - Additional condition for a media query to be added for tests to be satisfied.
+     * @attr {string} [and-media-matches] - Additional condition for a media query to be added for tests to be satisfied.
+     */
     andMediaMatches: string | undefined;
 
     /**

@@ -21,6 +21,26 @@ const attachedParents = new WeakSet();
  * @attr {boolean} [disabled] - Do not evaluate expression until disabled setting is removed.
  * @prop {number} [ownedSiblingCount] - If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.
  * @prop {string} [hiddenStyle = display:none] - Specify exact manner in which non visible content should be hidden.
+ * @prop {number} [ownedSiblingCount] - If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.
+ * @attr {number} [owned-sibling-count] - If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.
+     * @prop {string} [hiddenStyle = display:none] - Specify exact manner in which non-visible content should be hidden.
+     * @attr {string} [hidden-style = display:none] - Specify exact manner in which non-visible content should be hidden.
+     * @prop {string} [setAttr] - Specify name of attribute to add when conditions are satisfied / removed when not satisfied
+     * @attr {string} [set-attr] - Specify name of attribute to add when conditions are satisfied / removed when not satisfied
+     * @prop {string} [setClass] - Specify name of class to add when conditions are satisfied / removed when not satisfied
+     * @attr {string} [set-class] - Specify name of class to add when conditions are satisfied / removed when not satisfied
+     * @prop {string} [setPart] - Specify name of part to add when conditions are satisfied / removed when not satisfied
+     * @attr {string} [set-part] - Specify name of part to add when conditions are satisfied / removed when not satisfied
+     * @prop {boolean} [notEquals] - lhs must not equal rhs to pass tests.
+     * @attr {boolean} [not-equals] - lhs must not equal rhs to pass tests.
+     * @prop {boolean} [includes] - For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs
+     * @attr {boolean} [includes] - For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs
+     * @readonly @prop {boolean} [value] - Computed based on values of  if / equals / not_equals / includes and other property values
+     * @prop {number} [m] - Maximum number of elements that are effected by condition.
+     * @attr {number} [m] - Maximum number of elements that are effected by condition.
+     * @prop {string} [andMediaMatches] - Additional condition for a media query to be added for tests to be satisfied.
+     * @attr {string} [and-media-matches] - Additional condition for a media query to be added for tests to be satisfied.
+
  */
 export class IfDiff extends HTMLElement {
     static is = 'if-diff';

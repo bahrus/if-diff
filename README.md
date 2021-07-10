@@ -13,6 +13,8 @@
 
 if-diff adds an extra conditional on displaying the contents -- it only displays content when the content scrolls or is clicked into view.  if-diff also goes to some lengths to make the resulting DOM structure as flat as possible.  It does this by way of [lazy-mt](https://github.com/bahrus/lazy-mt).
 
+if-diff also allows media queries to serve as an additional criteria.
+
 ## Syntax
 
 The simplest, client-centric approach to using if-diff is demonstrated below:

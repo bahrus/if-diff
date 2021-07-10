@@ -349,9 +349,93 @@
               "type": {
                 "text": "string"
               },
-              "description": "Specify exact manner in which non visible content should be hidden.",
+              "description": "Specify exact manner in which non-visible content should be hidden.",
               "name": "hiddenStyle",
               "default": "display:none",
+              "kind": "field",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of attribute to add when conditions are satisfied / removed when not satisfied",
+              "name": "setAttr",
+              "kind": "field",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of class to add when conditions are satisfied / removed when not satisfied",
+              "name": "setClass",
+              "kind": "field",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of part to add when conditions are satisfied / removed when not satisfied",
+              "name": "setPart",
+              "kind": "field",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "lhs must not equal rhs to pass tests.",
+              "name": "notEquals",
+              "kind": "field",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs",
+              "name": "includes",
+              "kind": "field",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of elements that are effected by condition.",
+              "name": "m",
+              "kind": "field",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Additional condition for a media query to be added for tests to be satisfied.",
+              "name": "andMediaMatches",
               "kind": "field",
               "inheritedFrom": {
                 "name": "IfDiff",
@@ -427,6 +511,106 @@
               },
               "description": "Do not evaluate expression until disabled setting is removed.",
               "name": "disabled",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.",
+              "name": "owned-sibling-count",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify exact manner in which non-visible content should be hidden.",
+              "name": "hidden-style",
+              "default": "display:none",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of attribute to add when conditions are satisfied / removed when not satisfied",
+              "name": "set-attr",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of class to add when conditions are satisfied / removed when not satisfied",
+              "name": "set-class",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of part to add when conditions are satisfied / removed when not satisfied",
+              "name": "set-part",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "lhs must not equal rhs to pass tests.",
+              "name": "not-equals",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs",
+              "name": "includes",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of elements that are effected by condition.",
+              "name": "m",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Additional condition for a media query to be added for tests to be satisfied.",
+              "name": "and-media-matches",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -737,9 +921,93 @@
               "type": {
                 "text": "string"
               },
-              "description": "Specify exact manner in which non visible content should be hidden.",
+              "description": "Specify exact manner in which non-visible content should be hidden.",
               "name": "hiddenStyle",
               "default": "display:none",
+              "kind": "field",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of attribute to add when conditions are satisfied / removed when not satisfied",
+              "name": "setAttr",
+              "kind": "field",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of class to add when conditions are satisfied / removed when not satisfied",
+              "name": "setClass",
+              "kind": "field",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of part to add when conditions are satisfied / removed when not satisfied",
+              "name": "setPart",
+              "kind": "field",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "lhs must not equal rhs to pass tests.",
+              "name": "notEquals",
+              "kind": "field",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs",
+              "name": "includes",
+              "kind": "field",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of elements that are effected by condition.",
+              "name": "m",
+              "kind": "field",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Additional condition for a media query to be added for tests to be satisfied.",
+              "name": "andMediaMatches",
               "kind": "field",
               "inheritedFrom": {
                 "name": "IfDiff",
@@ -815,6 +1083,106 @@
               },
               "description": "Do not evaluate expression until disabled setting is removed.",
               "name": "disabled",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.",
+              "name": "owned-sibling-count",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify exact manner in which non-visible content should be hidden.",
+              "name": "hidden-style",
+              "default": "display:none",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of attribute to add when conditions are satisfied / removed when not satisfied",
+              "name": "set-attr",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of class to add when conditions are satisfied / removed when not satisfied",
+              "name": "set-class",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of part to add when conditions are satisfied / removed when not satisfied",
+              "name": "set-part",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "lhs must not equal rhs to pass tests.",
+              "name": "not-equals",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs",
+              "name": "includes",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of elements that are effected by condition.",
+              "name": "m",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Additional condition for a media query to be added for tests to be satisfied.",
+              "name": "and-media-matches",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -1015,9 +1383,65 @@
               "type": {
                 "text": "string"
               },
-              "description": "Specify exact manner in which non visible content should be hidden.",
+              "description": "Specify exact manner in which non-visible content should be hidden.",
               "name": "hiddenStyle",
               "default": "display:none",
+              "kind": "field"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of attribute to add when conditions are satisfied / removed when not satisfied",
+              "name": "setAttr",
+              "kind": "field"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of class to add when conditions are satisfied / removed when not satisfied",
+              "name": "setClass",
+              "kind": "field"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of part to add when conditions are satisfied / removed when not satisfied",
+              "name": "setPart",
+              "kind": "field"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "lhs must not equal rhs to pass tests.",
+              "name": "notEquals",
+              "kind": "field"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs",
+              "name": "includes",
+              "kind": "field"
+            },
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of elements that are effected by condition.",
+              "name": "m",
+              "kind": "field"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Additional condition for a media query to be added for tests to be satisfied.",
+              "name": "andMediaMatches",
               "kind": "field"
             }
           ],
@@ -1063,6 +1487,70 @@
               },
               "description": "Do not evaluate expression until disabled setting is removed.",
               "name": "disabled"
+            },
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.",
+              "name": "owned-sibling-count"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify exact manner in which non-visible content should be hidden.",
+              "name": "hidden-style",
+              "default": "display:none"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of attribute to add when conditions are satisfied / removed when not satisfied",
+              "name": "set-attr"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of class to add when conditions are satisfied / removed when not satisfied",
+              "name": "set-class"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of part to add when conditions are satisfied / removed when not satisfied",
+              "name": "set-part"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "lhs must not equal rhs to pass tests.",
+              "name": "not-equals"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs",
+              "name": "includes"
+            },
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of elements that are effected by condition.",
+              "name": "m"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Additional condition for a media query to be added for tests to be satisfied.",
+              "name": "and-media-matches"
             }
           ],
           "superclass": {
@@ -1282,9 +1770,65 @@
               "type": {
                 "text": "string"
               },
-              "description": "Specify exact manner in which non visible content should be hidden.",
+              "description": "Specify exact manner in which non-visible content should be hidden.",
               "name": "hiddenStyle",
               "default": "display:none",
+              "kind": "field"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of attribute to add when conditions are satisfied / removed when not satisfied",
+              "name": "setAttr",
+              "kind": "field"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of class to add when conditions are satisfied / removed when not satisfied",
+              "name": "setClass",
+              "kind": "field"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of part to add when conditions are satisfied / removed when not satisfied",
+              "name": "setPart",
+              "kind": "field"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "lhs must not equal rhs to pass tests.",
+              "name": "notEquals",
+              "kind": "field"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs",
+              "name": "includes",
+              "kind": "field"
+            },
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of elements that are effected by condition.",
+              "name": "m",
+              "kind": "field"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Additional condition for a media query to be added for tests to be satisfied.",
+              "name": "andMediaMatches",
               "kind": "field"
             }
           ],
@@ -1330,6 +1874,70 @@
               },
               "description": "Do not evaluate expression until disabled setting is removed.",
               "name": "disabled"
+            },
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.",
+              "name": "owned-sibling-count"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify exact manner in which non-visible content should be hidden.",
+              "name": "hidden-style",
+              "default": "display:none"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of attribute to add when conditions are satisfied / removed when not satisfied",
+              "name": "set-attr"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of class to add when conditions are satisfied / removed when not satisfied",
+              "name": "set-class"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Specify name of part to add when conditions are satisfied / removed when not satisfied",
+              "name": "set-part"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "lhs must not equal rhs to pass tests.",
+              "name": "not-equals"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs",
+              "name": "includes"
+            },
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum number of elements that are effected by condition.",
+              "name": "m"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Additional condition for a media query to be added for tests to be satisfied.",
+              "name": "and-media-matches"
             }
           ],
           "superclass": {
