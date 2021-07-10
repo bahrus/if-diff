@@ -325,6 +325,7 @@ function changeDisplay(self: IfDiffProps, lhsLazyMt: Element, rhsLazyMt: Element
 
 const onAndMediaMatches = ({ andMediaMatches, self }: IfDiff) => {
     self._mql = window.matchMedia(andMediaMatches!);
+    self._mql.addEventListener('change', self.mediaQueryHandler.bind(self));
     (<any>self)[slicedPropDefs.propLookup.matchesMediaQuery!.alias!] = self._mql.matches;
 }
 

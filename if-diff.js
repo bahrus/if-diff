@@ -292,6 +292,7 @@ function changeDisplay(self, lhsLazyMt, rhsLazyMt, display) {
 }
 const onAndMediaMatches = ({ andMediaMatches, self }) => {
     self._mql = window.matchMedia(andMediaMatches);
+    self._mql.addEventListener('change', self.mediaQueryHandler.bind(self));
     self[slicedPropDefs.propLookup.matchesMediaQuery.alias] = self._mql.matches;
 };
 const propActions = [
