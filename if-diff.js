@@ -7,6 +7,8 @@ const attachedParents = new WeakSet();
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
  * No DOM deletion takes place on non matching elements.[More Info](https://github.com/bahrus/if-diff)
  * @element if-diff
+ * @event {ValueEvent} value-changed - When conditions change, causing a change to the computed condition, this event is fired.
+ * @event {CustomEvent} matches-media-query-changed - If and-media-matches condition is present, fires this event when the media query changes in value (regardless of the large condition expression).
  * @prop {boolean} iff - Must be true to pass test(s). Can also be an object.  Condition is based on the property being truthy.
  * @attr {boolean} iff - Must be true (exists) to pass test(s)
  * @prop {boolean | string | number | object} [lhs] - LHS Operand.
@@ -23,23 +25,23 @@ const attachedParents = new WeakSet();
  * @prop {string} [hiddenStyle = display:none] - Specify exact manner in which non visible content should be hidden.
  * @prop {number} [ownedSiblingCount] - If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.
  * @attr {number} [owned-sibling-count] - If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.
-     * @prop {string} [hiddenStyle = display:none] - Specify exact manner in which non-visible content should be hidden.
-     * @attr {string} [hidden-style = display:none] - Specify exact manner in which non-visible content should be hidden.
-     * @prop {string} [setAttr] - Specify name of attribute to add when conditions are satisfied / removed when not satisfied
-     * @attr {string} [set-attr] - Specify name of attribute to add when conditions are satisfied / removed when not satisfied
-     * @prop {string} [setClass] - Specify name of class to add when conditions are satisfied / removed when not satisfied
-     * @attr {string} [set-class] - Specify name of class to add when conditions are satisfied / removed when not satisfied
-     * @prop {string} [setPart] - Specify name of part to add when conditions are satisfied / removed when not satisfied
-     * @attr {string} [set-part] - Specify name of part to add when conditions are satisfied / removed when not satisfied
-     * @prop {boolean} [notEquals] - lhs must not equal rhs to pass tests.
-     * @attr {boolean} [not-equals] - lhs must not equal rhs to pass tests.
-     * @prop {boolean} [includes] - For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs
-     * @attr {boolean} [includes] - For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs
-     * @readonly @prop {boolean} [value] - Computed based on values of  if / equals / not_equals / includes and other property values
-     * @prop {number} [m] - Maximum number of elements that are effected by condition.
-     * @attr {number} [m] - Maximum number of elements that are effected by condition.
-     * @prop {string} [andMediaMatches] - Additional condition for a media query to be added for tests to be satisfied.
-     * @attr {string} [and-media-matches] - Additional condition for a media query to be added for tests to be satisfied.
+ * @prop {string} [hiddenStyle = display:none] - Specify exact manner in which non-visible content should be hidden.
+ * @attr {string} [hidden-style = display:none] - Specify exact manner in which non-visible content should be hidden.
+ * @prop {string} [setAttr] - Specify name of attribute to add when conditions are satisfied / removed when not satisfied
+ * @attr {string} [set-attr] - Specify name of attribute to add when conditions are satisfied / removed when not satisfied
+ * @prop {string} [setClass] - Specify name of class to add when conditions are satisfied / removed when not satisfied
+ * @attr {string} [set-class] - Specify name of class to add when conditions are satisfied / removed when not satisfied
+ * @prop {string} [setPart] - Specify name of part to add when conditions are satisfied / removed when not satisfied
+ * @attr {string} [set-part] - Specify name of part to add when conditions are satisfied / removed when not satisfied
+ * @prop {boolean} [notEquals] - lhs must not equal rhs to pass tests.
+ * @attr {boolean} [not-equals] - lhs must not equal rhs to pass tests.
+ * @prop {boolean} [includes] - For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs
+ * @attr {boolean} [includes] - For strings, this means lhs.indexOf(rhs) > -1.  For arrays, this means lhs intersect rhs = rhs. For numbers, this means lhs >= rhs.  For objects, this means all the properties of rhs match the same properties of lhs
+ * @readonly @prop {boolean} [value] - Computed based on values of  if / equals / not_equals / includes and other property values
+ * @prop {number} [m] - Maximum number of elements that are effected by condition.
+ * @attr {number} [m] - Maximum number of elements that are effected by condition.
+ * @prop {string} [andMediaMatches] - Additional condition for a media query to be added for tests to be satisfied.
+ * @attr {string} [and-media-matches] - Additional condition for a media query to be added for tests to be satisfied.
 
  */
 export class IfDiff extends HTMLElement {

@@ -122,6 +122,10 @@ export interface IfDiffProps extends HTMLElement{
     matchesMediaQuery: boolean | undefined;
 
 }
+export interface ValueDetail {
+    value: any,
+}
+export interface ValueEvent extends CustomEvent<ValueDetail>{}
 
 export interface IfDiffEventNameMap {
     'template-cloned': TemplateClonedDetail;

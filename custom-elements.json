@@ -616,6 +616,30 @@
                 "module": "if-diff.ts"
               }
             }
+          ],
+          "events": [
+            {
+              "type": {
+                "text": "ValueEvent"
+              },
+              "description": "When conditions change, causing a change to the computed condition, this event is fired.",
+              "name": "value-changed",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "If and-media-matches condition is present, fires this event when the media query changes in value (regardless of the large condition expression).",
+              "name": "matches-media-query-changed",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            }
           ]
         }
       ],
@@ -1188,6 +1212,30 @@
                 "module": "if-diff.ts"
               }
             }
+          ],
+          "events": [
+            {
+              "type": {
+                "text": "ValueEvent"
+              },
+              "description": "When conditions change, causing a change to the computed condition, this event is fired.",
+              "name": "value-changed",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            },
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "If and-media-matches condition is present, fires this event when the media query changes in value (regardless of the large condition expression).",
+              "name": "matches-media-query-changed",
+              "inheritedFrom": {
+                "name": "IfDiff",
+                "module": "if-diff.ts"
+              }
+            }
           ]
         }
       ],
@@ -1443,6 +1491,22 @@
               "description": "Additional condition for a media query to be added for tests to be satisfied.",
               "name": "andMediaMatches",
               "kind": "field"
+            }
+          ],
+          "events": [
+            {
+              "type": {
+                "text": "ValueEvent"
+              },
+              "description": "When conditions change, causing a change to the computed condition, this event is fired.",
+              "name": "value-changed"
+            },
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "If and-media-matches condition is present, fires this event when the media query changes in value (regardless of the large condition expression).",
+              "name": "matches-media-query-changed"
             }
           ],
           "attributes": [
@@ -1830,6 +1894,22 @@
               "description": "Additional condition for a media query to be added for tests to be satisfied.",
               "name": "andMediaMatches",
               "kind": "field"
+            }
+          ],
+          "events": [
+            {
+              "type": {
+                "text": "ValueEvent"
+              },
+              "description": "When conditions change, causing a change to the computed condition, this event is fired.",
+              "name": "value-changed"
+            },
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "If and-media-matches condition is present, fires this event when the media query changes in value (regardless of the large condition expression).",
+              "name": "matches-media-query-changed"
             }
           ],
           "attributes": [
