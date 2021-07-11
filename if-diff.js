@@ -156,6 +156,7 @@ const linkValue = ({ iff, lhs, equals, rhs, notEquals, includes, disabled, match
     if (disabled)
         return;
     if (typeof iff !== 'boolean') {
+        self.passedInIff = iff;
         if (self.isNonEmptyArray) {
             self.iff = (iff !== undefined && Array.isArray(iff) && iff.length > 0);
         }
@@ -385,6 +386,7 @@ const num1 = {
 // };
 const propDefMap = {
     iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1, matchesMediaQuery: bool2,
+    passedInIff: obj1,
     isNonEmptyArray: bool1, andMediaMatches: str2,
     lazyDisplay: bool1,
     lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,

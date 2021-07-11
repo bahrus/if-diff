@@ -9,6 +9,8 @@ export interface IfDiffProps extends HTMLElement{
      */
     iff?: boolean | undefined;
 
+    passedInIff?: any;
+
     /**
      * @prop {boolean | string | number | object} [lhs] - LHS Operand.
      * @attr {boolean | string | number | object} [lhs] - LHS Operand.  Is JSON parsed.
