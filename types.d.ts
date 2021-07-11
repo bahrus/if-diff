@@ -108,6 +108,12 @@ export interface IfDiffProps extends HTMLElement{
      */
     m?: number | undefined;
 
+    /**
+     * @prop {boolean} [lazyDisplay] -- Only clone the template contents and add into the live DOM tree when absolutely necessary.  Experimental.
+     * @attr {boolean} [lazy-display] -- Only clone the template contents and add into the live DOM tree when absolutely necessary.  Experimental.
+     */
+    lazyDisplay: boolean | undefined;
+
     lazyDelay?: number | undefined;
 
     /**

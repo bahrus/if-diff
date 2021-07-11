@@ -278,7 +278,10 @@ function createLazyMts(self: IfDiff, templ: HTMLTemplateElement) {
     const lhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
     const eLHS = lhsLazyMt as Element;
     lhsLazyMt.setAttribute('enter', '');
-    lhsLazyMt.setAttribute('treat-as-visible', '');
+    if(!self.lazyDisplay){
+        lhsLazyMt.setAttribute('treat-as-visible', '');
+    }
+    
     self.insertAdjacentElement('afterend', lhsLazyMt as Element);
     eLHS.insertAdjacentElement('afterend', templ);
     const rhsLazyMt = document.createElement('lazy-mt') as any;
@@ -411,6 +414,7 @@ const sync: PropDef = {
 const propDefMap: PropDefMap<IfDiffProps> = {
     iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1, matchesMediaQuery: bool2,
     isNonEmptyArray: bool1, andMediaMatches: str2,
+    lazyDisplay: bool1,
     lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
     ownedSiblingCount: num1, setAttr: str1, setClass: str1, setPart: str1,
     hiddenStyle: str1,
