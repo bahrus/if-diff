@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "lazy-mt": "0.0.13",
+    "lazy-mt": "0.0.14",
     "mut-obs": "0.0.9",
     "trans-render": "0.0.291",
     "xtal-element": "0.0.414"
