@@ -15,13 +15,13 @@
       <p-d on=input to=[-lhs] val=target.value m=2 init-val=value></p-d>
       <label for=rhs>RHS:</label><input id=rhs>
       <p-d on=input to=[-rhs] val=target.value m=2 init-val=value></p-d>
-      <if-diff iff -lhs equals -rhs>
+      <if-diff iff -lhs equals -rhs lazy-display>
           <template>
             <div>LHS == RHS</div>
           </template>
       </if-diff>
       <p-d observe=if-diff on=value-changed to=[data-lhs-equals-rhs] prop=textContent></p-d>
-      <if-diff iff -lhs not-equals -rhs>
+      <if-diff iff -lhs not-equals -rhs lazy-display>
           <template>
             <div>LHS != RHS</div>
           </template>

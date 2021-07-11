@@ -80,10 +80,10 @@ The user will immediately see the desired text "I wish it was Sunday" before a s
 
 One other thing:  When the server renders the content for Monday, this still leaves some slightly unnecessary processing -- we need to pass down the values of lhs, rhs, etc, in order for changes to the properties to evaluate consistently.  That causes if-diff to calculate the value of the logical expression, and then make sure the visibility of the owned content is compatible with the values.
 
-But if the server made sure that the original HTML matches the correct initial value, there's a way the server can set the properties without forcing the component to do any of its client-side work:
+But if the server made sure that the original HTML matches the correct initial value, there's a way the server can set the properties without forcing the component to do any of its client-side work [TODO: test]:
 
 ```html
-<if-diff sync-props-from-server='{"iff": true, "lhs": "Monday", "equals": true, "rhs": "Monday", "ownedSiblingCount": 1}'></if-diff>
+<if-diff defer-hydrate></if-diff>
 <div>
   I wish it was Sunday
 </div>
@@ -157,6 +157,22 @@ Syntax:
   <my-grid></my-grid>
   <my-chart></my-chart>
 </template></if-diff>
+```
+
+## Details regarding experimental lazy loading support
+
+For lazy loading to be effective, often it is helpful to set some initial height on the lazy loaded content, until it is determined what should display and what shouldn't, with a bit of a delay.  if-diff supports an attribute:  lazy-delay which can serve two purposes:
+
+1.  Specify how long to wait before remove the attribute
+2.  Styling can use that attribute to set some initial height:
+
+```html
+<style>
+  if-diff[lazy-delay]{
+    min-height:400px;
+    display:block;
+  }
+</style>
 ```
 
 ## Viewing Your Element Locally

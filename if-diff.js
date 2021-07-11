@@ -62,13 +62,16 @@ export class IfDiff extends HTMLElement {
      * @private
      */
     _mql;
-    static isLocked = false;
+    //static isLocked = false;
     connectedCallback() {
-        this.style.display = 'none';
+        //this.style.display = 'none';
         xc.mergeProps(this, slicedPropDefs, {
             hiddenStyle: 'display:none',
-            lazyDelay: -1,
+            lazyDelay: 0,
         });
+        setTimeout(() => {
+            this.removeAttribute('defer-hydrate');
+        }, 100);
         //causing issues -- maybe isn't necessary, since this._mql will be garbage collected?
         //if (this._mql) this._mql.addEventListener('change', this.mediaQueryHandler);
     }
@@ -139,6 +142,9 @@ export class IfDiff extends HTMLElement {
                 [data-if-diff-display="false"]{
                     ${self.hiddenStyle}
                 }
+                if-diff:not([lazy-delay]){
+                    display:none;
+                }
             `;
             rootNode.appendChild(style);
         }
@@ -195,21 +201,21 @@ function findTemplate(self) {
             setTimeout(() => findTemplate(self), 50);
             return;
         }
-        if (self.lazyDelay > 0) {
-            if (IfDiff.isLocked) {
-                setTimeout(() => {
-                    findTemplate(self);
-                }, self.lazyDelay);
-                return;
-            }
-            IfDiff.isLocked = true;
-        }
+        // if (self.lazyDelay! > 0) {
+        //     if (IfDiff.isLocked) {
+        //         setTimeout(() => {
+        //             findTemplate(self);
+        //         }, self.lazyDelay);
+        //         return;
+        //     }
+        //     IfDiff.isLocked = true;
+        // }
         createLazyMts(self, templ);
-        if (self.lazyDelay > 0) {
-            setTimeout(() => {
-                IfDiff.isLocked = false;
-            }, self.lazyDelay);
-        }
+        // if (self.lazyDelay! > 0) {
+        //     setTimeout(() => {
+        //         IfDiff.isLocked = false;
+        //     }, self.lazyDelay);
+        // }
     }
     else {
         let ns = self;
@@ -227,6 +233,9 @@ function findTemplate(self) {
         }
         wrapLazyMts(self, lhsElement, ns);
     }
+    setTimeout(() => {
+        self.removeAttribute('lazy-delay');
+    }, self.lazyDelay);
 }
 function wrapLazyMts(self, lhsElement, rhsElement) {
     self.addStyle(self);
@@ -367,11 +376,11 @@ const num1 = {
     ...baseProp,
     type: Number,
 };
-const sync = {
-    ...baseProp,
-    type: Object,
-    syncProps: true,
-};
+// const sync: PropDef = {
+//     ...baseProp,
+//     type: Object,
+//     syncProps: true,
+// };
 const propDefMap = {
     iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1, matchesMediaQuery: bool2,
     isNonEmptyArray: bool1, andMediaMatches: str2,
@@ -379,7 +388,7 @@ const propDefMap = {
     lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
     ownedSiblingCount: num1, setAttr: str1, setClass: str1, setPart: str1,
     hiddenStyle: str1,
-    syncPropsFromServer: sync,
+    // syncPropsFromServer: sync,
     lazyDelay: num1,
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);

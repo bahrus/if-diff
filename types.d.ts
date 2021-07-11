@@ -86,7 +86,7 @@ export interface IfDiffProps extends HTMLElement{
      */ 
     notEquals?: boolean | undefined;
 
-    syncPropsFromServer?: IfDiffProps | undefined;
+    // syncPropsFromServer?: IfDiffProps | undefined;
 
     configureLazyMt(lazyMT: LazyMTProps): void;
 
