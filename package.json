@@ -1,15 +1,15 @@
 {
   "dependencies": {
     "lazy-mt": "0.0.12",
-    "mut-obs": "0.0.8",
+    "mut-obs": "0.0.9",
     "trans-render": "0.0.291",
-    "xtal-element": "0.0.413"
+    "xtal-element": "0.0.414"
   },
   "devDependencies": {
     "@skypack/package-check": "0.2.2",
-    "pass-down": "0.0.45",
+    "pass-down": "0.0.59",
     "xtal-test": "0.0.51",
-    "@custom-elements-manifest/analyzer": "0.4.11"
+    "@custom-elements-manifest/analyzer": "0.4.12"
   },
   "keywords": [
     "webcomponents",
