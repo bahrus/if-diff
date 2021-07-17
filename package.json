@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "lazy-mt": "0.0.14",
+    "lazy-mt": "0.0.15",
     "mut-obs": "0.0.9",
     "trans-render": "0.0.291",
     "xtal-element": "0.0.414"
@@ -12,10 +12,10 @@
     "@custom-elements-manifest/analyzer": "0.4.12"
   },
   "keywords": [
-    "webcomponents",
-    "webcomponent",
-    "customelements",
-    "customelement",
+    "web-components",
+    "web-component",
+    "custom-elements",
+    "custom-element",
     "bind",
     "dom-bind",
     "conditional-display"
