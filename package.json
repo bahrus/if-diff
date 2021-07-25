@@ -3,13 +3,13 @@
     "lazy-mt": "0.0.19",
     "mut-obs": "0.0.9",
     "trans-render": "0.0.291",
-    "xtal-element": "0.0.416"
+    "xtal-element": "0.0.418"
   },
   "devDependencies": {
     "@skypack/package-check": "0.2.2",
-    "pass-down": "0.0.71",
+    "pass-down": "0.0.72",
     "xtal-test": "0.0.51",
-    "@custom-elements-manifest/analyzer": "0.4.12"
+    "@custom-elements-manifest/analyzer": "0.4.13"
   },
   "keywords": [
     "web-components",
