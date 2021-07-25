@@ -122,7 +122,7 @@ export interface IfDiffProps extends HTMLElement{
      * @prop {string} [andMediaMatches] - Additional condition for a media query to be added for tests to be satisfied.
      * @attr {string} [and-media-matches] - Additional condition for a media query to be added for tests to be satisfied.
      */
-    andMediaMatches: string | undefined;
+    mediaMatches: string | undefined;
 
     /**
      * @private

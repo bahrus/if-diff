@@ -125,7 +125,7 @@
             {
               "kind": "field",
               "name": "propActions",
-              "default": "[\r\n    linkValue, toggleMt, onAndMediaMatches\r\n]",
+              "default": "[\r\n    linkValue, toggleMt, onMediaMatches\r\n]",
               "privacy": "private",
               "inheritedFrom": {
                 "name": "IfDiff",
@@ -152,19 +152,6 @@
                 "text": "MediaQueryList | undefined"
               },
               "privacy": "private",
-              "inheritedFrom": {
-                "name": "IfDiff",
-                "module": "if-diff.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "isLocked",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "false",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -435,7 +422,7 @@
                 "text": "string"
               },
               "description": "Additional condition for a media query to be added for tests to be satisfied.",
-              "name": "andMediaMatches",
+              "name": "mediaMatches",
               "kind": "field",
               "inheritedFrom": {
                 "name": "IfDiff",
@@ -610,7 +597,7 @@
                 "text": "string"
               },
               "description": "Additional condition for a media query to be added for tests to be satisfied.",
-              "name": "and-media-matches",
+              "name": "media-matches",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -721,7 +708,7 @@
             {
               "kind": "field",
               "name": "propActions",
-              "default": "[\r\n    linkValue, toggleMt, onAndMediaMatches\r\n]",
+              "default": "[\r\n    linkValue, toggleMt, onMediaMatches\r\n]",
               "privacy": "private",
               "inheritedFrom": {
                 "name": "IfDiff",
@@ -748,19 +735,6 @@
                 "text": "MediaQueryList | undefined"
               },
               "privacy": "private",
-              "inheritedFrom": {
-                "name": "IfDiff",
-                "module": "if-diff.ts"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "isLocked",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "false",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -1031,7 +1005,7 @@
                 "text": "string"
               },
               "description": "Additional condition for a media query to be added for tests to be satisfied.",
-              "name": "andMediaMatches",
+              "name": "mediaMatches",
               "kind": "field",
               "inheritedFrom": {
                 "name": "IfDiff",
@@ -1206,7 +1180,7 @@
                 "text": "string"
               },
               "description": "Additional condition for a media query to be added for tests to be satisfied.",
-              "name": "and-media-matches",
+              "name": "media-matches",
               "inheritedFrom": {
                 "name": "IfDiff",
                 "module": "if-diff.ts"
@@ -1277,7 +1251,7 @@
             {
               "kind": "field",
               "name": "propActions",
-              "default": "[\n    linkValue, toggleMt, onAndMediaMatches\n]",
+              "default": "[\n    linkValue, toggleMt, onMediaMatches\n]",
               "privacy": "private",
               "type": {
                 "text": "array"
@@ -1293,15 +1267,6 @@
               "kind": "field",
               "name": "_mql",
               "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "isLocked",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "false"
             },
             {
               "kind": "field",
@@ -1489,7 +1454,7 @@
                 "text": "string"
               },
               "description": "Additional condition for a media query to be added for tests to be satisfied.",
-              "name": "andMediaMatches",
+              "name": "mediaMatches",
               "kind": "field"
             }
           ],
@@ -1614,7 +1579,7 @@
                 "text": "string"
               },
               "description": "Additional condition for a media query to be added for tests to be satisfied.",
-              "name": "and-media-matches"
+              "name": "media-matches"
             }
           ],
           "superclass": {
@@ -1662,7 +1627,7 @@
             {
               "kind": "field",
               "name": "propActions",
-              "default": "[\r\n    linkValue, toggleMt, onAndMediaMatches\r\n]",
+              "default": "[\r\n    linkValue, toggleMt, onMediaMatches\r\n]",
               "privacy": "private"
             },
             {
@@ -1681,15 +1646,6 @@
                 "text": "MediaQueryList | undefined"
               },
               "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "isLocked",
-              "type": {
-                "text": "boolean"
-              },
-              "static": true,
-              "default": "false"
             },
             {
               "kind": "field",
@@ -1892,7 +1848,7 @@
                 "text": "string"
               },
               "description": "Additional condition for a media query to be added for tests to be satisfied.",
-              "name": "andMediaMatches",
+              "name": "mediaMatches",
               "kind": "field"
             }
           ],
@@ -2017,7 +1973,7 @@
                 "text": "string"
               },
               "description": "Additional condition for a media query to be added for tests to be satisfied.",
-              "name": "and-media-matches"
+              "name": "media-matches"
             }
           ],
           "superclass": {

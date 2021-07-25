@@ -40,8 +40,8 @@ const attachedParents = new WeakSet();
  * @readonly @prop {boolean} [value] - Computed based on values of  if / equals / not_equals / includes and other property values
  * @prop {number} [m] - Maximum number of elements that are effected by condition.
  * @attr {number} [m] - Maximum number of elements that are effected by condition.
- * @prop {string} [andMediaMatches] - Additional condition for a media query to be added for tests to be satisfied.
- * @attr {string} [and-media-matches] - Additional condition for a media query to be added for tests to be satisfied.
+ * @prop {string} [mediaMatches] - Additional condition for a media query to be added for tests to be satisfied.
+ * @attr {string} [media-matches] - Additional condition for a media query to be added for tests to be satisfied.
 
  */
 export class IfDiff extends HTMLElement {
@@ -330,13 +330,13 @@ function changeDisplay(self, lhsLazyMt, rhsLazyMt, display) {
         ns = ns.nextElementSibling;
     }
 }
-const onAndMediaMatches = ({ andMediaMatches, self }) => {
-    self._mql = window.matchMedia(andMediaMatches);
+const onMediaMatches = ({ mediaMatches, self }) => {
+    self._mql = window.matchMedia(mediaMatches);
     self._mql.addEventListener('change', self.mediaQueryHandler.bind(self));
     self[slicedPropDefs.propLookup.matchesMediaQuery.alias] = self._mql.matches;
 };
 const propActions = [
-    linkValue, toggleMt, onAndMediaMatches
+    linkValue, toggleMt, onMediaMatches
 ];
 const baseProp = {
     dry: true,
@@ -387,7 +387,7 @@ const num1 = {
 const propDefMap = {
     iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1, matchesMediaQuery: bool2,
     passedInIff: obj1,
-    isNonEmptyArray: bool1, andMediaMatches: str2,
+    isNonEmptyArray: bool1, mediaMatches: str2,
     lazyDisplay: bool1,
     lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
     ownedSiblingCount: num1, setAttr: str1, setClass: str1, setPart: str1,
