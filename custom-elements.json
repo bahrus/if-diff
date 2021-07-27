@@ -1234,47 +1234,6 @@
           "name": "IfDiff",
           "members": [
             {
-              "kind": "field",
-              "name": "is",
-              "type": {
-                "text": "string"
-              },
-              "static": true,
-              "default": "'if-diff'"
-            },
-            {
-              "kind": "field",
-              "name": "self",
-              "default": "this",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "propActions",
-              "default": "[\n    linkValue, toggleMt, onMediaMatches\n]",
-              "privacy": "private",
-              "type": {
-                "text": "array"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "reactor",
-              "default": "new xc.Rx(this)",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "_mql",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "mediaQueryHandler",
-              "default": "(e) => {\n        this[slicedPropDefs.propLookup.matchesMediaQuery.alias] = e.matches;\n    }",
-              "privacy": "private"
-            },
-            {
               "kind": "method",
               "name": "disconnect"
             },
@@ -1285,15 +1244,6 @@
             {
               "kind": "field",
               "name": "ownedRange"
-            },
-            {
-              "kind": "field",
-              "name": "_doNotCleanUp",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "privacy": "private"
             },
             {
               "kind": "method",
@@ -1335,6 +1285,42 @@
                   "name": "lazyMT"
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "self",
+              "privacy": "private",
+              "default": "this"
+            },
+            {
+              "kind": "field",
+              "name": "propActions",
+              "privacy": "private",
+              "default": "[\n    linkValue, toggleMt, onMediaMatches\n]",
+              "type": {
+                "text": "array"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "reactor",
+              "privacy": "private",
+              "default": "new xc.Rx(this)"
+            },
+            {
+              "kind": "field",
+              "name": "mediaQueryHandler",
+              "privacy": "private",
+              "default": "(e) => {\n            this[slicedPropDefs.propLookup.matchesMediaQuery.alias] = e.matches;\n        }"
+            },
+            {
+              "kind": "field",
+              "name": "_doNotCleanUp",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
             },
             {
               "type": {
