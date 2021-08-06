@@ -91,6 +91,7 @@ export class IfDiff extends HTMLElement {
         this[slicedPropDefs.propLookup.matchesMediaQuery.alias] = e.matches;
     };
     disconnect() {
+        //[TODO]  Wrong  https://www.youtube.com/watch?v=YDU_3WdfkxA&list=LL&index=2
         //causing issues -- maybe isn't necessary, since this._mql will be garbage collected?
         //if (this._mql) this._mql.removeEventListener('change', this.mediaQueryHandler);
     }
