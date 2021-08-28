@@ -3,6 +3,66 @@ import('lazy-mt/lazy-mt.js');
 import('mut-obs/mut-obs.js');
 const p_d_std = 'p_d_std';
 const attachedParents = new WeakSet();
+//#region Props
+const baseProp = {
+    dry: true,
+    async: true,
+};
+const bool1 = {
+    ...baseProp,
+    type: Boolean,
+};
+const bool2 = {
+    ...bool1,
+    notify: true,
+    obfuscate: true,
+};
+const str1 = {
+    ...baseProp,
+    type: String,
+};
+const str2 = {
+    ...str1,
+    stopReactionsIfFalsy: true,
+};
+const obj1 = {
+    ...baseProp,
+    type: Object,
+    parse: true,
+};
+const obj2 = {
+    ...baseProp,
+    type: Object,
+    notify: true,
+    obfuscate: true
+};
+const obj3 = {
+    ...baseProp,
+    type: Object,
+    stopReactionsIfFalsy: true,
+};
+const num1 = {
+    ...baseProp,
+    type: Number,
+};
+// const sync: PropDef = {
+//     ...baseProp,
+//     type: Object,
+//     syncProps: true,
+// };
+const propDefMap = {
+    iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1, matchesMediaQuery: bool2,
+    passedInIff: obj1,
+    isNonEmptyArray: bool1, mediaMatches: str2,
+    lazyDisplay: bool1,
+    lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
+    ownedSiblingCount: num1, setAttr: str1, setClass: str1, setPart: str1,
+    hiddenStyle: str1,
+    // syncPropsFromServer: sync,
+    lazyDelay: num1,
+};
+const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
+//#endregion
 /**
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.
  * No DOM deletion takes place on non matching elements.[More Info](https://github.com/bahrus/if-diff)
@@ -42,10 +102,13 @@ const attachedParents = new WeakSet();
  * @attr {number} [m] - Maximum number of elements that are effected by condition.
  * @prop {string} [mediaMatches] - Additional condition for a media query to be added for tests to be satisfied.
  * @attr {string} [media-matches] - Additional condition for a media query to be added for tests to be satisfied.
-
  */
 export class IfDiff extends HTMLElement {
     static is = 'if-diff';
+    static observedAttributes = [...slicedPropDefs.boolNames, ...slicedPropDefs.numNames, ...slicedPropDefs.strNames, ...slicedPropDefs.parseNames];
+    attributeChangedCallback(n, ov, nv) {
+        xc.passAttrToProp(this, slicedPropDefs, n, ov, nv);
+    }
     /**
      * @private
      */
@@ -62,9 +125,7 @@ export class IfDiff extends HTMLElement {
      * @private
      */
     _mql;
-    //static isLocked = false;
     connectedCallback() {
-        //this.style.display = 'none';
         xc.mergeProps(this, slicedPropDefs, {
             hiddenStyle: 'display:none',
             lazyDelay: 0,
@@ -72,8 +133,9 @@ export class IfDiff extends HTMLElement {
         setTimeout(() => {
             this.removeAttribute('defer-hydrate');
         }, 100);
-        //causing issues -- maybe isn't necessary, since this._mql will be garbage collected?
-        //if (this._mql) this._mql.addEventListener('change', this.mediaQueryHandler);
+        this.disconnect();
+        if (this._mql)
+            this._mql.addEventListener('change', this.mediaQueryHandler);
     }
     disconnectedCallback() {
         if (!this._doNotCleanUp) {
@@ -91,9 +153,9 @@ export class IfDiff extends HTMLElement {
         this[slicedPropDefs.propLookup.matchesMediaQuery.alias] = e.matches;
     };
     disconnect() {
-        //[TODO]  Wrong  https://www.youtube.com/watch?v=YDU_3WdfkxA&list=LL&index=2
-        //causing issues -- maybe isn't necessary, since this._mql will be garbage collected?
-        //if (this._mql) this._mql.removeEventListener('change', this.mediaQueryHandler);
+        // https://www.youtube.com/watch?v=YDU_3WdfkxA&list=LL&index=2
+        if (this._mql)
+            this._mql.removeEventListener('change', this.mediaQueryHandler);
     }
     cleanupIfNoParentElement() {
         if (this.parentElement === null) {
@@ -195,49 +257,6 @@ async function evaluate(self) {
     findTemplate(self);
 }
 function findTemplate(self) {
-    if (self.lhsLazyMt !== undefined)
-        return;
-    if (self.ownedSiblingCount === undefined) {
-        const templ = self.querySelector('template');
-        if (templ === null) {
-            setTimeout(() => findTemplate(self), 50);
-            return;
-        }
-        // if (self.lazyDelay! > 0) {
-        //     if (IfDiff.isLocked) {
-        //         setTimeout(() => {
-        //             findTemplate(self);
-        //         }, self.lazyDelay);
-        //         return;
-        //     }
-        //     IfDiff.isLocked = true;
-        // }
-        createLazyMts(self, templ);
-        // if (self.lazyDelay! > 0) {
-        //     setTimeout(() => {
-        //         IfDiff.isLocked = false;
-        //     }, self.lazyDelay);
-        // }
-    }
-    else {
-        let ns = self;
-        let count = 0;
-        let lhsElement;
-        while (ns !== null && count < self.ownedSiblingCount) {
-            ns = ns.nextElementSibling;
-            count++;
-            if (count === 1 && ns !== null)
-                lhsElement = ns;
-        }
-        if (ns === null || count < self.ownedSiblingCount) {
-            setTimeout(() => findTemplate(self), 50);
-            return;
-        }
-        wrapLazyMts(self, lhsElement, ns);
-    }
-    setTimeout(() => {
-        self.removeAttribute('lazy-delay');
-    }, self.lazyDelay);
 }
 function wrapLazyMts(self, lhsElement, rhsElement) {
     self.addStyle(self);
@@ -332,70 +351,13 @@ function changeDisplay(self, lhsLazyMt, rhsLazyMt, display) {
     }
 }
 const onMediaMatches = ({ mediaMatches, self }) => {
+    self.disconnect();
     self._mql = window.matchMedia(mediaMatches);
-    self._mql.addEventListener('change', self.mediaQueryHandler.bind(self));
+    self._mql.addEventListener('change', self.mediaQueryHandler);
     self[slicedPropDefs.propLookup.matchesMediaQuery.alias] = self._mql.matches;
 };
 const propActions = [
     linkValue, toggleMt, onMediaMatches
 ];
-const baseProp = {
-    dry: true,
-    async: true,
-};
-const bool1 = {
-    ...baseProp,
-    type: Boolean,
-};
-const bool2 = {
-    ...bool1,
-    notify: true,
-    obfuscate: true,
-};
-const str1 = {
-    ...baseProp,
-    type: String,
-};
-const str2 = {
-    ...str1,
-    stopReactionsIfFalsy: true,
-};
-const obj1 = {
-    ...baseProp,
-    type: Object,
-    parse: true,
-};
-const obj2 = {
-    ...baseProp,
-    type: Object,
-    notify: true,
-    obfuscate: true
-};
-const obj3 = {
-    ...baseProp,
-    type: Object,
-    stopReactionsIfFalsy: true,
-};
-const num1 = {
-    ...baseProp,
-    type: Number,
-};
-// const sync: PropDef = {
-//     ...baseProp,
-//     type: Object,
-//     syncProps: true,
-// };
-const propDefMap = {
-    iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1, matchesMediaQuery: bool2,
-    passedInIff: obj1,
-    isNonEmptyArray: bool1, mediaMatches: str2,
-    lazyDisplay: bool1,
-    lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
-    ownedSiblingCount: num1, setAttr: str1, setClass: str1, setPart: str1,
-    hiddenStyle: str1,
-    // syncPropsFromServer: sync,
-    lazyDelay: num1,
-};
-const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 xc.letThereBeProps(IfDiff, slicedPropDefs, 'onPropChange');
 xc.define(IfDiff);

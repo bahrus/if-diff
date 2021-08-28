@@ -288,35 +288,7 @@ async function evaluate(self: IfDiff) {
 }
 
 function findTemplate(self: IfDiff) {
-    if (self.lhsLazyMt !== undefined) return;
 
-    if (self.ownedSiblingCount === undefined) {
-        const templ = self.querySelector('template');
-        if (templ === null) {
-            setTimeout(() => findTemplate(self), 50);
-            return;
-        }
-
-        createLazyMts(self, templ);
-
-    } else {
-        let ns = self as Element | null;
-        let count = 0;
-        let lhsElement: Element | undefined;
-        while (ns !== null && count < self.ownedSiblingCount) {
-            ns = ns.nextElementSibling;
-            count++;
-            if (count === 1 && ns !== null) lhsElement = ns;
-        }
-        if (ns === null || count < self.ownedSiblingCount) {
-            setTimeout(() => findTemplate(self), 50);
-            return;
-        }
-        wrapLazyMts(self, lhsElement!, ns);
-    }
-    setTimeout(() => {
-        self.removeAttribute('lazy-delay');
-    }, self.lazyDelay);
     
 }
 

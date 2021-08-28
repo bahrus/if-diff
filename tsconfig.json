@@ -3,11 +3,14 @@
 		"target": "ESNext",
 		"module": "ESNext",
 		"sourceMap": false,
-		"experimentalDecorators": true,
+		"experimentalDecorators": false,
 		"newLine": "LF",
 		"strict": true,
 		"watch": true
 	},
+	"files": [
+		"if-diff2.ts"
+	],
 	"exclude":[
 		"build",
 		"bower_components",
