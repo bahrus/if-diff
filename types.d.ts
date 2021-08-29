@@ -138,7 +138,7 @@ export interface IfDiffProps{
 }
 
 export interface IfDiffActions {
-    evaluate: (self: this) => Promise<Partial<IfDiffProps>>;
+    evaluate: (self: this) => Partial<IfDiffProps>;
     findTemplate: (self: this) => Partial<IfDiffProps>;
     wrapLazyMTsAroundOwnedSiblings: (self: this) => Partial<IfDiffProps>;
     claimOwnership: (self: this) => Partial<IfDiffProps>;

@@ -7,7 +7,7 @@
   },
   "devDependencies": {
     "@skypack/package-check": "0.2.2",
-    "pass-down": "0.0.74",
+    "pass-down": "0.0.89",
     "xtal-test": "0.0.51",
     "@custom-elements-manifest/analyzer": "0.5.2"
   },
