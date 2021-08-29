@@ -239,6 +239,13 @@ const ce = new XE({
             lazyDelay: 0,
             mediaMatches: '',
         },
+        propInfo: {
+            value: {
+                notify: {
+                    dispatch: true,
+                }
+            }
+        },
         actions: {
             evaluate: {
                 async: true,

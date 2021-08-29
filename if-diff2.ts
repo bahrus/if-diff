@@ -257,6 +257,13 @@ const ce = new XE<IfDiffProps, IfDiffActions>({
             lazyDelay: 0,
             mediaMatches: '',
         },
+        propInfo:{
+            value:{
+                notify:{
+                    dispatch: true,
+                }
+            }
+        },
         actions:{
             evaluate:{
                 async: true,
