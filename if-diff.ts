@@ -1,75 +1,8 @@
-import { xc, PropAction, PropDef, PropDefMap, ReactiveSurface, IReactor } from 'xtal-element/lib/XtalCore.js';
-import { IfDiffProps, ValueEvent } from './types.d.js';
-import('lazy-mt/lazy-mt.js');
-import { LazyMTProps } from 'lazy-mt/types.d.js';
+import {XE} from 'xtal-element/src/XE.js';
+import {IfDiffActions, IfDiffProps} from './types';
+import { LazyMTProps } from 'lazy-mt/types';
 import('mut-obs/mut-obs.js');
-
-const p_d_std = 'p_d_std';
-const attachedParents = new WeakSet<Element>();
-
-//#region Props
-const baseProp: PropDef = {
-    dry: true,
-    async: true,
-};
-
-const bool1: PropDef = {
-    ...baseProp,
-    type: Boolean,
-};
-
-const bool2: PropDef = {
-    ...bool1,
-    notify: true,
-    obfuscate: true,
-}
-
-const str1: PropDef = {
-    ...baseProp,
-    type: String,
-};
-const str2: PropDef = {
-    ...str1,
-    stopReactionsIfFalsy: true,
-}
-const obj1: PropDef = {
-    ...baseProp,
-    type: Object,
-    parse: true,
-};
-const obj2: PropDef = {
-    ...baseProp,
-    type: Object,
-    notify: true,
-    obfuscate: true
-};
-const obj3: PropDef = {
-    ...baseProp,
-    type: Object,
-    stopReactionsIfFalsy: true,
-};
-const num1: PropDef = {
-    ...baseProp,
-    type: Number,
-};
-// const sync: PropDef = {
-//     ...baseProp,
-//     type: Object,
-//     syncProps: true,
-// };
-const propDefMap: PropDefMap<IfDiffProps> = {
-    iff: bool1, equals: bool1, notEquals: bool1, disabled: bool1, matchesMediaQuery: bool2,
-    passedInIff: obj1,
-    isNonEmptyArray: bool1, mediaMatches: str2,
-    lazyDisplay: bool1,
-    lhs: obj1, rhs: obj1, value: obj2, lhsLazyMt: obj3, rhsLazyMt: obj3,
-    ownedSiblingCount: num1, setAttr: str1, setClass: str1, setPart: str1,
-    hiddenStyle: str1,
-    // syncPropsFromServer: sync,
-    lazyDelay: num1,
-};
-const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
-//#endregion
+import('lazy-mt/lazy-mt.js');
 
 /**
  * Alternative to Polymer's dom-if element that allows comparison between two operands, as well as progressive enhancement.  
@@ -111,113 +44,136 @@ const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
  * @prop {string} [mediaMatches] - Additional condition for a media query to be added for tests to be satisfied.
  * @attr {string} [media-matches] - Additional condition for a media query to be added for tests to be satisfied.
  */
-export class IfDiff extends HTMLElement implements ReactiveSurface {
-    static is = 'if-diff';
-
-    static observedAttributes = [...slicedPropDefs.boolNames, ...slicedPropDefs.numNames, ...slicedPropDefs.strNames, ...slicedPropDefs.parseNames];
-
-    attributeChangedCallback(n: string, ov: string, nv: string){
-        xc.passAttrToProp(this, slicedPropDefs, n, ov, nv);
+export class IfDiffCore extends HTMLElement implements IfDiffActions{
+    evaluate = async ({iff, matchesMediaQuery, equals, notEquals, lhs, rhs, includes}: this) => {
+        let val = iff && !(matchesMediaQuery === false);
+        if (val) {
+            if (val) {
+                if (equals || notEquals) {
+                    let eq = false;
+                    if (typeof lhs === 'object' && typeof rhs === 'object') {
+                        const { compare } = await import('./compare.js');
+                        eq = compare(lhs, rhs);
+                    } else {
+                        eq = lhs === rhs;
+                    }
+                    val = equals ? eq : !eq;
+                } else if (includes) {
+                    const { includes } = await import('./includes.js');
+                    val = includes(lhs, rhs);
+                }
+    
+            }
+    
+        }
+        return {
+            value: val,
+            evaluated: true,
+        } as Partial<IfDiffProps>
     }
 
-    /**
-     * @private
-     */
-    self = this;
-    /**
-     * @private
-     */
-    propActions = propActions;
-    /**
-     * @private
-     */
-    reactor: IReactor = new xc.Rx(this);
-    /**
-     * @private
-     */
-    _mql: MediaQueryList | undefined;
-
-
-    connectedCallback() {
-        xc.mergeProps<Partial<IfDiffProps>>(this, slicedPropDefs, {
-            hiddenStyle: 'display:none',
-            lazyDelay: 0,
-        });
-        setTimeout(() => {
-            this.removeAttribute('defer-hydrate');
-        }, 100);
-        
-        
-        this.disconnect();
-        if (this._mql) this._mql.addEventListener('change', this.mediaQueryHandler);
-    }
-
-    disconnectedCallback() {
-        if (!this._doNotCleanUp) {
+    findTemplate = ({lazyDelay}: this) => {
+        const templ = this.querySelector('template');
+        if (templ === null) {
             setTimeout(() => {
-                //TODO:  Make connectedCallback cancel the setTimeout.
-                this.cleanupIfNoParentElement();
-            }, 1000);
+                if(this.lhsLazyMt !== undefined) return;
+                this.findTemplate(this);
+            }, 50);
+            return {};
         }
-        this.disconnect();
+        setTimeout(() => {
+            this.removeAttribute('lazy-delay');
+        }, lazyDelay);
+        this.insertAdjacentElement('afterend', templ);
+        return {
+            startingElementToWrap: templ,
+            endingElementToWrap: templ,
+        };
+    
+
     }
 
-    /**
-     * @private
-     */
-    mediaQueryHandler = (e: MediaQueryListEvent) => {
-        (<any>this)[slicedPropDefs.propLookup.matchesMediaQuery!.alias!] = e.matches;
+    claimOwnership = ({ownedSiblingCount}: this) => {
+        let ns = this as Element | null;
+        let count = 0;
+        let startingElementToWrap: Element | undefined;
+        let endingElementToWrap: Element | undefined;
+        while (ns !== null && count < ownedSiblingCount) {
+            ns = ns.nextElementSibling;
+            count++;
+            if(ns !== null){
+                if (count === 1) startingElementToWrap = ns;
+                if (count === ownedSiblingCount) endingElementToWrap = ns;
+            }
+
+        }
+        if (ns === null || count < ownedSiblingCount) {
+            setTimeout(() => this.claimOwnership(this), 50);
+            return {};
+        }
+        return {
+            startingElementToWrap, endingElementToWrap
+        };
     }
 
-    disconnect() {
-
-        // https://www.youtube.com/watch?v=YDU_3WdfkxA&list=LL&index=2
-        if (this._mql) this._mql.removeEventListener('change', this.mediaQueryHandler);
-    }
-
-    cleanupIfNoParentElement() {
-        if (this.parentElement === null) {
-            this.ownedRange?.deleteContents();
+    wrapLazyMTsAroundOwnedSiblings = ({startingElementToWrap, endingElementToWrap, lazyDisplay}: this) => {
+        const eLHS = document.createElement('lazy-mt');
+        const lhsLazyMt = eLHS as LazyMTProps & HTMLElement;
+        lhsLazyMt.setAttribute('enter', '');
+        if(!lazyDisplay){
+            lhsLazyMt.setAttribute('treat-as-visible', '');
+        }
+        
+        startingElementToWrap.insertAdjacentElement('beforebegin', eLHS);
+        const rhsLazyMt = document.createElement('lazy-mt') as LazyMTProps & HTMLElement;
+        rhsLazyMt.setAttribute('exit', '');
+        if(!lazyDisplay){
+            rhsLazyMt.setAttribute('treat-as-visible', '');
+        }
+        endingElementToWrap.insertAdjacentElement('afterend', rhsLazyMt);
+        return {
+            lhsLazyMt,
+            rhsLazyMt
         }
     }
 
-    get ownedRange() {
-        const typedThis = this as IfDiffProps;
-        if (typedThis.lhsLazyMt && typedThis.rhsLazyMt) {
-            const range = document.createRange();
-            range.setStartBefore(typedThis.lhsLazyMt);
-            range.setEndAfter(typedThis.rhsLazyMt);
-            return range;
+    applyConditionalDisplay = ({lhsLazyMt, rhsLazyMt, value, setAttr, setPart, setClass}: this) => {
+        let ns = lhsLazyMt! as HTMLElement;
+        //TODO: mutation observer
+        while (ns !== null) {
+            ns.dataset.ifDiffDisplay = value!.toString();
+            if (setAttr !== undefined) {
+                if (value) {
+                    ns.setAttribute(setAttr, '');
+                } else {
+                    ns.removeAttribute(setAttr);
+                }
+            }
+            const verb = value ? 'add' : 'remove';
+            const part = setPart;
+            if (part !== undefined) {
+                (<any>ns)[verb](part);
+            }
+            const className = setClass;
+            if (className !== undefined) {
+                ns.classList[verb](className);
+            }
+            if (ns === rhsLazyMt) return;
+            ns = ns.nextElementSibling as HTMLElement;
         }
     }
-    /**
-     * @private
-     */
-    _doNotCleanUp = false;
 
-    extractContents() {
-        const typedThis = this as unknown as IfDiffProps;
-        this._doNotCleanUp = true;
-        const range = document.createRange();
-        range.setStartBefore(this);
-        range.setEndAfter(typedThis.rhsLazyMt ?? this);
-        return range.extractContents();
+    mountMTs = ({ value, lhsLazyMt, rhsLazyMt }: this) => {
+        lhsLazyMt!.setAttribute('mount', '');
+        rhsLazyMt!.setAttribute('mount', '');
+
+    }
+    #mediaQueryHandler = (e: MediaQueryListEvent) => {
+            this.matchesMediaQuery = e.matches;
     }
 
-    get nextUnownedSibling() {
-        const typedThis = this as unknown as IfDiffProps;
-        if (typedThis.rhsLazyMt !== undefined) {
-            return typedThis.rhsLazyMt.nextElementSibling;
-        }
-        return this.nextElementSibling;
-    }
-
-    onPropChange(n: string, propDef: PropDef, newVal: any) {
-        this.reactor.addToQueue(propDef, newVal);
-    }
-
-    addStyle(self: IfDiffProps) {
-        let rootNode = self.getRootNode();
+    addStyle =  ({hiddenStyle}: this) => {
+        let rootNode = this.getRootNode();
         if ((<any>rootNode).host === undefined) {
             rootNode = document.head;
         }
@@ -226,7 +182,7 @@ export class IfDiff extends HTMLElement implements ReactiveSurface {
             const style = document.createElement('style');
             style.innerHTML = /* css */`
                 [data-if-diff-display="false"]{
-                    ${self.hiddenStyle}
+                    ${hiddenStyle}
                 }
                 if-diff:not([lazy-delay]){
                     display:none;
@@ -236,177 +192,124 @@ export class IfDiff extends HTMLElement implements ReactiveSurface {
         }
     }
 
-    configureLazyMt(lazyMT: LazyMTProps) { }
+    addMutObj = ({}: this) =>  {
+        const parent = this.parentElement;
+        if (parent !== null) {
+            if (!attachedParents.has(parent)) {
+                attachedParents.add(parent);
+                const mutObs = document.createElement('mut-obs');
+                const s = mutObs.setAttribute.bind(mutObs);
+                s('bubbles', '');
+                s('dispatch', p_d_std);
+                s('child-list', '');
+                s('observe', 'parentElement');
+                s('on', '*');
+                parent.appendChild(mutObs);
+            }
+            parent.addEventListener(p_d_std, e => {
+                e.stopPropagation();
+                this.applyConditionalDisplay(this);
+            })
+        }
+    }
 
+    #mql: MediaQueryList | undefined;
+    addMediaListener = ({ mediaMatches}: this) => {
+        this.disconnect();
+        this.#mql = window.matchMedia(mediaMatches!);
+        this.#mql.addEventListener('change', this.#mediaQueryHandler);
+        this.matchesMediaQuery = this.#mql.matches;
+    }
+
+    setMediaMatchesToTrue = ({}: this) => ({matchesMediaQuery: true})
+
+    disconnect() {
+
+        // https://www.youtube.com/watch?v=YDU_3WdfkxA&list=LL&index=2
+        if (this.#mql) this.#mql.removeEventListener('change', this.#mediaQueryHandler);
+    }
+
+    disconnectedCallback(){
+        this.disconnect();
+        //TODO remove owned siblings
+    }
+
+    configureLazyMt(lazyMT: LazyMTProps) { }
 }
 
-export interface IfDiff extends IfDiffProps { }
+export interface IfDiffCore extends IfDiffProps{}
 
 const styleMap = new WeakSet<Node>();
+const p_d_std = 'p_d_std';
+const attachedParents = new WeakSet<Element>();
 
-
-const linkValue = ({ iff, lhs, equals, rhs, notEquals, includes, disabled, matchesMediaQuery, self }: IfDiff) => {
-    if (disabled) return;
-    if (typeof iff !== 'boolean') {
-        self.passedInIff = iff;
-        if (self.isNonEmptyArray) {
-            self.iff = (iff !== undefined && Array.isArray(iff) && (iff as any).length > 0)
-        } else {
-            self.iff = !!iff;
-        }
-
-        return;
-    }
-    evaluate(self);
-}
-
-async function evaluate(self: IfDiff) {
-    let val = self.iff && !(self.matchesMediaQuery === false);
-    if (val) {
-        if (val) {
-            if (self.equals || self.notEquals) {
-                let eq = false;
-                if (typeof self.lhs === 'object' && typeof self.rhs === 'object') {
-                    const { compare } = await import('./compare.js');
-                    eq = compare(self.lhs, self.rhs);
-                } else {
-                    eq = self.lhs === self.rhs;
+const ce = new XE<IfDiffProps, IfDiffActions>({
+    config:{
+        tagName: 'if-diff',
+        propDefaults:{
+            isC: true,
+            ownedSiblingCount: 0,
+            evaluated: false,
+            iff: false,
+            matchesMediaQuery: false,
+            equals: false,
+            notEquals: false,
+            includes: false,
+            hiddenStyle: 'display:none',
+            lazyDelay: 0,
+            mediaMatches: '',
+        },
+        propInfo:{
+            value:{
+                notify:{
+                    dispatch: true,
                 }
-                val = self.equals ? eq : !eq;
-            } else if (self.includes) {
-                const { includes } = await import('./includes.js');
-                val = includes(self.lhs, self.rhs);
             }
-
-        }
-
-    }
-    if (val !== self.value) {
-        (<any>self)[slicedPropDefs!.propLookup!.value!.alias!] = val;
-    }
-    findTemplate(self);
-}
-
-function findTemplate(self: IfDiff) {
-
-    
-}
-
-function wrapLazyMts(self: IfDiff, lhsElement: Element, rhsElement: Element) {
-    self.addStyle(self);
-    const lhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
-    lhsLazyMt.enter = true;
-    self.configureLazyMt(lhsLazyMt);
-    lhsElement.insertAdjacentElement('beforebegin', lhsLazyMt);
-    const rhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
-    rhsLazyMt.exit = true;
-    self.configureLazyMt(rhsLazyMt);
-    rhsElement.insertAdjacentElement('afterend', rhsLazyMt);
-    self.lhsLazyMt = lhsLazyMt;
-    self.rhsLazyMt = rhsLazyMt;
-    addMutObj(self);
-}
-
-
-function createLazyMts(self: IfDiff, templ: HTMLTemplateElement) {
-    self.addStyle(self);
-    const lhsLazyMt = document.createElement('lazy-mt') as LazyMTProps;
-    const eLHS = lhsLazyMt as Element;
-    lhsLazyMt.setAttribute('enter', '');
-    if(!self.lazyDisplay){
-        lhsLazyMt.setAttribute('treat-as-visible', '');
-    }
-    
-    self.insertAdjacentElement('afterend', lhsLazyMt as Element);
-    eLHS.insertAdjacentElement('afterend', templ);
-    const rhsLazyMt = document.createElement('lazy-mt') as any;
-    rhsLazyMt.setAttribute('exit', '');
-    if(!self.lazyDisplay){
-        rhsLazyMt.setAttribute('treat-as-visible', '');
-    }
-    templ.insertAdjacentElement('afterend', rhsLazyMt);
-    self.lhsLazyMt = lhsLazyMt;
-    self.rhsLazyMt = rhsLazyMt;
-    addMutObj(self);
-}
-
-function addMutObj(self: IfDiffProps) {
-    const parent = self.parentElement;
-    if (parent !== null) {
-        if (!attachedParents.has(parent)) {
-            attachedParents.add(parent);
-            const mutObs = document.createElement('mut-obs');
-            const s = mutObs.setAttribute.bind(mutObs);
-            s('bubbles', '');
-            s('dispatch', p_d_std);
-            s('child-list', '');
-            s('observe', 'parentElement');
-            s('on', '*');
-            parent.appendChild(mutObs);
-        }
-        parent.addEventListener(p_d_std, e => {
-            e.stopPropagation();
-            changeDisplay(self, self.lhsLazyMt!, self.rhsLazyMt!, !!self.value);
-        })
-    }
-}
-
-const toggleMt = ({ value, lhsLazyMt, rhsLazyMt, self }: IfDiff) => {
-    if (value) {
-        lhsLazyMt!.setAttribute('mount', '');
-        rhsLazyMt!.setAttribute('mount', '');
-        changeDisplay(self, lhsLazyMt!, rhsLazyMt!, true);
-
-    } else {
-        changeDisplay(self, lhsLazyMt!, rhsLazyMt!, false);
-    }
-}
-
-function changeDisplay(self: IfDiffProps, lhsLazyMt: Element, rhsLazyMt: Element, display: boolean) {
-    let ns = lhsLazyMt as HTMLElement;
-    //TODO: mutation observer
-    while (ns !== null) {
-        ns.dataset.ifDiffDisplay = display.toString();
-        const attr = self.setAttr;
-        if (attr !== undefined) {
-            if (display) {
-                ns.setAttribute(attr, '');
-            } else {
-                ns.removeAttribute(attr);
+        },
+        actions:{
+            evaluate:{
+                async: true,
+                actIfKeyIn: ['iff', 'matchesMediaQuery', 'equals', 'notEquals', 'lhs', 'rhs', 'includes']
+            },
+            findTemplate:{
+                ifNoneOf: ['lhsLazyMt', 'ownedSiblingCount'],
+                actIfKeyIn: ['evaluated']
+            },
+            claimOwnership:{
+                ifNoneOf: ['lhsLazyMt'],
+                ifAllOf: ['ownedSiblingCount']
+            },
+            wrapLazyMTsAroundOwnedSiblings: {
+                ifAllOf: ['startingElementToWrap', 'endingElementToWrap']
+            },
+            mountMTs:{
+                ifAllOf: ['lhsLazyMt', 'rhsLazyMt', 'value']
+            },
+            applyConditionalDisplay: {
+                ifAllOf: ['lhsLazyMt', 'rhsLazyMt'],
+                actIfKeyIn: ['value'],
+            },
+            addStyle:{
+                ifAllOf: ['isC'],
+            },
+            addMutObj:{
+                ifAllOf: ['lhsLazyMt', 'rhsLazyMt'],
+            },
+            addMediaListener:{
+                ifAllOf: ['mediaMatches']
+            },
+            setMediaMatchesToTrue:{
+                ifNoneOf: ['mediaMatches'],
             }
         }
-        const verb = display ? 'add' : 'remove';
-        const part = self.setPart;
-        if (part !== undefined) {
-            (<any>ns)[verb](part);
-        }
-        const className = self.setClass;
-        if (className !== undefined) {
-            ns.classList[verb](className);
-        }
-        if (ns === rhsLazyMt) return;
-        ns = ns.nextElementSibling as HTMLElement;
-    }
-}
+    },
+    superclass: IfDiffCore
+});
 
-const onMediaMatches = ({ mediaMatches, self }: IfDiff) => {
-    self.disconnect();
-    self._mql = window.matchMedia(mediaMatches!);
-    self._mql.addEventListener('change', self.mediaQueryHandler);
-    (<any>self)[slicedPropDefs.propLookup.matchesMediaQuery!.alias!] = self._mql.matches;
-}
-
-const propActions = [
-    linkValue, toggleMt, onMediaMatches
-] as PropAction[];
-
-
-
-xc.letThereBeProps(IfDiff, slicedPropDefs, 'onPropChange');
-xc.define(IfDiff);
+export const IfDiff = ce.classDef;
 
 declare global {
     interface HTMLElementTagNameMap {
-        "if-diff": IfDiff,
+        "if-diff": IfDiffCore,
     }
 }

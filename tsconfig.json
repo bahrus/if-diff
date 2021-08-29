@@ -9,7 +9,7 @@
 		"watch": true
 	},
 	"files": [
-		"if-diff2.ts"
+		"if-diff.ts"
 	],
 	"exclude":[
 		"build",
