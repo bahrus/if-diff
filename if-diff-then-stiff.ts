@@ -1,5 +1,5 @@
-import {IfDiff} from './if-diff.js';
-import {xc} from 'xtal-element/lib/XtalCore.js';
+import {IfDiff} from './if-diff2.js';
+import {def} from 'trans-render/lib/def.js';
 import {LazyMTProps} from 'lazy-mt/types.d.js';
 
 /**
@@ -9,12 +9,12 @@ import {LazyMTProps} from 'lazy-mt/types.d.js';
  */
 export class IfDiffThenStiff extends IfDiff{
     static is = 'if-diff-then-stiff';
-    addStyle(self: IfDiff){  
+    override addStyle = ({}: this) => {  
         //no need for styles to hide things.
-    }
-    configureLazyMt(lazyMT: LazyMTProps){
+    };
+    override configureLazyMt(lazyMT: LazyMTProps){
         lazyMT.minMem = true;
     }
 }
 
-xc.define(IfDiffThenStiff);
+def(IfDiffThenStiff);

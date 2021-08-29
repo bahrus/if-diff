@@ -233,6 +233,8 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
         this.disconnect();
         //TODO remove owned siblings
     }
+
+    configureLazyMt(lazyMT: LazyMTProps) { }
 }
 
 export interface IfDiffCore extends IfDiffProps{}
@@ -303,3 +305,11 @@ const ce = new XE<IfDiffProps, IfDiffActions>({
     },
     superclass: IfDiffCore
 });
+
+export const IfDiff = ce.classDef;
+
+declare global {
+    interface HTMLElementTagNameMap {
+        "if-diff": IfDiffCore,
+    }
+}

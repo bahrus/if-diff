@@ -219,6 +219,7 @@ export class IfDiffCore extends HTMLElement {
         this.disconnect();
         //TODO remove owned siblings
     }
+    configureLazyMt(lazyMT) { }
 }
 const styleMap = new WeakSet();
 const p_d_std = 'p_d_std';
@@ -285,3 +286,4 @@ const ce = new XE({
     },
     superclass: IfDiffCore
 });
+export const IfDiff = ce.classDef;

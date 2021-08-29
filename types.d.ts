@@ -148,6 +148,7 @@ export interface IfDiffActions {
     addMediaListener: (self: this) => void;
     setMediaMatchesToTrue: (self: this) => Partial<IfDiffProps>;
     mountMTs: (self: this) => void;
+    configureLazyMt(lazyMT: LazyMTProps): void;
 }
 
 export interface ValueDetail {
