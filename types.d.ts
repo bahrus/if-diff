@@ -7,9 +7,9 @@ export interface IfDiffProps{
      * @prop {boolean} iff - Must be true to pass test(s). Can also be an object.  Condition is based on the property being truthy.
      * @attr {boolean} iff - Must be true (exists) to pass test(s)
      */
-    iff?: boolean;
+    iff?: any;
 
-    passedInIff?: any;
+    //passedInIff?: any;
 
     /**
      * @prop {boolean | string | number | object} [lhs] - LHS Operand.
@@ -100,7 +100,7 @@ export interface IfDiffProps{
      * @readonly
      * @prop {boolean} [value] - Computed based on values of  if / equals / not_equals / includes and other property values
      */
-    value?: boolean;
+    value: boolean;
 
     /**
      * @prop {number} [m] - Maximum number of elements that are effected by condition.
@@ -138,7 +138,7 @@ export interface IfDiffProps{
 }
 
 export interface IfDiffActions {
-    evaluate: (self: this) => Partial<IfDiffProps>;
+    evaluate: (self: this) => Promise<{value: boolean, evaluated: boolean}>;
     findTemplate: (self: this) => Partial<IfDiffProps>;
     wrapLazyMTsAroundOwnedSiblings: (self: this) => Partial<IfDiffProps>;
     claimOwnership: (self: this) => Partial<IfDiffProps>;

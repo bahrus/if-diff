@@ -45,8 +45,20 @@ import('lazy-mt/lazy-mt.js');
  * @attr {string} [media-matches] - Additional condition for a media query to be added for tests to be satisfied.
  */
 export class IfDiffCore extends HTMLElement implements IfDiffActions{
-    evaluate = async ({iff, matchesMediaQuery, equals, notEquals, lhs, rhs, includes}: this) => {
-        let val = iff && !(matchesMediaQuery === false);
+    async evaluate({iff, matchesMediaQuery, equals, notEquals, lhs, rhs, includes, isNonEmptyArray}: this){
+        let val = false;
+        switch(typeof iff){
+            case 'boolean':
+                val = iff;
+                break;
+            case 'object':
+                if(isNonEmptyArray){
+                    val = Array.isArray(iff) && iff.length > 0;
+                }else{
+                    val = !!iff;
+                }
+        }
+        val= val && !(matchesMediaQuery === false);
         if (val) {
             if (val) {
                 if (equals || notEquals) {
@@ -69,10 +81,10 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
         return {
             value: val,
             evaluated: true,
-        } as Partial<IfDiffProps>
+        };
     }
 
-    findTemplate = ({lazyDelay}: this) => {
+    findTemplate({lazyDelay}: this){
         const templ = this.querySelector('template');
         if (templ === null) {
             setTimeout(() => {
@@ -93,7 +105,7 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
 
     }
 
-    claimOwnership = ({ownedSiblingCount}: this) => {
+    claimOwnership({ownedSiblingCount}: this){
         let ns = this as Element | null;
         let count = 0;
         let startingElementToWrap: Element | undefined;
@@ -116,7 +128,7 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
         };
     }
 
-    wrapLazyMTsAroundOwnedSiblings = ({startingElementToWrap, endingElementToWrap, lazyDisplay}: this) => {
+    wrapLazyMTsAroundOwnedSiblings({startingElementToWrap, endingElementToWrap, lazyDisplay}: this){
         const eLHS = document.createElement('lazy-mt');
         const lhsLazyMt = eLHS as LazyMTProps & HTMLElement;
         lhsLazyMt.setAttribute('enter', '');
@@ -137,7 +149,7 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
         }
     }
 
-    applyConditionalDisplay = ({lhsLazyMt, rhsLazyMt, value, setAttr, setPart, setClass}: this) => {
+    applyConditionalDisplay({lhsLazyMt, rhsLazyMt, value, setAttr, setPart, setClass}: this){
         let ns = lhsLazyMt! as HTMLElement;
         //TODO: mutation observer
         while (ns !== null) {
@@ -163,16 +175,16 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
         }
     }
 
-    mountMTs = ({ value, lhsLazyMt, rhsLazyMt }: this) => {
+    mountMTs({ value, lhsLazyMt, rhsLazyMt }: this){
         lhsLazyMt!.setAttribute('mount', '');
         rhsLazyMt!.setAttribute('mount', '');
 
     }
-    #mediaQueryHandler = (e: MediaQueryListEvent) => {
+    #mediaQueryHandler(e: MediaQueryListEvent){
             this.matchesMediaQuery = e.matches;
     }
 
-    addStyle =  ({hiddenStyle}: this) => {
+    addStyle({hiddenStyle}: this){
         let rootNode = this.getRootNode();
         if ((<any>rootNode).host === undefined) {
             rootNode = document.head;
@@ -192,7 +204,7 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
         }
     }
 
-    addMutObj = ({}: this) =>  {
+    addMutObj({}: this){
         const parent = this.parentElement;
         if (parent !== null) {
             if (!attachedParents.has(parent)) {
@@ -269,11 +281,11 @@ const ce = new XE<IfDiffProps, IfDiffActions>({
         actions:{
             evaluate:{
                 async: true,
-                actIfKeyIn: ['iff', 'matchesMediaQuery', 'equals', 'notEquals', 'lhs', 'rhs', 'includes']
+                ifKeyIn: ['iff', 'matchesMediaQuery', 'equals', 'notEquals', 'lhs', 'rhs', 'includes']
             },
             findTemplate:{
                 ifNoneOf: ['lhsLazyMt', 'ownedSiblingCount'],
-                actIfKeyIn: ['evaluated']
+                ifKeyIn: ['evaluated']
             },
             claimOwnership:{
                 ifNoneOf: ['lhsLazyMt'],
@@ -287,7 +299,7 @@ const ce = new XE<IfDiffProps, IfDiffActions>({
             },
             applyConditionalDisplay: {
                 ifAllOf: ['lhsLazyMt', 'rhsLazyMt'],
-                actIfKeyIn: ['value'],
+                ifKeyIn: ['value'],
             },
             addStyle:{
                 ifAllOf: ['isC'],

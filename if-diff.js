@@ -42,8 +42,21 @@ import('lazy-mt/lazy-mt.js');
  * @attr {string} [media-matches] - Additional condition for a media query to be added for tests to be satisfied.
  */
 export class IfDiffCore extends HTMLElement {
-    evaluate = async ({ iff, matchesMediaQuery, equals, notEquals, lhs, rhs, includes }) => {
-        let val = iff && !(matchesMediaQuery === false);
+    async evaluate({ iff, matchesMediaQuery, equals, notEquals, lhs, rhs, includes, isNonEmptyArray }) {
+        let val = false;
+        switch (typeof iff) {
+            case 'boolean':
+                val = iff;
+                break;
+            case 'object':
+                if (isNonEmptyArray) {
+                    val = Array.isArray(iff) && iff.length > 0;
+                }
+                else {
+                    val = !!iff;
+                }
+        }
+        val = val && !(matchesMediaQuery === false);
         if (val) {
             if (val) {
                 if (equals || notEquals) {
@@ -67,8 +80,8 @@ export class IfDiffCore extends HTMLElement {
             value: val,
             evaluated: true,
         };
-    };
-    findTemplate = ({ lazyDelay }) => {
+    }
+    findTemplate({ lazyDelay }) {
         const templ = this.querySelector('template');
         if (templ === null) {
             setTimeout(() => {
@@ -86,8 +99,8 @@ export class IfDiffCore extends HTMLElement {
             startingElementToWrap: templ,
             endingElementToWrap: templ,
         };
-    };
-    claimOwnership = ({ ownedSiblingCount }) => {
+    }
+    claimOwnership({ ownedSiblingCount }) {
         let ns = this;
         let count = 0;
         let startingElementToWrap;
@@ -109,8 +122,8 @@ export class IfDiffCore extends HTMLElement {
         return {
             startingElementToWrap, endingElementToWrap
         };
-    };
-    wrapLazyMTsAroundOwnedSiblings = ({ startingElementToWrap, endingElementToWrap, lazyDisplay }) => {
+    }
+    wrapLazyMTsAroundOwnedSiblings({ startingElementToWrap, endingElementToWrap, lazyDisplay }) {
         const eLHS = document.createElement('lazy-mt');
         const lhsLazyMt = eLHS;
         lhsLazyMt.setAttribute('enter', '');
@@ -128,8 +141,8 @@ export class IfDiffCore extends HTMLElement {
             lhsLazyMt,
             rhsLazyMt
         };
-    };
-    applyConditionalDisplay = ({ lhsLazyMt, rhsLazyMt, value, setAttr, setPart, setClass }) => {
+    }
+    applyConditionalDisplay({ lhsLazyMt, rhsLazyMt, value, setAttr, setPart, setClass }) {
         let ns = lhsLazyMt;
         //TODO: mutation observer
         while (ns !== null) {
@@ -155,15 +168,15 @@ export class IfDiffCore extends HTMLElement {
                 return;
             ns = ns.nextElementSibling;
         }
-    };
-    mountMTs = ({ value, lhsLazyMt, rhsLazyMt }) => {
+    }
+    mountMTs({ value, lhsLazyMt, rhsLazyMt }) {
         lhsLazyMt.setAttribute('mount', '');
         rhsLazyMt.setAttribute('mount', '');
-    };
-    #mediaQueryHandler = (e) => {
+    }
+    #mediaQueryHandler(e) {
         this.matchesMediaQuery = e.matches;
-    };
-    addStyle = ({ hiddenStyle }) => {
+    }
+    addStyle({ hiddenStyle }) {
         let rootNode = this.getRootNode();
         if (rootNode.host === undefined) {
             rootNode = document.head;
@@ -181,8 +194,8 @@ export class IfDiffCore extends HTMLElement {
             `;
             rootNode.appendChild(style);
         }
-    };
-    addMutObj = ({}) => {
+    }
+    addMutObj({}) {
         const parent = this.parentElement;
         if (parent !== null) {
             if (!attachedParents.has(parent)) {
@@ -201,7 +214,7 @@ export class IfDiffCore extends HTMLElement {
                 this.applyConditionalDisplay(this);
             });
         }
-    };
+    }
     #mql;
     addMediaListener = ({ mediaMatches }) => {
         this.disconnect();
@@ -250,11 +263,11 @@ const ce = new XE({
         actions: {
             evaluate: {
                 async: true,
-                actIfKeyIn: ['iff', 'matchesMediaQuery', 'equals', 'notEquals', 'lhs', 'rhs', 'includes']
+                ifKeyIn: ['iff', 'matchesMediaQuery', 'equals', 'notEquals', 'lhs', 'rhs', 'includes']
             },
             findTemplate: {
                 ifNoneOf: ['lhsLazyMt', 'ownedSiblingCount'],
-                actIfKeyIn: ['evaluated']
+                ifKeyIn: ['evaluated']
             },
             claimOwnership: {
                 ifNoneOf: ['lhsLazyMt'],
@@ -268,7 +281,7 @@ const ce = new XE({
             },
             applyConditionalDisplay: {
                 ifAllOf: ['lhsLazyMt', 'rhsLazyMt'],
-                actIfKeyIn: ['value'],
+                ifKeyIn: ['value'],
             },
             addStyle: {
                 ifAllOf: ['isC'],
