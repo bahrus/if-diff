@@ -180,7 +180,7 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
         rhsLazyMt!.setAttribute('mount', '');
 
     }
-    #mediaQueryHandler(e: MediaQueryListEvent){
+    #mediaQueryHandler = (e: MediaQueryListEvent) => {
             this.matchesMediaQuery = e.matches;
     }
 

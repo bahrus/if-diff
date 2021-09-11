@@ -173,9 +173,9 @@ export class IfDiffCore extends HTMLElement {
         lhsLazyMt.setAttribute('mount', '');
         rhsLazyMt.setAttribute('mount', '');
     }
-    #mediaQueryHandler(e) {
+    #mediaQueryHandler = (e) => {
         this.matchesMediaQuery = e.matches;
-    }
+    };
     addStyle({ hiddenStyle }) {
         let rootNode = this.getRootNode();
         if (rootNode.host === undefined) {
