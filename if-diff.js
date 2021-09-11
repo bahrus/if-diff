@@ -252,6 +252,7 @@ const ce = new XE({
             hiddenStyle: 'display:none',
             lazyDelay: 0,
             mediaMatches: '',
+            isNonEmptyArray: false,
         },
         propInfo: {
             value: {

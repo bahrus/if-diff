@@ -270,6 +270,7 @@ const ce = new XE<IfDiffProps, IfDiffActions>({
             hiddenStyle: 'display:none',
             lazyDelay: 0,
             mediaMatches: '',
+            isNonEmptyArray: false,
         },
         propInfo:{
             value:{
