@@ -175,10 +175,9 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
         }
     }
 
-    mountMTs({ value, lhsLazyMt, rhsLazyMt }: this){
+    mountMTs({ lhsLazyMt, rhsLazyMt }: this){
         lhsLazyMt!.setAttribute('mount', '');
         rhsLazyMt!.setAttribute('mount', '');
-
     }
     #mediaQueryHandler = (e: MediaQueryListEvent) => {
             this.matchesMediaQuery = e.matches;
@@ -233,7 +232,7 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
         this.matchesMediaQuery = this.#mql.matches;
     }
 
-    setMediaMatchesToTrue = ({}: this) => ({matchesMediaQuery: true})
+    setMediaMatchesToTrue = setMediaMatchesToTrue;
 
     disconnect() {
 
@@ -248,6 +247,8 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
 
     configureLazyMt(lazyMT: LazyMTProps) { }
 }
+
+const setMediaMatchesToTrue = ({}: IfDiffProps) => ({matchesMediaQuery: true});
 
 export interface IfDiffCore extends IfDiffProps{}
 
@@ -268,14 +269,18 @@ const ce = new XE<IfDiffProps, IfDiffActions>({
             notEquals: false,
             includes: false,
             hiddenStyle: 'display:none',
-            lazyDelay: 0,
+            lazyDelay: 16,
             mediaMatches: '',
             isNonEmptyArray: false,
+            value: false,
+            debouncedValue: false,
         },
         propInfo:{
             value:{
                 notify:{
                     dispatch: true,
+                    echoTo: 'debouncedValue',
+                    echoDelay: 'lazyDelay'
                 }
             }
         },
@@ -296,7 +301,7 @@ const ce = new XE<IfDiffProps, IfDiffActions>({
                 ifAllOf: ['startingElementToWrap', 'endingElementToWrap']
             },
             mountMTs:{
-                ifAllOf: ['lhsLazyMt', 'rhsLazyMt', 'value']
+                ifAllOf: ['lhsLazyMt', 'rhsLazyMt', 'value', 'debouncedValue'],
             },
             applyConditionalDisplay: {
                 ifAllOf: ['lhsLazyMt', 'rhsLazyMt'],

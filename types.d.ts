@@ -135,6 +135,8 @@ export interface IfDiffProps{
     endingElementToWrap: Element;
     isC: boolean;
 
+    debouncedValue: boolean;
+
 }
 
 export interface IfDiffActions {

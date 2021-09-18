@@ -1,41 +1,43 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
-    <title>if-diff demo</title>
-  </head>
-  <body>
-    <div>
-      <h3>Basic if-diff demo.</h3>
-      <div> 
-        Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right textbox.
-      </div>
-      <label for=lhs>LHS:</label><input id=lhs> 
-      <p-d on=input to=[-lhs] val=target.value m=2 init-val=value></p-d>
-      <label for=rhs>RHS:</label><input id=rhs>
-      <p-d on=input to=[-rhs] val=target.value m=2 init-val=value></p-d>
-      <if-diff iff -lhs equals -rhs lazy-display>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>if-diff demo</title>
+</head>
+
+<body>
+  <h3>Basic if-diff demo.</h3>
+  <div>
+    Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right
+    textbox.
+  </div>
+  <label for=lhs>LHS:</label><input id=lhs>
+  <p-d on=input to=[-lhs] val=target.value m=2 init-val=value></p-d>
+  <label for=rhs>RHS:</label><input id=rhs>
+  <p-d on=input to=[-rhs] val=target.value m=2 init-val=value></p-d>
+  <!-- <if-diff iff -lhs equals -rhs lazy-display>
           <template>
             <div>LHS == RHS</div>
           </template>
-      </if-diff>
-      <p-d observe=if-diff on=value-changed to=[data-lhs-equals-rhs] prop=textContent></p-d>
-      <if-diff iff -lhs not-equals -rhs lazy-display>
-          <template>
-            <div>LHS != RHS</div>
-          </template>
-      </if-diff>
-      <p-d observe=if-diff on=value-changed to=[data-lhs-not-equals-rhs] prop=textContent></p-d>
+      </if-diff> -->
+  <p-d observe=if-diff on=value-changed to=[data-lhs-equals-rhs] prop=textContent></p-d>
+  <if-diff iff -lhs not-equals -rhs lazy-display>
+    <template>
+      <div>LHS != RHS</div>
+    </template>
+  </if-diff>
+  <p-d observe=if-diff on=value-changed to=[data-lhs-not-equals-rhs] prop=textContent></p-d>
 
-      LHS Equals RHS: 
-      <div data-lhs-equals-rhs></div>
-      LHS Doesn't equal RHS:
-      <div data-lhs-not-equals-rhs></div>
+  LHS Equals RHS:
+  <div data-lhs-equals-rhs></div>
+  LHS Doesn't equal RHS:
+  <div data-lhs-not-equals-rhs></div>
 
-      <!-- ========================  Script Refs ========================== -->
+  <!-- ========================  Script Refs ========================== -->
 
-      <script type="importmap">
+  <script type="importmap">
         {
           "imports": {
             "xtal-element/":        "../node_modules/xtal-element/",
@@ -47,10 +49,10 @@
           }
         }
         </script>
-      <script  type="module">
-        import '../if-diff.js';
-        import 'pass-down/p-d.js';
-      </script>
-    </div>
-  </body>
+  <script type="module">
+    import '../if-diff.js';
+    import 'pass-down/p-d.js';
+  </script>
+</body>
+
 </html>

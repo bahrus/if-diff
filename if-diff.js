@@ -169,7 +169,7 @@ export class IfDiffCore extends HTMLElement {
             ns = ns.nextElementSibling;
         }
     }
-    mountMTs({ value, lhsLazyMt, rhsLazyMt }) {
+    mountMTs({ lhsLazyMt, rhsLazyMt }) {
         lhsLazyMt.setAttribute('mount', '');
         rhsLazyMt.setAttribute('mount', '');
     }
@@ -222,7 +222,7 @@ export class IfDiffCore extends HTMLElement {
         this.#mql.addEventListener('change', this.#mediaQueryHandler);
         this.matchesMediaQuery = this.#mql.matches;
     };
-    setMediaMatchesToTrue = ({}) => ({ matchesMediaQuery: true });
+    setMediaMatchesToTrue = setMediaMatchesToTrue;
     disconnect() {
         // https://www.youtube.com/watch?v=YDU_3WdfkxA&list=LL&index=2
         if (this.#mql)
@@ -234,6 +234,7 @@ export class IfDiffCore extends HTMLElement {
     }
     configureLazyMt(lazyMT) { }
 }
+const setMediaMatchesToTrue = ({}) => ({ matchesMediaQuery: true });
 const styleMap = new WeakSet();
 const p_d_std = 'p_d_std';
 const attachedParents = new WeakSet();
@@ -250,14 +251,18 @@ const ce = new XE({
             notEquals: false,
             includes: false,
             hiddenStyle: 'display:none',
-            lazyDelay: 0,
+            lazyDelay: 16,
             mediaMatches: '',
             isNonEmptyArray: false,
+            value: false,
+            debouncedValue: false,
         },
         propInfo: {
             value: {
                 notify: {
                     dispatch: true,
+                    echoTo: 'debouncedValue',
+                    echoDelay: 'lazyDelay'
                 }
             }
         },
@@ -278,7 +283,7 @@ const ce = new XE({
                 ifAllOf: ['startingElementToWrap', 'endingElementToWrap']
             },
             mountMTs: {
-                ifAllOf: ['lhsLazyMt', 'rhsLazyMt', 'value']
+                ifAllOf: ['lhsLazyMt', 'rhsLazyMt', 'value', 'debouncedValue'],
             },
             applyConditionalDisplay: {
                 ifAllOf: ['lhsLazyMt', 'rhsLazyMt'],
