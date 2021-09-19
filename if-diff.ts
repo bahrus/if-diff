@@ -269,6 +269,7 @@ const ce = new XE<IfDiffProps, IfDiffActions>({
             notEquals: false,
             includes: false,
             hiddenStyle: 'display:none',
+            lazyDisplay: false,
             lazyDelay: 16,
             mediaMatches: '',
             isNonEmptyArray: false,

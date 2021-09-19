@@ -13,6 +13,11 @@
     Type in the text boxes, and see what happens when value in the left textbox matches or doesn't match the right
     textbox.
   </div>
+  <script type="application/json">
+    {
+      "test": "hello"
+    }
+  </script>
   <label for=lhs>LHS:</label><input id=lhs>
   <p-d on=input to=[-lhs] val=target.value m=2 init-val=value></p-d>
   <label for=rhs>RHS:</label><input id=rhs>
@@ -38,17 +43,21 @@
   <!-- ========================  Script Refs ========================== -->
 
   <script type="importmap">
-        {
-          "imports": {
-            "xtal-element/":        "../node_modules/xtal-element/",
-            "trans-render/":        "../node_modules/trans-render/",
-            "pass-down/":           "../node_modules/pass-down/",
-            "lazy-mt/":             "../node_modules/lazy-mt/",
-            "on-to-me/":            "../node_modules/on-to-me/",
-            "mut-obs/":             "../node_modules/mut-obs/"
-          }
-        }
-        </script>
+    {
+      "imports": {
+        "xtal-element/":        "../node_modules/xtal-element/",
+        "trans-render/":        "../node_modules/trans-render/",
+        "pass-down/":           "../node_modules/pass-down/",
+        "lazy-mt/":             "../node_modules/lazy-mt/",
+        "on-to-me/":            "../node_modules/on-to-me/",
+        "mut-obs/":             "../node_modules/mut-obs/"
+      }
+    }
+  </script>
+
+  
+
+  
   <script type="module">
     import '../if-diff.js';
     import 'pass-down/p-d.js';

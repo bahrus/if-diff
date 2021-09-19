@@ -11,7 +11,7 @@
 
 \<if-diff\> is an alternative to Polymer's [dom-if](https://polymer-library.polymer-project.org/3.0/docs/devguide/templates#dom-if) element that allows comparison between two operands, as well as progressive enhancement.  See [if-else](https://github.com/matthewp/if-else) for another data-centric alternative. And [iff-diff](https://github.com/bahrus/iff-diff) for something extremely light and simple, both size-wise and feature-wise.
 
-if-diff shares with Polymer's dom-if the appreciate for the benefits of lazy loading content -- The content to display is normally tucked inside a template, where it doesn't impose a tax on memory or cpu, until the condition(s) are satisfied.  Only then is the template cloned and added into the live DOM tree.
+if-diff shares with Polymer's dom-if the appreciation for the benefits of lazy loading content -- The content to display is normally tucked inside a template, where it doesn't impose a tax on memory or cpu, until the condition(s) are satisfied.  Only then is the template cloned and added into the live DOM tree.
 
 if-diff adds additional, experimental support for an extra condition on rendering the contents -- it can be made to only load the content into the live DOM tree when the content scrolls or is clicked into view.  This can be specified by setting property lazyDisplay to true (or adding attribute lazy-display).   
 
