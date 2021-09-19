@@ -143,7 +143,7 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
         endingElementToWrap.insertAdjacentElement('afterend', rhsLazyMt);
         if(lazyDelay){
             queue.push(this);
-            if(queue.length === 1){
+            if(!queueIsProcessing){
                 doQueue();
             }
         }
@@ -270,9 +270,13 @@ const p_d_std = 'p_d_std';
 const attachedParents = new WeakSet<Element>();
 
 const queue: IfDiffCore[] = [];
-
+let queueIsProcessing = false;
 function doQueue(){
-    if(queue.length === 0) return;
+    if(queue.length === 0) {
+        queueIsProcessing = false;
+        return;
+    }
+    queueIsProcessing = true;
     const doThisOne = queue.shift()!;
     setTimeout(() => {
         doThisOne.removeAttribute('lazy-delay');

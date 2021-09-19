@@ -136,7 +136,7 @@ export class IfDiffCore extends HTMLElement {
         endingElementToWrap.insertAdjacentElement('afterend', rhsLazyMt);
         if (lazyDelay) {
             queue.push(this);
-            if (queue.length === 1) {
+            if (!queueIsProcessing) {
                 doQueue();
             }
         }
@@ -247,9 +247,13 @@ const styleMap = new WeakSet();
 const p_d_std = 'p_d_std';
 const attachedParents = new WeakSet();
 const queue = [];
+let queueIsProcessing = false;
 function doQueue() {
-    if (queue.length === 0)
+    if (queue.length === 0) {
+        queueIsProcessing = false;
         return;
+    }
+    queueIsProcessing = true;
     const doThisOne = queue.shift();
     setTimeout(() => {
         doThisOne.removeAttribute('lazy-delay');
