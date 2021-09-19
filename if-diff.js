@@ -120,7 +120,7 @@ export class IfDiffCore extends HTMLElement {
             startingElementToWrap, endingElementToWrap
         };
     }
-    wrapLazyMTsAroundOwnedSiblings({ startingElementToWrap, endingElementToWrap, lazyDisplay }) {
+    wrapLazyMTsAroundOwnedSiblings({ startingElementToWrap, endingElementToWrap, lazyDisplay, lazyDelay }) {
         const eLHS = document.createElement('lazy-mt');
         const lhsLazyMt = eLHS;
         lhsLazyMt.setAttribute('enter', '');
@@ -134,6 +134,11 @@ export class IfDiffCore extends HTMLElement {
             rhsLazyMt.setAttribute('treat-as-visible', '');
         }
         endingElementToWrap.insertAdjacentElement('afterend', rhsLazyMt);
+        if (lazyDelay) {
+            setTimeout(() => {
+                this.removeAttribute('lazy-delay');
+            }, lazyDelay);
+        }
         return {
             lhsLazyMt,
             rhsLazyMt
@@ -167,13 +172,8 @@ export class IfDiffCore extends HTMLElement {
         }
     }
     mountMTs({ lhsLazyMt, rhsLazyMt, lazyDelay }) {
-        lhsLazyMt.addEventListener('is-visible-changed', this.handleIsVisible);
-        rhsLazyMt.addEventListener('is-visible-changed', this.handleIsVisible);
         lhsLazyMt.setAttribute('mount', '');
         rhsLazyMt.setAttribute('mount', '');
-        // setTimeout(() => {
-        //     this.removeAttribute('lazy-delay');
-        // }, lazyDelay);
     }
     handleIsVisible = (e) => {
         if (e.detail.value) {
