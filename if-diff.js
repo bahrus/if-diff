@@ -176,7 +176,9 @@ export class IfDiffCore extends HTMLElement {
         // }, lazyDelay);
     }
     handleIsVisible = (e) => {
-        this.removeAttribute('lazy-delay');
+        if (e.detail.value) {
+            this.removeAttribute('lazy-delay');
+        }
     };
     #mediaQueryHandler = (e) => {
         this.matchesMediaQuery = e.matches;

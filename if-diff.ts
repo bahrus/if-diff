@@ -184,7 +184,10 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
         // }, lazyDelay);
     }
     handleIsVisible = (e: CustomEvent) => {
-        this.removeAttribute('lazy-delay');
+        if(e.detail.value){
+            this.removeAttribute('lazy-delay');
+        }
+        
     }
     #mediaQueryHandler = (e: MediaQueryListEvent) => {
             this.matchesMediaQuery = e.matches;
