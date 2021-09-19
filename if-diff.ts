@@ -93,9 +93,7 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
             }, 50);
             return {};
         }
-        setTimeout(() => {
-            this.removeAttribute('lazy-delay');
-        }, lazyDelay);
+
         this.insertAdjacentElement('afterend', templ);
         return {
             startingElementToWrap: templ,
@@ -175,9 +173,18 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
         }
     }
 
-    mountMTs({ lhsLazyMt, rhsLazyMt }: this){
+    mountMTs({ lhsLazyMt, rhsLazyMt, lazyDelay }: this){
+        lhsLazyMt!.addEventListener('is-visible-changed', this.handleIsVisible);
+        rhsLazyMt!.addEventListener('is-visible-changed', this.handleIsVisible);
         lhsLazyMt!.setAttribute('mount', '');
         rhsLazyMt!.setAttribute('mount', '');
+        
+        // setTimeout(() => {
+        //     this.removeAttribute('lazy-delay');
+        // }, lazyDelay);
+    }
+    handleIsVisible = (e: CustomEvent) => {
+        this.removeAttribute('lazy-delay');
     }
     #mediaQueryHandler = (e: MediaQueryListEvent) => {
             this.matchesMediaQuery = e.matches;

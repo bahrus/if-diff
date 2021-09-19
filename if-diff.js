@@ -91,9 +91,6 @@ export class IfDiffCore extends HTMLElement {
             }, 50);
             return {};
         }
-        setTimeout(() => {
-            this.removeAttribute('lazy-delay');
-        }, lazyDelay);
         this.insertAdjacentElement('afterend', templ);
         return {
             startingElementToWrap: templ,
@@ -169,10 +166,18 @@ export class IfDiffCore extends HTMLElement {
             ns = ns.nextElementSibling;
         }
     }
-    mountMTs({ lhsLazyMt, rhsLazyMt }) {
+    mountMTs({ lhsLazyMt, rhsLazyMt, lazyDelay }) {
+        lhsLazyMt.addEventListener('is-visible-changed', this.handleIsVisible);
+        rhsLazyMt.addEventListener('is-visible-changed', this.handleIsVisible);
         lhsLazyMt.setAttribute('mount', '');
         rhsLazyMt.setAttribute('mount', '');
+        // setTimeout(() => {
+        //     this.removeAttribute('lazy-delay');
+        // }, lazyDelay);
     }
+    handleIsVisible = (e) => {
+        this.removeAttribute('lazy-delay');
+    };
     #mediaQueryHandler = (e) => {
         this.matchesMediaQuery = e.matches;
     };
