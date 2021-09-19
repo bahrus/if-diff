@@ -142,9 +142,10 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
         }
         endingElementToWrap.insertAdjacentElement('afterend', rhsLazyMt);
         if(lazyDelay){
-            setTimeout(() => {
-                this.removeAttribute('lazy-delay');
-            }, lazyDelay);
+            queue.push(this);
+            if(queue.length === 1){
+                doQueue();
+            }
         }
 
         return {
@@ -260,13 +261,25 @@ export class IfDiffCore extends HTMLElement implements IfDiffActions{
     configureLazyMt(lazyMT: LazyMTProps) { }
 }
 
-const setMediaMatchesToTrue = ({}: IfDiffProps) => ({matchesMediaQuery: true});
-
 export interface IfDiffCore extends IfDiffProps{}
+
+const setMediaMatchesToTrue = ({}: IfDiffProps) => ({matchesMediaQuery: true});
 
 const styleMap = new WeakSet<Node>();
 const p_d_std = 'p_d_std';
 const attachedParents = new WeakSet<Element>();
+
+const queue: IfDiffCore[] = [];
+
+function doQueue(){
+    if(queue.length === 0) return;
+    const doThisOne = queue.shift()!;
+    setTimeout(() => {
+        doThisOne.removeAttribute('lazy-delay');
+        doQueue();
+    }, doThisOne.lazyDelay);
+
+}
 
 const ce = new XE<IfDiffProps, IfDiffActions>({
     config:{
