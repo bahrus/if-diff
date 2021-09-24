@@ -10,9 +10,9 @@ export function includes(lhs: any, rhs: any){
     if(typeof lhs !== typeof rhs) return false;
     switch(typeof lhs){
         case 'number':
-            return lhs > rhs;
+            return lhs >= rhs;
         case 'boolean':
-            return false;
+            return (lhs === rhs);
         case 'string':
             return (lhs as string).includes(rhs as string);
         case 'object':

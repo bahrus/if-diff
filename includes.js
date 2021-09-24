@@ -11,9 +11,9 @@ export function includes(lhs, rhs) {
         return false;
     switch (typeof lhs) {
         case 'number':
-            return lhs > rhs;
+            return lhs >= rhs;
         case 'boolean':
-            return false;
+            return (lhs === rhs);
         case 'string':
             return lhs.includes(rhs);
         case 'object':
