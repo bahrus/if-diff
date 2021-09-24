@@ -73,7 +73,7 @@ export class IfDiffCore extends HTMLElement {
                 else if (includes || notIncludes) {
                     const { includes } = await import('./includes.js');
                     val = includes(lhs, rhs);
-                    if (!notIncludes)
+                    if (notIncludes)
                         val = !val;
                 }
             }
