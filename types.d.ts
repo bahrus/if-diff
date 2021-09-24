@@ -97,6 +97,12 @@ export interface IfDiffProps{
     includes?: boolean; 
 
     /**
+     * @prop {boolean} [includes] - For strings, this means lhs.indexOf(rhs) === -1.  For arrays, this means lhs intersect rhs != rhs. For numbers, this means lhs < rhs.  For objects, this means not all the properties of rhs match the same properties of lhs
+     * @attr {boolean} [includes] - For strings, this means lhs.indexOf(rhs) === -1.  For arrays, this means lhs intersect rhs != rhs. For numbers, this means lhs < rhs.  For objects, this means not all the properties of rhs match the same properties of lhs
+     */
+    notIncludes?: boolean;
+
+    /**
      * @readonly
      * @prop {boolean} [value] - Computed based on values of  if / equals / not_equals / includes and other property values
      */

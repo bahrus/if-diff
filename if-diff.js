@@ -42,7 +42,7 @@ import('lazy-mt/lazy-mt.js');
  * @attr {string} [media-matches] - Additional condition for a media query to be added for tests to be satisfied.
  */
 export class IfDiffCore extends HTMLElement {
-    async evaluate({ iff, matchesMediaQuery, equals, notEquals, lhs, rhs, includes, isNonEmptyArray }) {
+    async evaluate({ iff, matchesMediaQuery, equals, notEquals, lhs, rhs, includes, notIncludes, isNonEmptyArray }) {
         let val = false;
         switch (typeof iff) {
             case 'boolean':
@@ -70,9 +70,11 @@ export class IfDiffCore extends HTMLElement {
                     }
                     val = equals ? eq : !eq;
                 }
-                else if (includes) {
+                else if (includes || notIncludes) {
                     const { includes } = await import('./includes.js');
                     val = includes(lhs, rhs);
+                    if (!notIncludes)
+                        val = !val;
                 }
             }
         }
@@ -272,6 +274,7 @@ const ce = new XE({
             equals: false,
             notEquals: false,
             includes: false,
+            notIncludes: false,
             hiddenStyle: 'display:none',
             lazyDisplay: false,
             lazyDelay: 16,
