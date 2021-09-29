@@ -2,12 +2,12 @@
   "dependencies": {
     "lazy-mt": "0.0.22",
     "mut-obs": "0.0.10",
-    "trans-render": "0.0.409",
+    "trans-render": "0.0.414",
     "xtal-element": "0.0.442"
   },
   "devDependencies": {
     "@skypack/package-check": "0.2.2",
-    "pass-down": "0.0.110",
+    "pass-down": "0.0.117",
     "xtal-test": "0.0.51",
     "@custom-elements-manifest/analyzer": "0.5.3"
   },
