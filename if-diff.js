@@ -24,7 +24,7 @@ import('lazy-mt/lazy-mt.js');
  * @prop {number} [ownedSiblingCount] - If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.
  * @attr {number} [owned-sibling-count] - If content is rendered by the server, the server can indicate which nodes that it rendered can be hidden / displayed by if-diff on the client.
  * @prop {string} [hiddenStyle = display:none] - Specify exact manner in which non-visible content should be hidden.
- * @attr {string} [hidden-style= display:none] - Specify exact manner in which non-visible content should be hidden.
+ * @attr {string} [hidden-style = display:none] - Specify exact manner in which non-visible content should be hidden.
  * @prop {string} [setAttr] - Specify name of attribute to add when conditions are satisfied / removed when not satisfied
  * @attr {string} [set-attr] - Specify name of attribute to add when conditions are satisfied / removed when not satisfied
  * @prop {string} [setClass] - Specify name of class to add when conditions are satisfied / removed when not satisfied
