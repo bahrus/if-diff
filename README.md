@@ -8,6 +8,8 @@
 
 # \<if-diff\>
 
+**NB:** if-diff is deprecated.  The functionality is (mostly) ported over to [be-switched](https://github.com/bahrus/be-switched)
+
 
 \<if-diff\> is an alternative to Polymer's [dom-if](https://polymer-library.polymer-project.org/3.0/docs/devguide/templates#dom-if) element that allows comparison between two operands, as well as progressive enhancement.  See [if-else](https://github.com/matthewp/if-else) for another data-centric alternative. And [iff-diff](https://github.com/bahrus/iff-diff) for something extremely light and simple, both size-wise and feature-wise.
 
